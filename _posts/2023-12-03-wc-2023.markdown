@@ -74,9 +74,9 @@ if ( v7[idc] >= 123456790 )
       exit(0);
 }
 ```
-
+```
 However, because of this check, we can't easily build a normal rop chain with the large address in libc. So, i manage to leak libc and use scanf("%lld", <got_addr>) to get shell !!!
-
+```
 
 Here is my solve script
 ```python
