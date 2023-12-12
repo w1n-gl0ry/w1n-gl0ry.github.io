@@ -2,7 +2,7 @@
 layout: post
 title:  "W1 2023"
 date:   2023-7-31 15:14:54
-categories: pwn
+categories: pwn rev
 tags: ctf 
 excerpt: Một vài bài test ở khóa training
 mathjax: true
