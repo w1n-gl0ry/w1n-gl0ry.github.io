@@ -19,7 +19,7 @@ type: page
 
 * GitHub：[w1n-gl0ry](https://github.com/w1n-gl0ry)
 * email：duynguyen45608@gmail.com
-* [Facebook](https://www.facebook.com/profile.php?id=100028783850506)
+* [Facebook](https://www.facebook.com/profile.php?id=100028783850506
 
 ## Links
 
