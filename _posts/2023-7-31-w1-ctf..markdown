@@ -7,6 +7,10 @@ tags: ctf
 excerpt: Một vài bài test ở khóa training
 mathjax: true
 ---
+
+* content
+{:toc}
+
 Tuần vừa rồi mình có tham gia giải mini-CTF về 3 mảng (web, forensics, crypto) của CLB W1, nhưng thật không may, vì không chuyên vào các mảng này và cũng không tiếp xúc nhiều nên mình chỉ làm được 1 ít và dừng chân ở top 11 (khá là tiếc vì chỉ còn 1 chút nữa là mình đã pass kì test). Tuy nhiên, qua bài test đó, mình đã học rất nhiều thứ bổ ích. Tuần này quay trở lại bài test về binary (gồm Pwn và Reverse), bài test gồm 2 bài Pwn và 5 bài Reverse, mình đã hoàn thành 6/7 bài, và thật tiếc khi không đủ time để làm bài cuối
 
 Mình xin trình bày một số bài mà mình đã làm được 

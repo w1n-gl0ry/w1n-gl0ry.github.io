@@ -7,6 +7,10 @@ tags: ctf
 excerpt: WriteUp for SEETF 2023
 mathjax: true
 ---
+
+* content
+{:toc}
+
 # Great - Expectations
 `Description: Ask no questions, and you'll be told no lies. `
 

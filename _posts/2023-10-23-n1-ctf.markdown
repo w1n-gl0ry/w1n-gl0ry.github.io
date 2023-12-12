@@ -8,6 +8,9 @@ excerpt: WriteUp for N1CTF 2023
 mathjax: true
 ---
 
+* content
+{:toc}
+
 Rating weight: 97,33 
 
 During the 2 weekends, I played the N1CTF contest with my teammate `cauca`, we landed in the top 45 and I managed to solve 1/4 problem in PWN category :()

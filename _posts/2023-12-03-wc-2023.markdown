@@ -8,6 +8,9 @@ excerpt: Writeup for WannaGame ChampionShip 2023
 mathjax: true
 ---
 
+* content
+{:toc}
+
 This past weekend, I played the WannaGame Championship CTF with my team 1337% Yogurt and we finished in the top 8 Global and top 2 in my University. Through this, I have managed to solved 2/2 pwn challenge `winner_of_all_time` and `serendipity`.
 
 ![image](https://hackmd.io/_uploads/ryAWhnN8T.png)

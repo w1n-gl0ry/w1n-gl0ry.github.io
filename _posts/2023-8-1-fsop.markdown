@@ -8,6 +8,9 @@ excerpt: Một vài nghiên cứu về FSOP
 mathjax: true
 ---
 
+* content
+{:toc}
+
 Nói về `FILE STRUCTURE` attack (FSOP), nếu là 1 người chơi `pwn` chắc hẳn mọi người cũng đã có nghe qua. Bản thân mình cũng mơ hồ về loại tấn công này, nên mình quyết định viết 1 bài research về nó.
 
 Theo mình tìm hiểu, thì kỹ thuật này được [Angelboy](https://github.com/scwuaptx) public qua bài viết [ Play with FILE Structure - Yet Another Binary Exploit Technique](https://www.slideshare.net/AngelBoy1/play-with-file-structure-yet-another-binary-exploit-technique).
