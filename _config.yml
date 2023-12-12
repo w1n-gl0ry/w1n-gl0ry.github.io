@@ -42,9 +42,8 @@ google_analytics_id: UA-72449510-4 # google 分析追踪id
 markdown: kramdown
 
 kramdown:
-  syntax_highlighter_opts:
-    disable : true
-
+  input: GFM
+  syntax_highlighter: rouge
 
 # port
 # port: 1234
