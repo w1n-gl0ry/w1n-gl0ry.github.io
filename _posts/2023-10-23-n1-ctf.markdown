@@ -7,12 +7,18 @@ tags: ctf honor
 excerpt: WriteUp for N1CTF 2023
 mathjax: true
 ---
+
 Rating weight: 97,33 
+
 During the 2 weekends, I played the N1CTF contest with my teammate `cauca`, we landed in the top 45 and I managed to solve 1/4 problem in PWN category :()
+
 ![image](https://hackmd.io/_uploads/Byh_XerIT.png)
+
 ### Overview
 After this contest, i asked author for the source of this challenge to make it easy to debug.
+
 `main.cpp`
+
 ```cpp
 #include "sys/random.h"
 #include "utils.h"

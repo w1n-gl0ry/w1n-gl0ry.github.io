@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "SEECTF 2023"
+title:  "SEETF 2023"
 date:   2023-7-12 15:14:54
 categories: pwn
 tags: ctf 
-excerpt: WriteUp for SEECTF 2023
+excerpt: WriteUp for SEETF 2023
 mathjax: true
 ---
 # Great - Expectations

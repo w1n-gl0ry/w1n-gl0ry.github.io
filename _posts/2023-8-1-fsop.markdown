@@ -7,7 +7,6 @@ tags: ctf tecnique
 excerpt: Một vài nghiên cứu về FSOP
 mathjax: true
 ---
-###### tags: `fsop` `technique` `pwn` `hacking`
 
 Nói về `FILE STRUCTURE` attack (FSOP), nếu là 1 người chơi `pwn` chắc hẳn mọi người cũng đã có nghe qua. Bản thân mình cũng mơ hồ về loại tấn công này, nên mình quyết định viết 1 bài research về nó.
 
