@@ -427,7 +427,7 @@ sleep(1)
 io.interactive()
 ```
 ### Reference
-https://maskray.me/blog/2020-11-08-stack-unwinding
-https://github.com/chop-project/
-https://www.cnblogs.com/catch/p/3604516.html
-https://baiy.cn/doc/cpp/inside_exception.htm
+* https://maskray.me/blog/2020-11-08-stack-unwinding
+* https://github.com/chop-project/
+* https://www.cnblogs.com/catch/p/3604516.html
+* https://baiy.cn/doc/cpp/inside_exception.htm
