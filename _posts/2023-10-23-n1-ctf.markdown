@@ -233,6 +233,10 @@ exit(1);
 }
 ```
 
+When the check fault, it will use function `raise()` to print `*** stack smash detected ***` and when an exception is thrown, it will look for catch. If it is not found in this function, it will be searched up along the function call chain, and there will be two results:
+* Find the catch, record the catch location, clean the stack starting from the function that throws the exception, until you reach the function where the catch is located, and enter the catch code for processing
+* If the corresponding catch is not found after walking through the call chain, then call std::terminate()this function to abort the program by default.
+
 ```cpp
 ──────────────────────────────────────────────────────────────────────────[ DISASM / x86-64 / set emulate on ]───────────────────────────────────────────────────────────────────────────
    0x4018f2 <ProtectedBuffer<64ul>::check()+40>    setne  al
@@ -274,9 +278,6 @@ exit(1);
 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 pwndbg>   
 ```
-When the check fault, it will use function `raise()` to print `*** stack smash detected ***` and when an exception is thrown, it will look for catch. If it is not found in this function, it will be searched up along the function call chain, and there will be two results:
-* Find the catch, record the catch location, clean the stack starting from the function that throws the exception, until you reach the function where the catch is located, and enter the catch code for processing
-* If the corresponding catch is not found after walking through the call chain, then call std::terminate()this function to abort the program by default.
 
 If you curious about that, feel free to read the [article](https://baiy.cn/doc/cpp/inside_exception.htm).
 
