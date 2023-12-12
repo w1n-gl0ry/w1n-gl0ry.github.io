@@ -11,5 +11,5 @@ type: page
 
 ## contact me
 
-* GitHub：[w1n-gl0ry](https://github.com/w1n-gl0ry)
+* github：[w1n-gl0ry](https://github.com/w1n-gl0ry)
 * email：duynguyen45608@gmail.com
