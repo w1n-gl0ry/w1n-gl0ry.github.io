@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "SEECTF 2023"
-date:   2023-12-7 15:14:54
+date:   2023-7-12 15:14:54
 categories: pwn
 tags: ctf 
 excerpt: WriteUp for SEECTF 2023
