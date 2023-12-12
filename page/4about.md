@@ -9,4 +9,7 @@ type: page
 * content
 {:toc}
 
-I'm th3_5had0w. I love solving computer security related problems and low-level programming. I also play CTF.
+## contact me
+
+* GitHub：[w1n-gl0ry](https://github.com/w1n-gl0ry)
+* email：duynguyen45608@gmail.com
