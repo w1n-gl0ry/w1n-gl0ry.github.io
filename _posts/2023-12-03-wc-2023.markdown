@@ -4,7 +4,7 @@ title:  "WannaGame ChampionShip 2023"
 date:   2023-12-03 15:14:54
 categories: pwn
 tags: ctf
-excerpt: Writeup for WannaGame ChampionShip 2023
+excerpt: WriteUp for WannaGame ChampionShip 2023
 mathjax: true
 ---
 
@@ -1218,5 +1218,4 @@ io.interactive()
 - I spent 10 hours debugging each one
 - I didn't realize the mistake while doing the test and kept spending hours thinking about it, a bit of a joke :(
 - After this contest, I learned many things, and I should realize that I should not focus on one direction too much.
-- See you again
 
