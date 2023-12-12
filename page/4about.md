@@ -15,4 +15,4 @@ type: page
 
 ## contact me
 * github：[w1n-gl0ry](https://github.com/w1n-gl0ry)
-* email：duynguyen45608@gmail.com
+* email：[duynguyen45608@gmail.com](https://mail.google.com/mail/?view=cm&to=duynguyen45608@gmail.com)
