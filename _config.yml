@@ -6,44 +6,44 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: Black Horse
-brief-intro: Binary Exploitation
+title: Bearking's Stronghold
+brief-intro: will hack for food
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://w1n-gl0ry.github.io" # the base hostname & protocol for your site
 
 permalink: /:year/:month/:day/:title/
 
 # other links
-twitter_username: w1ngl0ry
-facebook_username: duynguyen
-github_username:  w1n-gl0ry
-email: duynguyen45608@gmail.com
-weibo_username: 
-zhihu_username: 
-linkedIn_username: 
-dribbble_username:
+twitter_username: w1n-gl0ry
+# facebook_username: gaohaoyang.water
+github_username: w1n-gl0ry
+# email: gaohaoyang126@126.com
+# weibo_username: 3115521wh
+# zhihu_username: gaohaoyang
+# linkedIn_username: gaohaoyang
+# dribbble_username:
 
-description_footer: 本站记录我前端之旅的沿途风景！
+description_footer: I love flags 🚩
 
 # comments
 # two ways to comment, only choose one, and use your own short name
 # 两种评论插件，选一个就好了，使用自己的 short_name
-duoshuo_shortname: #hygblog
-disqus_shortname: w1n-gl0ry
+# duoshuo_shortname: #hygblog
+# disqus_shortname: gaohaoyang
 
 # statistic analysis 统计代码
 # 百度统计 id，将统计代码替换为自己的百度统计id，即
 # hm.src = "//hm.baidu.com/hm.js?xxxxxxxxxxxx";
 # xxxxx字符串
-baidu_tongji_id: cf8506e0ef223e57ff6239944e5d46a4
-google_analytics_id: UA-72449510-4 # google 分析追踪id
+# baidu_tongji_id: cf8506e0ef223e57ff6239944e5d46a4
+# google_analytics_id: UA-72449510-4 # google 分析追踪id
 
 # Build settings
 markdown: kramdown
 
 kramdown:
-  input: GFM
-  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    disable : true
 
 # port
 # port: 1234
