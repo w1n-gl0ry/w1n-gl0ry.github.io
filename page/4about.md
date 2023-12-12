@@ -9,9 +9,9 @@ type: page
 * content
 {:toc}
 
-Pwn hand
-Working on: phis1Ng_ member
-Current goal: Learn more about Kernel and Fuzzing
+* Pwn hand
+* Working on: phis1Ng_ member
+* Current goal: Learn more about Kernel and Fuzzing
 
 
 ## contact me
