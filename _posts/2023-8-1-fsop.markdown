@@ -3,7 +3,7 @@ layout: post
 title:  "FILE STREAM"
 date:   2023-7-31 15:14:54
 categories: pwn 
-tags: ctf tecnique
+tags: ctf technique
 excerpt: Một vài nghiên cứu về FSOP
 mathjax: true
 ---
