@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en-us" data-theme="dark">
+<html lang="zh-CN" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>W1n-gl0ry's blog</title>
-  <!-- <meta name="keywords" content="LYYL, Blog, Pwn, pwn">
+  <title>LYYL' Blog - 毋忧拂意，毋喜快心，毋恃久安，毋惮初难。</title>
+  <meta name="keywords" content="LYYL, Blog, Pwn, pwn">
   <meta name="author" content="LYYL">
   <meta name="copyright" content="LYYL">
   <meta name="format-detection" content="telephone=no">
@@ -14,7 +14,7 @@
   <meta name="description" content="毋忧拂意，毋喜快心，毋恃久安，毋惮初难。">
   <meta property="og:type" content="website">
   <meta property="og:title" content="LYYL&#39; Blog">
-  <meta property="og:url" content="https://www.lyyl.online/index.html">
+  <meta property="og:url" content="https://www.lyyl.online/page/3/index.html">
   <meta property="og:site_name" content="LYYL&#39; Blog">
   <meta property="og:description" content="毋忧拂意，毋喜快心，毋恃久安，毋惮初难。">
   <meta property="og:locale" content="zh_CN">
@@ -22,9 +22,9 @@
   <meta property="article:author" content="LYYL">
   <meta property="article:tag" content="LYYL, Blog, Pwn, pwn">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:image" content="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/favicon.png"> -->
+  <meta name="twitter:image" content="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/favicon.png">
   <link rel="shortcut icon" href="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/favicon.png">
-  <link rel="canonical" href="https://www.lyyl.online/">
+  <link rel="canonical" href="https://www.lyyl.online/page/3/">
   <link rel="preconnect" href="//cdn.jsdelivr.net" />
   <link rel="preconnect" href="//www.google-analytics.com" crossorigin="" />
   <link rel="preconnect" href="//busuanzi.ibruce.info" />
@@ -222,8 +222,8 @@
   </div>
   <div class="page" id="body-wrap">
     <header class="full_page" id="page-header"
-      style="background-image: url('/img/back_ground.jpg')">
-      <nav id="nav"><span id="blog_name"><a id="site-name" href="/">w1n-gl0ry's blog</a></span>
+      style="background-image: url('https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/index_img.jpeg')">
+      <nav id="nav"><span id="blog_name"><a id="site-name" href="/">LYYL' Blog</a></span>
         <div id="menus">
           <div class="menus_items">
             <div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span>
@@ -239,7 +239,7 @@
         </div>
       </nav>
       <div id="site-info">
-        <h1 id="site-title">w1n-gl0ry's blog</h1>
+        <h1 id="site-title">LYYL' Blog</h1>
         <div id="site_social_icons"><a class="social-icon" href="https://github.com/liuzhongchina521"
             rel="external nofollow noreferrer" target="_blank" title="Github"><i class="fab fa-github"></i></a><a
             class="social-icon" href="mailto:liuzhongchina521@gmail.com" rel="external nofollow noreferrer"
@@ -250,28 +250,175 @@
     <main class="layout" id="content-inner">
       <div class="recent-posts" id="recent-posts">
         <div class="recent-post-item">
-          <div class="post_cover left_radius"><a href="/posts/103439762.html" title="CTF"> <img class="post_bg"
-                src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-3.jpeg"
-                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AFL源码及流程分析"></a></div>
-          <div class="recent-post-info"><a class="article-title" href="/posts/103439762.html"
-              title="AFL源码及流程分析">Markdown: Syntax</a>
+          <div class="post_cover left_radius"><a href="/posts/2569855600.html"
+              title="2019 0CTF/TCTF Quals 部分PWN WriteUp"> <img class="post_bg"
+                src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-62.jpeg"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2019 0CTF/TCTF Quals 部分PWN WriteUp"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/2569855600.html"
+              title="2019 0CTF/TCTF Quals 部分PWN WriteUp">2019 0CTF/TCTF Quals 部分PWN WriteUp</a>
             <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
-                  class="article-meta-label">发表于</span><time datetime="2022-05-26T07:20:45.000Z"
-                  title="发表于 2022-05-26 15:20:45">2023-05-26</time></span><span class="article-meta"><span
+                  class="article-meta-label">发表于</span><time datetime="2020-09-13T07:46:45.000Z"
+                  title="发表于 2020-09-13 15:46:45">2020-09-13</time></span><span class="article-meta"><span
                   class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a
-                  class="article-meta__categories"
-                  href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">源码分析</a></span></div>
-            <div class="content">Overview about markdown syntax</div>
+                  class="article-meta__categories" href="/categories/CTF-WriteUp/">CTF WriteUp</a></span></div>
+            <div class="content">babyaegis首先我们看一下程序开启的防护机制
+
+
+              程序开启了ASAN,UBSAN保护。
+              ASANasan(AddressSanitizer)是google开源的一个用于进行内存检测的工具，可以检测常见的heap and stack BufferOverflow，global buffer
+              overflow, UAF等
+              asan主要由两个部分构成，插桩和动态运行库，其中插桩主要是针对的是llvm编译器级别对访问内存的操作（store，load和alloca等）,而动态运行库则主要提供一些比较复杂的操作，例如position/unposion（用于进行内存保护）和影子内存，同时hook
+              free,malloc等函数。启用了asan保护的程序不同size大小的chunk是在不同内存区域进行分配的，并且free掉之后的内存在一段时间内并不会被启用。chunk也与一般的chunk不相同，其头部0x10字节大小的ChunkHeader用来存储chunk的一些信息。
+              12345678910111213141516171819struct ChunkHeader &#123; // 1-st ...</div>
           </div>
         </div>
-        <!-- pagination
+        <div class="recent-post-item">
+          <div class="post_cover right_radius"><a href="/posts/213364399.html" title="高校战疫网络安全分享赛 WP"> <img
+                class="post_bg" src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-52.jpeg"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="高校战疫网络安全分享赛 WP"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/213364399.html"
+              title="高校战疫网络安全分享赛 WP">高校战疫网络安全分享赛 WP</a>
+            <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                  class="article-meta-label">发表于</span><time datetime="2020-08-07T10:52:45.000Z"
+                  title="发表于 2020-08-07 18:52:45">2020-08-07</time></span></div>
+            <div class="content">Babyhacker2分析首先我们看一下startvm.sh
+
+
+              有时间限制，并且开启了kalsr,smep,smap的保护。即内核不能访问用户空间的数据和代码，这个保护可以通过修改cr4寄存器来关闭。我们看一下虚拟机本身
+              1cpio -idmv &lt; initramfs.cpio
+
+
+
+              首先是加载了babyhacker.ko的驱动，这里驱动开启了canary和NX保护。接着将dmesg_restrict/kptr_restrict置为0意味着我们可以通过cat
+              kallsyms查看commit_creds/prepare_kernel_cred两个函数的地址。通过commit_creds(prepare_kernel_cred(0))调用来实现提权。
+              漏洞出现在0x30000的操作处
+
+
+              我们传入的rdx是一个signedint，因此我们可以通过输入负数来实现判断的绕过
+
+
+              绕过判断之后就可以将di即后两个字节赋值给buffersize。由于读取和写入的操作是通过buffersize来控制的，因此我们可以实现栈内容的泄露和栈溢出覆盖返回地址ROP。
+              利用
+              修改buffersize ...</div>
+          </div>
+        </div>
+        <div class="recent-post-item">
+          <div class="post_cover left_radius"><a href="/posts/2727069109.html" title="docker pwn 环境搭建"> <img
+                class="post_bg" src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-27.png"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="docker pwn 环境搭建"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/2727069109.html"
+              title="docker pwn 环境搭建">docker pwn 环境搭建</a>
+            <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                  class="article-meta-label">发表于</span><time datetime="2020-08-06T08:07:23.000Z"
+                  title="发表于 2020-08-06 16:07:23">2020-08-06</time></span><span class="article-meta"><span
+                  class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a
+                  class="article-meta__categories" href="/categories/PWN%E6%80%BB%E7%BB%93/">PWN总结</a></span></div>
+            <div class="content">1sudo docker run -it -v /home/pwn/Desktop/pwn_ques:/root/work -v
+              /home/pwn/Desktop/glibc:/root/glibc -p 9994:8888 --privileged --cap-add=SYS_PTRACE
+              --security-opt=&quot;seccomp=unconfined&quot; --name pwn18_10 pwn:18.10
+
+              ubuntu 18.04 pwn docker dockerfile目前是18.04的Dockerfile
+              123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111
+              ...</div>
+          </div>
+        </div>
+        <div class="recent-post-item">
+          <div class="post_cover right_radius"><a href="/posts/1951095530.html" title="GeekPwn 2020 云靶场挑战赛热身赛 WP"> <img
+                class="post_bg" src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-79.jpeg"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GeekPwn 2020 云靶场挑战赛热身赛 WP"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/1951095530.html"
+              title="GeekPwn 2020 云靶场挑战赛热身赛 WP">GeekPwn 2020 云靶场挑战赛热身赛 WP</a>
+            <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                  class="article-meta-label">发表于</span><time datetime="2020-07-13T06:07:35.000Z"
+                  title="发表于 2020-07-13 14:07:35">2020-07-13</time></span></div>
+            <div class="content">题目链接
+              BabyPwn分析首先我们看一下程序，程序提供了三种操作add,
+              throw_out,show，操作的结构是member，describe是依据用户输入的大小所分配的堆空间，但是输入的大小最大是0x40，即堆块最大为0x50
+
+              漏洞函数位于add中读取字符串的函数
+
+              注意到length的类型为int，因此存在堆溢出漏洞。
+              利用有两种利用的方式
+              方式1整体思路为通过unsorted bin泄露libc地址，FSOP进行getshell
+
+              释放两个相同大小的chunk，申请chunk的时候将size设置为1，这样就不会读取内容，从而泄露出堆地址
+              通过堆溢出伪造chunk，大小为连续申请的几个chunk和，使其释放时进入unsorted bin中，从而获取libc基址
+              堆溢出覆写unsorted bin的fd,bk指针，伪造IO_FILE，采用FSOP进行getshell
+
+              首先泄露heap的地址
+              12345678910111213141516171819add_member(&quot;12112&quot;, 0x10, &quot;0&quot;)add_member(&qu ...</div>
+          </div>
+        </div>
+        <div class="recent-post-item">
+          <div class="post_cover left_radius"><a href="/posts/2085258898.html" title="LinuxX86程序启动-main函数执行"> <img
+                class="post_bg" src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-68.jpeg"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LinuxX86程序启动-main函数执行"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/2085258898.html"
+              title="LinuxX86程序启动-main函数执行">LinuxX86程序启动-main函数执行</a>
+            <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                  class="article-meta-label">发表于</span><time datetime="2019-10-20T02:46:11.000Z"
+                  title="发表于 2019-10-20 10:46:11">2019-10-20</time></span><span class="article-meta"><span
+                  class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a
+                  class="article-meta__categories" href="/categories/PWN%E6%80%BB%E7%BB%93/">PWN总结</a></span></div>
+            <div class="content">调用过程分析首先我们编一个简单的main函数，函数主体为空
+              123int main()&#123; &#125;
+
+              编译完成之后，我们需要知道程序第一个调用的函数是什么，查看ELF文件的头部objdump -f mainAna
+
+
+              可以看到可执行文件的起始地址是0x80482e0，也就是函数第一个调用的是0x80482e0处存储的函数，那么这个可执行文件的起始地址是如何得到的呢，我们知道每一个elf文件都具有一个头部，头部格式的定义如下
+              1234567891011121314151617typedef struct&#123; unsigned char e_ident[EI_NIDENT]; /* Magic number and other
+              info */ Elf32_Half e_type; /* Object file type */ Elf32_Half e_machine; /* Architecture */ Elf32_Word
+              e_version; /* Object file version */ Elf32_Addr e_ent ...</div>
+          </div>
+        </div>
+        <div class="recent-post-item">
+          <div class="post_cover right_radius"><a href="/posts/3142214610.html" title="windbg教程"> <img class="post_bg"
+                src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-8.jpeg"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="windbg教程"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/3142214610.html"
+              title="windbg教程">windbg教程</a>
+            <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                  class="article-meta-label">发表于</span><time datetime="2019-10-09T12:35:23.000Z"
+                  title="发表于 2019-10-09 20:35:23">2019-10-09</time></span><span class="article-meta"><span
+                  class="article-meta__separator">|</span><i class="fas fa-inbox"></i><a
+                  class="article-meta__categories" href="/categories/PWN%E6%80%BB%E7%BB%93/">PWN总结</a></span></div>
+            <div class="content">安装有两种方式可以进行安装，一种是直接在微软的应用商店中搜索windbg preview进行安装下载，另一种是通过安装win10 SDK中的debugging
+              tools进行安装。我是采用第二种方式进行安装的，因为第一种方式下载安装的windbg preview无法运行。
+              下载下来之后运行选择Debugging Tools for Windows下载完成之后到一开始选择的目录下面寻找安装文件，安装即可。
+              安装symbols
+              将windbg的安装目录加入到环境变量中方便程序寻找SYMSRV.DLL, SYMSTORE.EXE文件
+
+              新建环境变量_NT_SYMBOL_PATH，其值设置为SRV*c:\mysymbol*
+              http://msdl.microsoft.com/download/symbols，或者查看windbg的项目地址获取服务器的地址
+              前面的设置的文件夹是用来存储下载的符号文件的，也可以将值设置为cache*c:\mysymbol;srv*http://msdl.microsoft.com/download/symbols
+
+
+              attach一个进程，即可以在相应的文件夹下面 ...</div>
+          </div>
+        </div>
+        <div class="recent-post-item">
+          <div class="post_cover left_radius"><a href="/posts/4051894441.html" title="glibc2.23中的malloc和free源码分析"> <img
+                class="post_bg" src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/bg/bg-40.jpeg"
+                onerror="this.onerror=null;this.src='/img/404.jpg'" alt="glibc2.23中的malloc和free源码分析"></a></div>
+          <div class="recent-post-info"><a class="article-title" href="/posts/4051894441.html"
+              title="glibc2.23中的malloc和free源码分析">glibc2.23中的malloc和free源码分析</a>
+            <div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span
+                  class="article-meta-label">发表于</span><time datetime="2019-09-28T06:44:33.000Z"
+                  title="发表于 2019-09-28 14:44:33">2019-09-28</time></span></div>
+            <div class="content">管理结构malloc_chunkchunk的基本结构
+              12345678910111213141516171819202122232425262728293031323334353637383940414243struct malloc_chunk &#123;
+              INTERNAL_SIZE_T prev_size; /* Size of previous chunk (if free). */ INTERNAL_SIZE_T size; /* Size in bytes,
+              including overhead. */ struct malloc_chunk* fd; /* double links -- used only if free. */ struct
+              malloc_chunk* bk; /* Only used for large blocks: pointer to next larger size. */ struct malloc_chunk*
+              fd_nextsize; /* double links -- ...</div>
+          </div>
+        </div>
         <nav id="pagination">
-          <div class="pagination"><span class="page-number current">1</span><a class="page-number"
-              href="/page/2/#content-inner">2</a><a class="page-number" href="/page/3/#content-inner">3</a><a
-              class="extend next" rel="next" href="/page/2/#content-inner"><i
-                class="fas fa-chevron-right fa-fw"></i></a></div>
+          <div class="pagination"><a class="extend prev" rel="prev" href="/page/3/#content-inner"><i
+                class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">2</a><a class="page-number"
+              href="/page/3/#content-inner">3</a><span class="page-number current">4</span></div>
         </nav>
-        -->
       </div>
       <div class="aside-content" id="aside-content">
         <div class="card-widget card-info">
@@ -279,22 +426,22 @@
             <div class="avatar-img"><img src="https://lyyl-1254465038.cos.ap-beijing.myqcloud.com/favicon.png"
                 onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" /></div>
             <div class="author-info__name">LYYL</div>
-            <div class="author-info__description">Sống để code chết mang theo</div>
+            <div class="author-info__description">毋忧拂意，毋喜快心，毋恃久安，毋惮初难。</div>
           </div>
           <div class="card-info-data">
             <div class="card-info-data-item is-center"><a href="/archives/">
-                <div class="headline">Article</div>
-                <div class="length-num">1</div>
+                <div class="headline">文章</div>
+                <div class="length-num">27</div>
               </a></div>
             <div class="card-info-data-item is-center"><a href="/categories/">
-                <div class="headline">Classification</div>
-                <div class="length-num">1</div>
+                <div class="headline">分类</div>
+                <div class="length-num">5</div>
               </a></div>
           </div><a class="button--animated" id="card-info-btn" target="_blank"
-            rel="noopener external nofollow noreferrer" href="https://github.com/w1n-gl0ry"><i
+            rel="noopener external nofollow noreferrer" href="https://github.com/liuzhongchina521"><i
               class="fab fa-github"></i><span>Follow Me</span></a>
           <div class="card-info-social-icons is-center"><a class="social-icon"
-              href="https://github.com/w1n-gl0ry" rel="external nofollow noreferrer" target="_blank"
+              href="https://github.com/liuzhongchina521" rel="external nofollow noreferrer" target="_blank"
               title="Github"><i class="fab fa-github"></i></a><a class="social-icon"
               href="mailto:liuzhongchina521@gmail.com" rel="external nofollow noreferrer" target="_blank"
               title="Email"><i class="fas fa-envelope"></i></a></div>
