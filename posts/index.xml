@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Blogs</title>
-    <link>https://bott0n.github.io/posts/</link>
+    <link>https://w1n-gl0ry.github.io/posts/</link>
     <description>Recent content in Posts on Blogs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
-    <lastBuildDate>Sat, 18 Nov 2023 16:38:33 +0800</lastBuildDate><atom:link href="https://bott0n.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 18 Nov 2023 16:38:33 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HkcertCTF 2023 Writeups</title>
-      <link>https://bott0n.github.io/posts/hkcertctf-2023-writeups/</link>
+      <link>https://w1n-gl0ry.github.io/posts/hkcertctf-2023-writeups/</link>
       <pubDate>Sat, 18 Nov 2023 16:38:33 +0800</pubDate>
       
-      <guid>https://bott0n.github.io/posts/hkcertctf-2023-writeups/</guid>
+      <guid>https://w1n-gl0ry.github.io/posts/hkcertctf-2023-writeups/</guid>
       <description></description>
     </item>
     
     <item>
       <title>BauhiniaCTF 2023 Author Writeups</title>
-      <link>https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/</link>
+      <link>https://w1n-gl0ry.github.io/posts/bauhiniactf2023-author-writeups/</link>
       <pubDate>Sun, 20 Aug 2023 17:37:11 +0800</pubDate>
       
-      <guid>https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/</guid>
+      <guid>https://w1n-gl0ry.github.io/posts/bauhiniactf2023-author-writeups/</guid>
       <description></description>
     </item>
     
     <item>
       <title>My Experience on OSCP</title>
-      <link>https://bott0n.github.io/posts/my-experience-on-oscp/</link>
+      <link>https://w1n-gl0ry.github.io/posts/my-experience-on-oscp/</link>
       <pubDate>Mon, 31 Jul 2023 18:26:56 +0800</pubDate>
       
-      <guid>https://bott0n.github.io/posts/my-experience-on-oscp/</guid>
+      <guid>https://w1n-gl0ry.github.io/posts/my-experience-on-oscp/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 &lt;p&gt;This is a blog post about my perosnal experience and sharing on OSCP Exam. I am currently a 21 y/o student. I started the OSCP labs during my second semester of my fourth year at university and passed the OSCP exam during the summer semester. I will share about my preparation and the things that I learned in this post. Please note that the content may not be suitable for all viewers, depending on the different backgrounds, knowledge, or situations.&lt;/p&gt;
 &lt;h1 id=&#34;my-background&#34;&gt;My Background&lt;/h1&gt;
@@ -69,19 +69,19 @@ This article also mentioned it:&lt;/p&gt;
     
     <item>
       <title>HKcert CTF 2022 Writeups</title>
-      <link>https://bott0n.github.io/posts/hkcertctf-2022-writeups/</link>
+      <link>https://w1n-gl0ry.github.io/posts/hkcertctf-2022-writeups/</link>
       <pubDate>Sat, 19 Nov 2022 17:44:45 +0800</pubDate>
       
-      <guid>https://bott0n.github.io/posts/hkcertctf-2022-writeups/</guid>
+      <guid>https://w1n-gl0ry.github.io/posts/hkcertctf-2022-writeups/</guid>
       <description></description>
     </item>
     
     <item>
       <title>HKcertCTF 2021 Writeups</title>
-      <link>https://bott0n.github.io/posts/hkcertctf-2021-writeups/</link>
+      <link>https://w1n-gl0ry.github.io/posts/hkcertctf-2021-writeups/</link>
       <pubDate>Wed, 17 Nov 2021 03:05:19 +0800</pubDate>
       
-      <guid>https://bott0n.github.io/posts/hkcertctf-2021-writeups/</guid>
+      <guid>https://w1n-gl0ry.github.io/posts/hkcertctf-2021-writeups/</guid>
       <description></description>
     </item>
     
