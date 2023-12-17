@@ -31,6 +31,10 @@
     color: var(--default_fg)
 }
 
+* {
+    scroll-behavior: smooth !important;
+}
+
 body,
 html {
     font-family: "Symbols Nerd Font", JetBrains Mono, monospace;
@@ -39,7 +43,6 @@ html {
     padding: 0;
     background-color: var(--default_bg);
     color: var(--default_fg);
-    scroll-behavior: smooth;
 }
 
 body {
