@@ -1,21 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
-    <title>Abouts on Blogs</title>
+    <title>Abouts on w1n-gl0ry&#39;s</title>
     <link>https://w1n-gl0ry.github.io/about/</link>
-    <description>Recent content in Abouts on Blogs</description>
+    <description>Recent content in Abouts on w1n-gl0ry&#39;s</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
-    <lastBuildDate>Mon, 31 Jul 2023 18:35:24 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/about/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 31 Jul 2023 18:35:24 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/about/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/img/icon.svg</icon>
+    
+    
     <item>
       <title>About me</title>
-      <link>https://w1n-gl0ry.github.io/about/aboutme/</link>
+      <link>https://w1n-gl0ry.github.io/about/about/</link>
       <pubDate>Mon, 31 Jul 2023 18:35:24 +0800</pubDate>
       
-      <guid>https://w1n-gl0ry.github.io/about/aboutme/</guid>
-      <description></description>
+      <guid>https://w1n-gl0ry.github.io/about/about/</guid>
+      <description><![CDATA[<h1 id="introduction">Introduction</h1>
+<p>Hong Konger | 21 y/o | CRTP &amp; OSCP | CTF player (pwn) | learning red team stuffs</p>
+<p>Writing blog posts to share or record my CTF writeups, experience, and useless research.</p>
+<h1 id="contact">Contact</h1>
+<p>Twitter: <a href="https://twitter.com/w1ngl0ry">https://twitter.com/w1ngl0ry</a></p>
+<p>Github: <a href="https://github.com/w1n-gl0ry">https://github.com/w1n-gl0ry</a></p>
+<p>Discord: @w1n-gl0ry#8067</p>
+<p>Email: <a href="mailto:duynguyen45608@gmail.com">duynguyen45608@gmail.com</a></p>]]></description>
+      
     </item>
+    
     
   </channel>
 </rss>

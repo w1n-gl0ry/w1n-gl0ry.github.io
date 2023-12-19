@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "Blogs",
-  "short_name": "Blogs",
+  "name": "w1n-gl0ry's",
+  "short_name": "w1n-gl0ry's",
   "start_url": "/",
   "display": "standalone",
   
@@ -10,25 +10,6 @@
   "background_color": "#242629",
   "theme_color": "#db5793"
   
-    ,
-    "description": "My personal blog"
-  
-  
-    ,
-    "icons": [
-      {
-        "src": "/icon512.png",
-        "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "maskable"
-      },
-      {
-        "src": "/icon512.png",
-        "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "any"
-      }
-    ]
   
 }
 
