@@ -4,7 +4,8 @@
     <link>https://w1n-gl0ry.github.io/categories/</link>
     <description>Recent content in Categories on w1n-gl0ry&#39;s</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://w1n-gl0ry.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/img/icon.svg</icon>
+    <language>en-us</language>
+    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright><atom:link href="https://w1n-gl0ry.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
     
   </channel>
 </rss>

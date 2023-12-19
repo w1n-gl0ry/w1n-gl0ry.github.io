@@ -5,7 +5,32 @@
     <description>Recent content in Tags on w1n-gl0ry&#39;s</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Oct 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/img/icon.svg</icon>
+    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
+    <lastBuildDate>Mon, 04 Dec 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
+    
+    
+    <item>
+      <title>ctf</title>
+      <link>https://w1n-gl0ry.github.io/tags/ctf/</link>
+      <pubDate>Mon, 04 Dec 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/ctf/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>pwn</title>
+      <link>https://w1n-gl0ry.github.io/tags/pwn/</link>
+      <pubDate>Mon, 04 Dec 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/pwn/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
     
     
     <item>
@@ -21,11 +46,11 @@
     
     
     <item>
-      <title>ctf</title>
-      <link>https://w1n-gl0ry.github.io/tags/ctf/</link>
-      <pubDate>Tue, 24 Oct 2023 17:37:11 +0800</pubDate>
+      <title>hacking</title>
+      <link>https://w1n-gl0ry.github.io/tags/hacking/</link>
+      <pubDate>Tue, 08 Aug 2023 17:37:11 +0800</pubDate>
       
-      <guid>https://w1n-gl0ry.github.io/tags/ctf/</guid>
+      <guid>https://w1n-gl0ry.github.io/tags/hacking/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -33,11 +58,23 @@
     
     
     <item>
-      <title>pwn</title>
-      <link>https://w1n-gl0ry.github.io/tags/pwn/</link>
-      <pubDate>Tue, 24 Oct 2023 17:37:11 +0800</pubDate>
+      <title>technique</title>
+      <link>https://w1n-gl0ry.github.io/tags/technique/</link>
+      <pubDate>Tue, 08 Aug 2023 17:37:11 +0800</pubDate>
       
-      <guid>https://w1n-gl0ry.github.io/tags/pwn/</guid>
+      <guid>https://w1n-gl0ry.github.io/tags/technique/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>test</title>
+      <link>https://w1n-gl0ry.github.io/tags/test/</link>
+      <pubDate>Tue, 01 Aug 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/test/</guid>
       <description><![CDATA[]]></description>
       
     </item>
