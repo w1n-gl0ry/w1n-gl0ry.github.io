@@ -6,7 +6,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
-    <lastBuildDate>Mon, 04 Dec 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/pwn/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
+    <lastBuildDate>Tue, 12 Dec 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/pwn/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
+    
+    
+    <item>
+      <title>0CTF/TCTF 2023 Writeups</title>
+      <link>https://w1n-gl0ry.github.io/posts/0ctf-tctf2023/</link>
+      <pubDate>Tue, 12 Dec 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/posts/0ctf-tctf2023/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
     
     
     <item>
