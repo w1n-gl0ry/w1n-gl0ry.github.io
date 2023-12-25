@@ -1,3 +1,6 @@
 [submodule "themes/ficurinia"]
 	path = themes/ficurinia
 	url = https://gitlab.com/gabmus/hugo-ficurinia.git
+[submodule "lattice-estimator"]
+	path = lattice-estimator
+	url = https://github.com/malb/lattice-estimator
