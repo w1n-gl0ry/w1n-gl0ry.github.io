@@ -258,7 +258,7 @@
 </div>
 
     <div><h1 id="lời-nói-đầu">Lời nói đầu</h1>
-<p>Trải qua 1 năm khá dài dẳng với CTF, mình quyết định kết thúc năm 2023 này với giải DiceCTF. Sau đây là writeups của 1 số bài mình làm được trong suốt và cả sau giải.</p>
+<p>Trải qua 1 năm khá dài dẳng với CTF, mình quyết định kết thúc năm 2023 này với giải DiceCTF. Sau đây là writeups của 1 số bài mình làm được trong suốt giải.</p>
 <h1 id="pwn---babytalk">Pwn - babytalk</h1>
 <h2 id="source-code-overview">Source code overview</h2>
 <ul>
@@ -298,9 +298,9 @@
 <p><code>The strtok() function breaks a string into a sequence of zero or more nonempty tokens.  On the first call to strtok(), the string to be parsed should be specified in str.  In each subsequent call that should parse the same string, str must be NULL.</code></p>
 <p>Ở hàm <code>do_str()</code>, khi cấp phát và nhập nội dung thì nó sẽ đọc chính xác số kí tự theo size đã được chỉ định và không kết thúc chuỗi bằng NULL byte.
 Do đó, ta có thể lấp đầy heap.</p>
-<p><img src="image.png" alt="alt text"></p>
+<p><img src="https://hackmd.io/_uploads/rJcByhPo6.png" alt="image"></p>
 <p>Bây giờ ta gọi hàm <code>do_tok()</code> và chỉ định delimiter byte là byte đầu tiên của trường size của chunk kế tiếp, ta sẽ trigger được null byte overflow.</p>
-<p><img src="https://imgur.com/S1RcWyr" alt="alt text"></p>
+<p><img src="https://hackmd.io/_uploads/B1xv12wj6.png" alt="image"></p>
 <p>Đến đây, mình khá là tà đạo nên sẽ sử dụng kĩ thuật House of einherjar để ghi đè <code>__free_hook</code> và get shell.</p>
 <h2 id="solve-script">Solve Script</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -409,7 +409,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// setvbuf(dlsym(NULL, &#34;stdout&#34;), NULL, _IOLBF, 0);
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, __art);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0;33mEven this cursed spirit uses Black Flash. The one who is now being left behind</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">is me. You’ve gotten strong, brother. Are you gonna just sit still, </span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[4;33mAoi Todo</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0;33m?!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Are you gonna let your brother feel alone again, </span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[4;33mAoi Todo</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0;33m?!</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0m</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0;33mEven this cursed spirit uses Black Flash. The one who is now being left behind</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">is me. You’ve gotten strong, brother. Are you gonna just sit still, </span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[4;33mAoi Todo</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0;33m?!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Are you gonna let your brother feel alone again, </span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[4;33mAoi Todo</span><span style="color:#ae81ff">\x1b</span><span style="color:#e6db74">[0;33m?!\x1b[0m</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>);
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> (data[<span style="color:#ae81ff">0</span>])
 </span></span><span style="display:flex;"><span>    {
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">size_t</span> a, b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
@@ -756,7 +756,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>.<span style="color:#f92672">/</span>run
 </span></span></code></pre></div><p>Bây giờ, để thực thi được <code>./y0u/w1ll/n3v3r_g3t/th1s/getflag</code> với số kí tự ít ỏi như vậy khá là khoai. Sau 1 hồi, mình tìm thấy tài liệu liên quan đến <a href="https://zsh.sourceforge.io/Doc/Release/Expansion.html#Glob-Operators">zsh</a> và chỉ cần define đúng 5 kí tự <code>./[!]</code> .</p>
 <h2 id="final-payload">Final Payload</h2>
-<p><img src="image-2.png" alt="alt text"></p>
+<p><img src="https://hackmd.io/_uploads/rJGO1nvop.png" alt="image"></p>
 <h1 id="reference">Reference</h1>
 <p><a href="https://github.com/shellphish/how2heap/blob/master/glibc_2.27/house_of_einherjar.c">https://github.com/shellphish/how2heap/blob/master/glibc_2.27/house_of_einherjar.c</a></p>
 <p><a href="https://wiki.osdev.org/C%2B%2B#GCC">https://wiki.osdev.org/C%2B%2B#GCC</a></p>
