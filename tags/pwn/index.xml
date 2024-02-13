@@ -464,7 +464,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
 </span></span></code></pre></div><p>Ở bài này, vì có write primitive ở libc 2.35 khá là mạnh nên mọi người có thể làm nhiều cách khác nhau, mọi người có thể tham khảo ở <a href="https://github.com/nobodyisnobody/docs/tree/main/code.execution.on.last.libc">bài viết này</a></p>
-<h1 id="mics---zshfuck">Mics - zshfuck</h1>
+<h1 id="misc---zshfuck">Misc - zshfuck</h1>
 <h2 id="source-code-overview-2">Source code overview</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/zsh
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>print -n -P <span style="color:#e6db74">&#34;%F{green}Specify your charset: %f&#34;</span>
