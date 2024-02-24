@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
-    <title>pwn on w1n-gl0ry&#39;s</title>
+    <title>Pwn on w1n-gl0ry&#39;s</title>
     <link>https://w1n-gl0ry.github.io/tags/pwn/</link>
-    <description>Recent content in pwn on w1n-gl0ry&#39;s</description>
+    <description>Recent content in Pwn on w1n-gl0ry&#39;s</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
@@ -56,9 +56,9 @@
 <p><code>The strtok() function breaks a string into a sequence of zero or more nonempty tokens.  On the first call to strtok(), the string to be parsed should be specified in str.  In each subsequent call that should parse the same string, str must be NULL.</code></p>
 <p>Ở hàm <code>do_str()</code>, khi cấp phát và nhập nội dung thì nó sẽ đọc chính xác số kí tự theo size đã được chỉ định và không kết thúc chuỗi bằng NULL byte.
 Do đó, ta có thể lấp đầy heap.</p>
-<p><img src="https://hackmd.io/_uploads/rJcByhPo6.png" alt="image"></p>
+<p><img src="https://i.imgur.com/IuZ1sZD.png" alt="image"></p>
 <p>Bây giờ ta gọi hàm <code>do_tok()</code> và chỉ định delimiter byte là byte đầu tiên của trường size của chunk kế tiếp, ta sẽ trigger được null byte overflow.</p>
-<p><img src="https://hackmd.io/_uploads/r12VeNuoT.png" alt="image"></p>
+<p><img src="https://imgur.com/OIe0iJN.png" alt="image"></p>
 <p>Đến đây, mình khá là tà đạo nên sẽ sử dụng kĩ thuật House of einherjar để ghi đè <code>__free_hook</code> và get shell.</p>
 <h2 id="solve-script">Solve Script</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -512,7 +512,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 </span></span><span style="display:flex;"><span>.<span style="color:#f92672">/</span>run
 </span></span></code></pre></div><p>Bây giờ, để thực thi được <code>./y0u/w1ll/n3v3r_g3t/th1s/getflag</code> với số kí tự ít ỏi như vậy khá là khoai. Sau 1 hồi, mình tìm thấy tài liệu liên quan đến <a href="https://zsh.sourceforge.io/Doc/Release/Expansion.html#Glob-Operators">zsh</a> và chỉ cần define đúng 5 kí tự <code>./[!]</code> .</p>
 <h2 id="final-payload">Final Payload</h2>
-<p><img src="https://hackmd.io/_uploads/rJGO1nvop.png" alt="image"></p>
+<p><img src="https://imgur.com/TZ7sqon.png" alt="image"></p>
 <h1 id="reference">Reference</h1>
 <p><a href="https://github.com/shellphish/how2heap/blob/master/glibc_2.27/house_of_einherjar.c">https://github.com/shellphish/how2heap/blob/master/glibc_2.27/house_of_einherjar.c</a></p>
 <p><a href="https://wiki.osdev.org/C%2B%2B#GCC">https://wiki.osdev.org/C%2B%2B#GCC</a></p>
@@ -550,7 +550,7 @@ Do đó, ta có thể lấp đầy heap.</p>
 <p>This past weekend, I played the WannaGame Championship CTF with my team 1337% Yogurt and we finished in the top 8 Global and top 2 in my University. Through this, I have managed to solve 2/2 pwn challenge <code>winner_of_all_time</code> and <code>serendipity</code>.</p>
 <h1 id="1-winner-of-all-time">1. Winner of all time</h1>
 <h2 id="overview">Overview</h2>
-<p><img src="https://hackmd.io/_uploads/S10id2EIa.png" alt="image"></p>
+<p><img src="https://imgur.com/g1rrttW.png" alt="image"></p>
 <h2 id="analysis">Analysis</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">__int64</span> <span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> a1, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a2, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a3)
 </span></span><span style="display:flex;"><span>{
@@ -676,7 +676,7 @@ LIBC.srand(LIBC.time(0))
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
 </span></span></code></pre></div><h1 id="2-serendipity">2. Serendipity</h1>
 <h2 id="overview-1">Overview</h2>
-<p><img src="https://hackmd.io/_uploads/B1r_03VUa.png" alt="image"></p>
+<p><img src="https://imgur.com/au8el4J.png" alt="image"></p>
 <p>Hmm, it&rsquo;s a 64 bits ELF file and has full protect, sound good to play with it.</p>
 <h2 id="analysis-1">Analysis</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#66d9ef">__fastcall</span> __noreturn <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> a1, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a2, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>a3)
@@ -1572,7 +1572,7 @@ $
       <description><![CDATA[<h1 id="introduction">Introduction</h1>
 <p>Rating weight: 97,33</p>
 <p>During weekends, I played the N1CTF contest with my teammate <code>cauca</code>. We ranked in the top 45 and I solved 1/4 of the problems in the <code>PWN</code> category.</p>
-<p><img src="https://hackmd.io/_uploads/Byh_XerIT.png" alt="image"></p>
+<p><img src="https://imgur.com/wi0stUp.png" alt="image"></p>
 <h1 id="n1-canary">N1-CANARY</h1>
 <p>After the contest, I asked the author for the source of the challenge to make it easier to debug.
 <code>main.cpp</code></p>
