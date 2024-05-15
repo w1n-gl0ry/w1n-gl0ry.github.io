@@ -728,7 +728,7 @@ susfile *__fastcall sus_open(char *a1, int a2)
 ```
 
 
-Go to the main function, it starts by opening the file `/proc/self/fd/0`, and then the `buffer` we enter will be passed to the `sus_open` function if it has the `sus` prefix. If not, it will reset the `cap_size` to the 0x10 size, and perform a re-reading from the beginning
+Go to the main function, it starts by opening the file `/proc/self/fd/0`, and then the `buffer` we enter will be passed to the `sus_open` function if it has the `sus` prefix. If not, it will reset the `cap_size` to 0x10, and perform a re-reading from the beginning
 
 
 ## Bug
@@ -789,7 +789,7 @@ So, the next `galloc` will print our gift =))
 
 ![image](https://imgur.com/1f6zxoU.png)
 
-The custom heap struct is beneath the GOT region, so I easily overwrite the `readline` function pointer with my one_gadget. Fortunately, there is 1 that satisfies the condition.
+The custom heap struct is beneath the GOT region, so I easily overwrite the `readline` function pointer with my one_gadget. Fortunately, there is the 1 that satisfies the condition.
 
 ![image](https://imgur.com/TbG73to.png)
 
@@ -1270,7 +1270,7 @@ pwndbg> x/2i 0x7ffff7d147e2
 
 The most important thing is that the `__GI___libc_read` function, as we would expect in a regular Linux process waits for some input (via getchar()).
 
-If you restart the process and look at it again, you will see that the all libraries are mapped to different addresses each time, while the addresses of the 'msvcrt.dll' libraries mostly remain the same.
+If you restart the process and look at it again, you will see that the all libraries are mapped to different addresses each time, while the addresses of the `msvcrt.dll` libraries mostly remain the same.
 
 It's called the LoadLibrary function and passes the `msvcrt.dll` as an argument to get the base of the `msvcrt.dll` module.
 
@@ -1648,9 +1648,9 @@ struct guess_t
 }
 ```
 
-The only bug I founded in this main function is the one-byte overflow to the next struct because it's allows us to define up to 10 of solution length =))
+The only bug I found in this challenge is the one-byte overflow to the next struct because it allows us to have solution string up to 10 characters long
 
-So, I leveraged this to leak and did a basic BufferOverFlow.
+So, I used this bug to leak and did a basic buffer overflow.
 
 ## Solve script
 
@@ -1796,7 +1796,7 @@ int __cdecl __noreturn main(int argc, const char **argv, const char **envp)
   }
 ```
 
-Since the value doesn't overwrite when they are NaN and because after malloc, the memory isn't properly initialized. So we can leverage that to have a strong leak through the `draw_graph` function.
+Since the value doesn't overwrite when they are NaN and because after malloc, the memory isn't properly initialized. So we can leverage that to have a leak through the `draw_graph` function.
 
 ## Trigger the bug
 
