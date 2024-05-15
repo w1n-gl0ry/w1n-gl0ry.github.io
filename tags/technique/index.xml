@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
-    <title>Technique on w1n-gl0ry&#39;s</title>
+    <title>Technique on kyrie</title>
     <link>https://w1n-gl0ry.github.io/tags/technique/</link>
-    <description>Recent content in Technique on w1n-gl0ry&#39;s</description>
+    <description>Recent content in Technique on kyrie</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
-    <lastBuildDate>Tue, 08 Aug 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/technique/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/img/icon.svg</icon>
+    <lastBuildDate>Tue, 08 Aug 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/technique/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
     
     
     <item>
-      <title>File Stream Oriented Programming</title>
-      <link>https://w1n-gl0ry.github.io/posts/fsop-attack/</link>
+      <title>FILE STREAM ORIENTED PROGRAMMING</title>
+      <link>https://w1n-gl0ry.github.io/posts/fsop/</link>
       <pubDate>Tue, 08 Aug 2023 17:37:11 +0800</pubDate>
       
-      <guid>https://w1n-gl0ry.github.io/posts/fsop-attack/</guid>
-      <description><![CDATA[<h1 id="file-structure">File Structure</h1>
+      <guid>https://w1n-gl0ry.github.io/posts/fsop/</guid>
+      <description><![CDATA[<h1 id="file-structure">FILE STRUCTURE</h1>
+<h6 id="tags-fsop-technique-pwn-hacking">tags: <code>fsop</code> <code>technique</code> <code>pwn</code> <code>hacking</code></h6>
 <p>Nói về <code>FILE STRUCTURE</code> attack (FSOP), nếu là 1 người chơi <code>pwn</code> chắc hẳn mọi người cũng đã có nghe qua. Bản thân mình cũng mơ hồ về loại tấn công này, nên mình quyết định viết 1 bài research về nó.</p>
 <p>Theo mình tìm hiểu, thì kỹ thuật này được <a href="https://github.com/scwuaptx">Angelboy</a> public qua bài viết <a href="https://www.slideshare.net/AngelBoy1/play-with-file-structure-yet-another-binary-exploit-technique"> Play with FILE Structure - Yet Another Binary Exploit Technique</a>.</p>
 <p>Mình bắt đầu đi vào các phần cơ bản nhất!</p>
-<h1 id="1-file-operator">1. File Operator</h1>
+<h3 id="1-file-operator">1. FILE OPERATOR</h3>
 <p><code>FILE</code> là 1 kiểu dữ liệu được định nghĩa trong glibc và thường được dùng khi muốn mở 1 file trong ngôn ngữ lập trình C.
 Tất nhiên, nó khác với khái niệm <code>File Descriptor</code> mà chúng ta thường dùng.
 Mục đích của việc dùng <code>FILE</code> là để việc thao tác với các <code>file operation</code> nhanh hơn bằng cách sử dụng <code>buffer</code> để giảm thiểu số lượng syscall được gọi (_IO_syscall read, write, &hellip;.). Vấn đề này mình sẽ giải thích kĩ hơn ở các phần sau.</p>
-<h1 id="2-diving-into-glibc-code">2. Diving into glibc code</h1>
+<h3 id="2-diving-into-glibc-code">2. DIVING INTO GLIBC CODE</h3>
 <p>Mình sẽ sử dụng <code>GLIBC-2.35</code> source code để tìm hiểu về <code>FILE STRUCTURE</code>.
 <a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/bits/types/FILE.h#L7">FILE</a></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> _IO_FILE FILE
@@ -181,7 +182,7 @@ Làm sao để gọi hàm đó ?</p>
 Tóm gọn lại, nếu chúng ta có thể ghi đè 1 file structure nào đó, thì ta có thể điều khiển được nơi mà chúng ta có thể ghi, đọc -&gt; READ/WRITE PRIMITIVE . Điều đó khá là dễ dàng nhưng chúng ta cần chú ý các điều kiện.</p>
 <p>Vậy mình đặt câu hỏi trong đầu: <code>Liệu có thể điều khiển được luồng thực thi sang hướng khác nếu như mình có thể ghi đè phân vùng vtable không ?</code></p>
 <p>Mình sẽ nói rõ hơn phần đó trong phần cuối cùng !</p>
-<h1 id="3-read-primitive">3. Read Primitive</h1>
+<h3 id="3-leak-libc-via-_io_file-read-primitive">3. LEAK LIBC VIA _IO_FILE (READ PRIMITIVE)</h3>
 <p>Làm sao chúng ta có thể leak được địa chỉ của libc thông qua FSOP attack ?</p>
 <p>Trước hết, tìm hiểu cách hoạt động của hàm <code>puts</code> trong C (glibc-2.35).</p>
 <p>Chương trình đơn giản sau thực hiện việc in chuỗi ra thiết bị xuất chuẩn</p>
@@ -642,10 +643,9 @@ _flags &amp; 0x1000 = 1
 <strong>-&gt; _flags = 0x1800</strong></p>
 <p>Tương tự với READ PRIMITIVE, WRITE PRIMITIVE cũng cần 1 số điều kiện để chúng có thể hoạt động, chỉ cần chúng ta điều khiển được các giá trị <code>_IO_read_end</code>, <code>_IO_read_ptr</code>,&hellip; là được.
 Vậy, chúng ta đã thành công bypass được tất cả các hạn chế và chỉ cần ghi vào <code>f-&gt;_IO_write_ptr</code> , <code>f-&gt;_IO_write_base</code> những giá trị phù hợp để khai thác, ta sẽ có được <del>LIBC BASE</del> , khi đã có <del>LIBC BASE</del>, ta có thể tiếp tục dùng <code>FSOP</code> để điều khiển được luồng thực thi nhờ <code>VTABLE HIJACKING</code> như phần trên mình đã nói (và rõ ràng là ở GLIBC-2.35 thì gần như đã full đồ, full giáp nên việc tấn công FSOP rất là khó và phải cần rất nhiều kiến thức và hiểu rõ bản chất để có thể đi sâu hơn trong kĩ thuật này) !</p>
-<h1 id="4-write-primitive">4. Write Primitive</h1>
-<h1 id="5-vtable-hijacking">5. Vtable Hijacking</h1>
+<h3 id="4-vtable-hijacking">4. VTABLE-HIJACKING</h3>
 <p>Ta đã thành công giải quyết được vấn đề READ/WRITE PRIMITIVE trên GLIBC-2.35, làm sao ta có thể điều khiển được luồng thực thi từ chương trình nếu như không thể bypass được loạt check trên.</p>
-<h1 id="6-protection-mechanism">6. Protection Mechanism</h1>
+<h3 id="5-protection-mechanism">5. PROTECTION MECHANISM</h3>
 <p>Từ phiên bản <code>Glibc-2.24</code> trở đi, khi ta ghi đè vào vtable thì sẽ không còn chiếm quyền điều khiển được nữa. Bởi vì chương trình sẽ kiểm tra tính hợp lệ của địa chỉ <code>vtable</code> trước khi gọi hàm ảo.</p>
 <p>Hai hàm <code>IO_validate_vtable</code> and <code>_IO_vtable_check</code> được thêm vào.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> _IO_jump_t <span style="color:#f92672">*</span>
@@ -688,15 +688,15 @@ Vậy, chúng ta đã thành công bypass được tất cả các hạn chế v
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">__libc_fatal</span> (<span style="color:#e6db74">&#34;Fatal error: glibc detected an invalid stdio handle</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Nếu <code>vtable</code> không hợp lệ, chương trình sẽ dừng lại và báo lỗi.</p>
-<h1 id="references">References</h1>
-<p><a href="https://chovid99.github.io/posts/file-structure-attack-part-1/">https://chovid99.github.io/posts/file-structure-attack-part-1/</a></p>
-<p><a href="https://dhavalkapil.com/blogs/FILE-Structure-Exploitation/">https://dhavalkapil.com/blogs/FILE-Structure-Exploitation/</a></p>
-<p><a href="https://nightrainy.github.io/2019/08/07/play-withe-file-structure-%E6%90%AC%E8%BF%90/">https://nightrainy.github.io/2019/08/07/play-withe-file-structure-%E6%90%AC%E8%BF%90/</a></p>
-<p><a href="https://outflux.net/blog/archives/2011/12/22/abusing-the-file-structure/">https://outflux.net/blog/archives/2011/12/22/abusing-the-file-structure/</a></p>
-<p><a href="https://en.wikipedia.org/wiki/Virtual_method_table">https://en.wikipedia.org/wiki/Virtual_method_table</a></p>
-<p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/">https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/</a></p>
-<p><a href="https://blog.kylebot.net/2022/10/22/angry-FSROP/">https://blog.kylebot.net/2022/10/22/angry-FSROP/</a></p>
-<p><a href="https://bbs.kanxue.com/thread-273832.htm">https://bbs.kanxue.com/thread-273832.htm</a></p>
+<h3 id="references">References</h3>
+<p><a href="https://chovid99.github.io/posts/file-structure-attack-part-1/">https://chovid99.github.io/posts/file-structure-attack-part-1/</a>
+<a href="https://dhavalkapil.com/blogs/FILE-Structure-Exploitation/">https://dhavalkapil.com/blogs/FILE-Structure-Exploitation/</a>
+<a href="https://nightrainy.github.io/2019/08/07/play-withe-file-structure-%E6%90%AC%E8%BF%90/">https://nightrainy.github.io/2019/08/07/play-withe-file-structure-%E6%90%AC%E8%BF%90/</a>
+<a href="https://outflux.net/blog/archives/2011/12/22/abusing-the-file-structure/">https://outflux.net/blog/archives/2011/12/22/abusing-the-file-structure/</a>
+<a href="https://en.wikipedia.org/wiki/Virtual_method_table">https://en.wikipedia.org/wiki/Virtual_method_table</a>
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/">https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/</a>
+<a href="https://blog.kylebot.net/2022/10/22/angry-FSROP/">https://blog.kylebot.net/2022/10/22/angry-FSROP/</a>
+<a href="https://bbs.kanxue.com/thread-273832.htm">https://bbs.kanxue.com/thread-273832.htm</a></p>
 ]]></description>
       
     </item>

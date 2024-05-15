@@ -1,317 +1,21 @@
-<!DOCTYPE html>
-<html class="" lang="en-us"><head>
-    
-    <meta name="robots" content="noai, noimageai">
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=7" />
-
-    <link
-    rel="icon"
-    href='/favicon.png'
-/>
-<link
-    rel="shortcut icon"
-    href='/favicon.ico'
-    type="image/x-icon"
-/>
-<link
-    rel="apple-touch-icon"
-    href='/apple-touch-icon.png'
-/>
-
-    <link
-        rel="icon"
-        href='/logo.svg'
-        type="image/svg+xml"
-    />
-
-<title>
-        
-            DEFCON Qualifier 2024  &ndash;
-        
-        kyrie
-    </title>
-
-    
-    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
-    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
-
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
+  <channel>
+    <title>Write-Up on kyrie</title>
+    <link>https://w1n-gl0ry.github.io/tags/write-up/</link>
+    <description>Recent content in Write-Up on kyrie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
+    <lastBuildDate>Fri, 10 May 2024 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/write-up/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
     
     
-    <link type="text/css" rel="stylesheet" href=https://w1n-gl0ry.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
-<meta name="author" content="w1n-gl0ry" />
-
-    
-        <meta name="keywords" content='ctf, pwn, rev, write-up' />
-    
-    
-        <meta name="description" content="DEFCON Qualifier 2024 Writeups" />
-    
-
-<meta property="og:site_name"
-    content='kyrie' />
-
-    <meta property="og:title" content="DEFCON Qualifier 2024" />
-    <meta property="og:type" content="article" />
-    
-    <meta
-        property="article:author" content="w1n-gl0ry" />
-    <meta
-        property="article:published_time"
-        content='2024-05-10T17:37:11Z&#43;0800' />
-    
-        
-            <meta property="article:tag" content="ctf" />
-        
-            <meta property="article:tag" content="pwn" />
-        
-            <meta property="article:tag" content="rev" />
-        
-            <meta property="article:tag" content="write-up" />
-        
-    
-    <meta property="og:url" content="https://w1n-gl0ry.github.io/posts/defcon32/" />
-    
-    
-    <meta property="og:image"
-        content="https://w1n-gl0ry.github.io/icon512.png" />
-    
-        <meta property="og:description" content="DEFCON Qualifier 2024 Writeups" />
-    
-
-<meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:domain"
-      content='w1n-gl0ry.github.io'
-/>
-<meta property="twitter:url" content="https://w1n-gl0ry.github.io/posts/defcon32/" />
-
-
-    <meta name="twitter:title" content="DEFCON Qualifier 2024" />
-    
-    
-    
-    <meta name="twitter:image"
-        content="https://w1n-gl0ry.github.io/icon512.png" />
-    
-        <meta name="twitter:description" content="DEFCON Qualifier 2024 Writeups" />
-    
-
-<link rel="manifest" href="/manifest/index.json" />
-</head>
-
-
-<body>
-        <div id="baseContainer"><header class="">
-<div class="titleAndSearchContainer">
-        <div id="titleContainer">
-            
-                <a class="unstyledLink" href="/">
-                    <img src='/logo.svg' alt='Logo'/>
-                </a>
-            
-            <div class="rightOfLogo">
-                <div class="titleAndHamburger">
-                    <h1>
-                        <a class="unstyledLink" href="/">kyrie</a>
-                        
-                    </h1>
-                    
-                </div>
-                <div id="wide_nav"><nav>
-    
-    <ul id="main-nav">
-        <li><a href="/">Home</a></li>
-        
-            <li><a href="/posts/">Posts</a></li>
-        
-        
-        
-        
-        
-        
-            <li><a href="https://w1n-gl0ry.github.io/about/aboutme/">About</a></li>
-        
-        
-            <li><a href="/tags/">Tags</a></li>
-        
-        
-    </ul>
-</nav>
-</div>
-            </div>
-        </div>
-        <div class="search">
-    <input id="searchbar" type="text" placeholder='Search' />
-    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
-</div>
-<script>
-    function newSearch() {
-        let term = searchbar.value.trim();
-        if (!term) return;
-        location.href = `/search/?q=${term}`;
-    }
-    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
-</script>
-
-    </div>
-    <div id="links">
-        <a
-    
-        rel="noreferrer"
-    
-    target="_blank"
-    class="nerdlink"
-    href="/index.xml">
-    
-    
-        &#xf09e;
-    
-    <span>
-        RSS
-    </span>
-</a>
-
-        
-        <a
-    
-        rel="noreferrer"
-    
-    target="_blank"
-    class="nerdlink"
-    href="https://github.com/w1n-gl0ry">
-    
-    
-        &#xf09b;
-    
-    <span>
-        GitHab
-    </span>
-</a>
-<a
-    
-        rel="noreferrer"
-    
-    target="_blank"
-    class="nerdlink"
-    href="https://twitter.com/w1n-gl0ry">
-    
-    
-        &#xf099;
-    
-    <span>
-        Titter
-    </span>
-</a>
-
-    </div>
-    
-
-</header>
-<div id="contentContainer">
-                <div id="content">
-                    <main>
-<article class="card single">
-    
-        <h1>DEFCON Qualifier 2024</h1>
-    
-    
-        <p class="date">
-            <span title='Date'> </span>
-    2024-05-10
-
-</p>
-    
-    
-    
-    <div class="articleToc">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#pwn---libpcre3">Pwn - libpcre3</a>
-      <ul>
-        <li><a href="#overview">Overview</a>
-          <ul>
-            <li><a href="#posix-regular-expressions">POSIX Regular Expressions</a></li>
-            <li><a href="#pcre---perl-compatible-regular-expressions">PCRE - Perl Compatible Regular Expressions</a>
-              <ul>
-                <li><a href="#pcre-and-pcre2">PCRE and PCRE2</a></li>
-                <li><a href="#install-pcre">Install PCRE</a></li>
-              </ul>
-            </li>
-            <li><a href="#nginx">Nginx</a></li>
-          </ul>
-        </li>
-        <li><a href="#source-code-overview">Source-code overview</a></li>
-        <li><a href="#exploit-script">Exploit script</a></li>
-      </ul>
-    </li>
-    <li><a href="#pwn---suscall">Pwn - suscall</a>
-      <ul>
-        <li><a href="#source-code-overview-1">Source-code overview</a></li>
-        <li><a href="#bug">Bug</a></li>
-        <li><a href="#solution">Solution</a></li>
-        <li><a href="#solve-script">Solve script</a></li>
-      </ul>
-    </li>
-    <li><a href="#pwn---process_vm_readv-me-maybe">Pwn - process_vm_readv-me-maybe</a>
-      <ul>
-        <li><a href="#source-code-overview-2">Source-code overview</a></li>
-        <li><a href="#solution-1">Solution</a></li>
-        <li><a href="#solve-script-1">Solve script</a></li>
-      </ul>
-    </li>
-    <li><a href="#pwn---durnk-winapi">Pwn - durnk (winapi)</a>
-      <ul>
-        <li><a href="#what-is-wine">What is WINE</a></li>
-        <li><a href="#debug">Debug</a></li>
-        <li><a href="#source-code-overview-3">Source-code overview</a></li>
-        <li><a href="#solution-2">Solution</a>
-          <ul>
-            <li><a href="#method-1">Method 1</a></li>
-            <li><a href="#method-2">Method 2</a></li>
-          </ul>
-        </li>
-        <li><a href="#solve-script-2">Solve script</a></li>
-      </ul>
-    </li>
-    <li><a href="#pwn---ndles">Pwn - ndles</a>
-      <ul>
-        <li><a href="#source-code-overview-4">Source-code overview</a></li>
-        <li><a href="#bug-1">Bug</a></li>
-        <li><a href="#solve-script-3">Solve script</a></li>
-      </ul>
-    </li>
-    <li><a href="#pwn---dotcom">Pwn - dotcom</a>
-      <ul>
-        <li><a href="#source-code-overview-5">Source-code overview</a></li>
-        <li><a href="#vulnerabilities">Vulnerabilities</a>
-          <ul>
-            <li><a href="#uninitialized-memory">Uninitialized Memory</a></li>
-<<<<<<< HEAD
-          </ul>
-        </li>
-        <li><a href="#trigger-the-bug">Trigger the bug</a>
-          <ul>
-            <li><a href="#stack-overflow">Stack overflow</a></li>
-          </ul>
-        </li>
-=======
-            <li><a href="#stack-overflow">Stack overflow</a></li>
-          </ul>
-        </li>
-        <li><a href="#trigger-the-bug">Trigger the bug</a></li>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
-        <li><a href="#solve-script-4">Solve script</a></li>
-      </ul>
-    </li>
-    <li><a href="#references">References</a></li>
-  </ul>
-</nav>
-    <hr />
-</div>
-
-    <div><h1 id="introduction">Introduction</h1>
+    <item>
+      <title>DEFCON Qualifier 2024</title>
+      <link>https://w1n-gl0ry.github.io/posts/defcon32/</link>
+      <pubDate>Fri, 10 May 2024 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/posts/defcon32/</guid>
+      <description><![CDATA[<h1 id="introduction">Introduction</h1>
 <p>I have played DEFCON-CTF Qualifier 2024 with my team 1337%Yogurt, we ended up with 30th place and I solved 5 pwnable challenges. In this write-up, I will write all the challenges I solved during and after the contests.</p>
 <p><img src="https://i.imgur.com/St1ntx9.png" alt="scoreboard"></p>
 <h1 id="pwn---libpcre3">Pwn - libpcre3</h1>
@@ -876,11 +580,7 @@ http {
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> v3;
 </span></span><span style="display:flex;"><span>}
-<<<<<<< HEAD
 </span></span></code></pre></div><p>Go to the main function, it starts by opening the file <code>/proc/self/fd/0</code>, and then the <code>buffer</code> we enter will be passed to the <code>sus_open</code> function if it has the <code>sus</code> prefix. If not, it will reset the <code>cap_size</code> to 0x10, and perform a re-reading from the beginning</p>
-=======
-</span></span></code></pre></div><p>Go to the main function, it starts by opening the file <code>/proc/self/fd/0</code>, and then the <code>buffer</code> we enter will be passed to the <code>sus_open</code> function if it has the <code>sus</code> prefix. If not, it will reset the <code>cap_size</code> to the 0x10 size, and perform a re-reading from the beginning</p>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <h2 id="bug">Bug</h2>
 <p>In the <code>read_file</code> function, it&rsquo;s called <code>regalloc</code> if the size is larger than the cap size, if our input has a null byte or newline, it stops reading and resets to read again.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">read_file</span>(susfile <span style="color:#f92672">*</span>a1)
@@ -921,11 +621,7 @@ http {
 <p><img src="https://imgur.com/OFrcqS9.png" alt="image"></p>
 <p>So, the next <code>galloc</code> will print our gift =))</p>
 <p><img src="https://imgur.com/1f6zxoU.png" alt="image"></p>
-<<<<<<< HEAD
 <p>The custom heap struct is beneath the GOT region, so I easily overwrite the <code>readline</code> function pointer with my one_gadget. Fortunately, there is the 1 that satisfies the condition.</p>
-=======
-<p>The custom heap struct is beneath the GOT region, so I easily overwrite the <code>readline</code> function pointer with my one_gadget. Fortunately, there is 1 that satisfies the condition.</p>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <p><img src="https://imgur.com/TbG73to.png" alt="image"></p>
 <h2 id="solve-script">Solve script</h2>
 <p><code>solve.py</code></p>
@@ -1344,13 +1040,8 @@ http {
    0x7ffff7d147e2 &lt;__GI___libc_read+18&gt;:        cmp    rax,0xfffffffffffff000
    0x7ffff7d147e8 &lt;__GI___libc_read+24&gt;:        ja     0x7ffff7d14840 &lt;__GI___libc_read+112&gt;
 </code></pre><p>The most important thing is that the <code>__GI___libc_read</code> function, as we would expect in a regular Linux process waits for some input (via getchar()).</p>
-<<<<<<< HEAD
 <p>If you restart the process and look at it again, you will see that the all libraries are mapped to different addresses each time, while the addresses of the <code>msvcrt.dll</code> libraries mostly remain the same.</p>
 <p>It&rsquo;s called the LoadLibrary function and passes the <code>msvcrt.dll</code> as an argument to get the base of the <code>msvcrt.dll</code> module.</p>
-=======
-<p>If you restart the process and look at it again, you will see that the all libraries are mapped to different addresses each time, while the addresses of the &lsquo;msvcrt.dll&rsquo; libraries mostly remain the same.</p>
-<p>When it call to <code>LoadLibrary</code> to get the base address of module <code>msvcrt.dll</code></p>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>    HMODULE msvcrt <span style="color:#f92672">=</span> <span style="color:#a6e22e">LoadLibrary</span>(<span style="color:#e6db74">&#34;msvcrt.dll&#34;</span>);
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;msvcrt.dll:</span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74">%p</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,msvcrt);    
 </span></span></code></pre></div><p>In gdb, <code>msvcrt.dll</code> is passed to <code>rcx</code> register while <code>rax</code> store the address of <code>LoadLibrary</code> function</p>
@@ -1375,11 +1066,7 @@ http {
 <h3 id="method-1">Method 1</h3>
 <ol>
 <li>I call the malloc function of msvcrt.dll with an appropriate size as an argument to allocate memory and obtain the address.</li>
-<<<<<<< HEAD
 <li>I call the gets function of msvcrt.dll with the address in step 1 as an argument, then enter the command <code>/bin/bash</code> =))</li>
-=======
-<li>I call the gets function of msvcrt.dll with the address in step 1 as an argument, then enter the command &lsquo;/bin/bash&rsquo; =))</li>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <li>Call &lsquo;WinExec&rsquo; and pass the address of the string as an argument, and we get a shell.</li>
 </ol>
 <p><img src="https://imgur.com/QNOdSBQ.png" alt="image"></p>
@@ -1424,17 +1111,10 @@ http {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
 </span></span></code></pre></div><p>But when running, it failed and returned -1, I don&rsquo;t know why it happened.</p>
-<<<<<<< HEAD
 <p>According to Microsoft&rsquo;s system function documentation, if calling the system function results in an error, it returns -1 and sets the error code to the global variable <code>errno</code>.</p>
 <blockquote>
 <p>If command is NULL and the command interpreter is found, returns a nonzero value. If the command interpreter isn&rsquo;t found, returns 0 and sets errno to ENOENT. If command isn&rsquo;t NULL, system returns the value that is returned by the command interpreter. It returns the value 0 only if the command interpreter returns the value 0. A return value of -1 indicates an error, and errno is set to one of the following values.</p>
 </blockquote>
-=======
-<blockquote>
-<p>If command is NULL and the command interpreter is found, returns a nonzero value. If the command interpreter isn&rsquo;t found, returns 0 and sets errno to ENOENT. If command isn&rsquo;t NULL, system returns the value that is returned by the command interpreter. It returns the value 0 only if the command interpreter returns the value 0. A return value of -1 indicates an error, and errno is set to one of the following values:</p>
-</blockquote>
-<p>According to Microsoft&rsquo;s system function documentation, if calling the system function results in an error, it returns -1 and sets the error code to the global variable <code>errno</code>.</p>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <p>So I leveraged the <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/get-errno?view=msvc-170">_get_errno</a> function to to get the current value of the errno global variable.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span>
@@ -1498,11 +1178,7 @@ http {
 </span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;\x02\r\n&#39;</span>
 </span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;Result: 0\r\n&#39;</span>
 </span></span><span style="display:flex;"><span>b<span style="color:#e6db74">&#39;Which module would you like to load?\r\n&#39;</span>
-<<<<<<< HEAD
 </span></span></code></pre></div><p>By referring to this <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/errno-constants?view=msvc-170">page</a>, I see that <code>ENOENT</code> has a value equal to 2, so it&rsquo;s equivalent to the error string <code>the command interpreter can't be found</code>.</p>
-=======
-</span></span></code></pre></div><p>By referring to this <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/errno-constants?view=msvc-170">page</a>, I see that ENOENT has a value equal to 2, so it&rsquo;s equivalent to the error string <code>the command interpreter can't be found</code>.</p>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <h2 id="solve-script-2">Solve script</h2>
 <p><code>solve.py</code></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -1678,13 +1354,8 @@ http {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
-<<<<<<< HEAD
 </span></span></code></pre></div><p>The only bug I found in this challenge is the one-byte overflow to the next struct because it allows us to have solution string up to 10 characters long</p>
 <p>So, I used this bug to leak and did a basic buffer overflow.</p>
-=======
-</span></span></code></pre></div><p>The only bug I founded in this main function is the one-byte overflow to the next struct because it&rsquo;s allows us to define up to 10 of solution length =))</p>
-<p>So, I leveraged this to leak and did a basic BufferOverFlow.</p>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <h2 id="solve-script-3">Solve script</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span>
@@ -1807,41 +1478,8 @@ http {
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> m;
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
-<<<<<<< HEAD
 </span></span></code></pre></div><p>Since the value doesn&rsquo;t overwrite when they are NaN and because after malloc, the memory isn&rsquo;t properly initialized. So we can leverage that to have a leak through the <code>draw_graph</code> function.</p>
 <h2 id="trigger-the-bug">Trigger the bug</h2>
-=======
-</span></span></code></pre></div><p>Since the value doesn&rsquo;t overwrite when they are NaN and because after malloc, the memory isn&rsquo;t properly initialized. So we can leverage that to have a strong leak through the <code>draw_graph</code> function.</p>
-<h3 id="stack-overflow">Stack overflow</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">__cdecl</span> <span style="color:#a6e22e">find_abort_string</span>(<span style="color:#66d9ef">uint64_t</span> rsp_0)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> i; <span style="color:#75715e">// [rsp+14h] [rbp-3Ch]
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">uint64_t</span> <span style="color:#f92672">*</span>p; <span style="color:#75715e">// [rsp+18h] [rbp-38h]
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> format[<span style="color:#ae81ff">32</span>]; <span style="color:#75715e">// [rsp+20h] [rbp-30h] BYREF
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">uint64_t</span> rsp_0a; <span style="color:#75715e">// [rsp+40h] [rbp-10h]
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>  rsp_0a <span style="color:#f92672">=</span> rsp_0;
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">memset</span>(format, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(format));
-</span></span><span style="display:flex;"><span>  p <span style="color:#f92672">=</span> (<span style="color:#66d9ef">uint64_t</span> <span style="color:#f92672">*</span>)rsp_0a;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> ( i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">500</span>; <span style="color:#f92672">++</span>i )
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> ( <span style="color:#f92672">*</span>p <span style="color:#f92672">==</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>essA :)(<span style="color:#960050;background-color:#1e0010">&#39;</span> )
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">strcpy</span>(format, (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)p);
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">strdup</span>(format);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">++</span>p;
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0LL</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>In the crash handler, there is an obvious stack overflow when parsing the abort message cuz it uses the <code>strcpy</code> function.</p>
-<p>Since strcpy terminates when it encounters a null byte, we can&rsquo;t perform a rop chain, so I will choose the following gadget to cause stack overflow again. Fortunately, the stack address remains in the RDI register.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>A1                 mov     rax, cs:stdin_ptr
-</span></span><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>A8                 mov     rdx, [rax]      ; stream
-</span></span><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>AB                 mov     esi, <span style="color:#ae81ff">0</span>C8h       ; n
-</span></span><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>B0                 call    _fgets
-</span></span></code></pre></div><h2 id="trigger-the-bug">Trigger the bug</h2>
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 <p>First, I created 2 chunks of 0x400 size, then free 1 to make it into the unsorted bin</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>pwndbg&gt; bins
 </span></span><span style="display:flex;"><span>tcachebins
@@ -1907,7 +1545,6 @@ http {
 </span></span><span style="display:flex;"><span>log<span style="color:#f92672">.</span>info(<span style="color:#e6db74">&#34;libc &#34;</span> <span style="color:#f92672">+</span> hex(libc<span style="color:#f92672">.</span>address))
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
-<<<<<<< HEAD
 </span></span></code></pre></div><h3 id="stack-overflow">Stack overflow</h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">__cdecl</span> <span style="color:#a6e22e">find_abort_string</span>(<span style="color:#66d9ef">uint64_t</span> rsp_0)
 </span></span><span style="display:flex;"><span>{
@@ -1936,8 +1573,6 @@ http {
 </span></span><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>A8                 mov     rdx, [rax]      ; stream
 </span></span><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>AB                 mov     esi, <span style="color:#ae81ff">0</span>C8h       ; n
 </span></span><span style="display:flex;"><span>.text:<span style="color:#ae81ff">00000000004025</span>B0                 call    _fgets
-=======
->>>>>>> 7ca16fc11a1c1091cfb6f215593b62a703a3669c
 </span></span></code></pre></div><h2 id="solve-script-4">Solve script</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span>
@@ -2014,51 +1649,23 @@ http {
 <p><a href="https://wiki.winehq.org/Wine_Developer%27s_Guide/Debugging_Wine">https://wiki.winehq.org/Wine_Developer%27s_Guide/Debugging_Wine</a></p>
 <p><a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/get-errno?view=msvc-170">https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/get-errno?view=msvc-170</a></p>
 <p><a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/errno-constants?view=msvc-170">https://learn.microsoft.com/en-us/cpp/c-runtime-library/errno-constants?view=msvc-170</a></p>
-</div>
-</article>
-
-    <hr />
-    <p class="articleTagsContainer">
-        <span> </span>
-        <strong>Tags:</strong>
-        
-            <a
-                
-                href="/tags/ctf/">#ctf</a>
-        
-            <a
-                
-                href="/tags/pwn/">#pwn</a>
-        
-            <a
-                
-                href="/tags/rev/">#rev</a>
-        
-            <a
-                
-                href="/tags/write-up/">#write-up</a>
-        
-    </p>
-
-
-
-
-
-
-                    </main><footer>
-    <hr />
-
-<p><small>
-        2024 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
-    </small></p>
-    <p><small>
-        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
-    </small></p>
-</footer>
-</div>
-            </div>
-        </div>
-
-
-</body>
-</html>
+]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>0CTF/TCTF 2023 Writeups</title>
+      <link>https://w1n-gl0ry.github.io/posts/0ctf-tctf/</link>
+      <pubDate>Tue, 12 Dec 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/posts/0ctf-tctf/</guid>
+      <description><![CDATA[<p>under maintenance</p>
+]]></description>
+      
+    </item>
+    
+    
+  </channel>
+</rss>

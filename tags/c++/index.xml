@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
-    <title>C&#43;&#43; on w1n-gl0ry&#39;s</title>
+    <title>C&#43;&#43; on kyrie</title>
     <link>https://w1n-gl0ry.github.io/tags/c&#43;&#43;/</link>
-    <description>Recent content in C&#43;&#43; on w1n-gl0ry&#39;s</description>
+    <description>Recent content in C&#43;&#43; on kyrie</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
-    <lastBuildDate>Tue, 24 Oct 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/img/icon.svg</icon>
+    <lastBuildDate>Tue, 24 Oct 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
     
     
     <item>
       <title>N1CTF 2023 Writeups</title>
-      <link>https://w1n-gl0ry.github.io/posts/n1ctf-2023/</link>
+      <link>https://w1n-gl0ry.github.io/posts/n1ctf/</link>
       <pubDate>Tue, 24 Oct 2023 17:37:11 +0800</pubDate>
       
-      <guid>https://w1n-gl0ry.github.io/posts/n1ctf-2023/</guid>
+      <guid>https://w1n-gl0ry.github.io/posts/n1ctf/</guid>
       <description><![CDATA[<h1 id="introduction">Introduction</h1>
 <p>Rating weight: 97,33</p>
 <p>During weekends, I played the N1CTF contest with my teammate <code>cauca</code>. We ranked in the top 45 and I solved 1/4 of the problems in the <code>PWN</code> category.</p>
-<p><img src="https://imgur.com/wi0stUp.png" alt="image"></p>
+<p><img src="https://hackmd.io/_uploads/Byh_XerIT.png" alt="image"></p>
 <h1 id="n1-canary">N1-CANARY</h1>
 <p>After the contest, I asked the author for the source of the challenge to make it easier to debug.
 <code>main.cpp</code></p>

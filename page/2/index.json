@@ -24,9 +24,15 @@
         
         
     
-    "articles": [{"date":"2023-08-01","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/posts/training/","summary":"Writeups for some challenges in W1 Test","tags":["ctf","pwn","test"],"title":"W1 Test"},{"date":"2023-06-12","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/posts/seetf-2023/","summary":"SEETF 2023 Writeups","tags":["ctf","pwn"],"title":"SEETF 2023 Writeups"},{"date":"0001-01-01","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/manifest/index.json","summary":"","tags":[],"title":"Manifest"},{"date":"0001-01-01","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/search/","summary":"","tags":[],"title":"Search"}],
-    "test": "DICE-CTF 2024 Writeups   0CTF/TCTF 2023 Writeups   WannaGame ChampionShip 2023 Writeups   N1CTF 2023 Writeups   File Stream Oriented Programming   W1 Test   SEETF 2023 Writeups   Manifest   Search   ",
+        
+        
+        
+    
+    "articles": [{"date":"2023-10-24","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/posts/n1ctf/","summary":"N1CTF 2023 Writeups N1-Canary","tags":["C++","ctf","pwn"],"title":"N1CTF 2023 Writeups"},{"date":"2023-08-08","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/posts/fsop/","summary":"FSOP ATTACK","tags":["ctf","pwn","technique"],"title":"FILE STREAM ORIENTED PROGRAMMING"},{"date":"2023-08-01","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/posts/w1_test/","summary":"Writeup","tags":["ctf","pwn"],"title":"W1 TEST 2023"},{"date":"2023-06-12","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/posts/seetf/","summary":"Writeup","tags":["ctf","pwn"],"title":"SEETF 2023"},{"date":"0001-01-01","image":"","imageAlt":"","link":"https://w1n-gl0ry.github.io/manifest/index.json","summary":"","tags":[],"title":"Manifest"}],
+    "test": "DEFCON Qualifier 2024   V8 note   DICE-CTF 2024 Writeups   0CTF/TCTF 2023 Writeups   WannaGame ChampionShip 2023 Writeups   N1CTF 2023 Writeups   FILE STREAM ORIENTED PROGRAMMING   W1 TEST 2023   SEETF 2023   Manifest   Search   ",
     "page": "2",
-    "next": ""
+    "next": 
+        "https://w1n-gl0ry.github.io/page/3/index.json"
+    
 }
 
