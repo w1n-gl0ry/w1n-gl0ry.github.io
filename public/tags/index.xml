@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
+  <channel>
+    <title>Tags on kyrie</title>
+    <link>https://w1n-gl0ry.github.io/tags/</link>
+    <description>Recent content in Tags on kyrie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
+    <lastBuildDate>Fri, 10 May 2024 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
+    
+    
+    <item>
+      <title>Ctf</title>
+      <link>https://w1n-gl0ry.github.io/tags/ctf/</link>
+      <pubDate>Fri, 10 May 2024 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/ctf/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Pwn</title>
+      <link>https://w1n-gl0ry.github.io/tags/pwn/</link>
+      <pubDate>Fri, 10 May 2024 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/pwn/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Rev</title>
+      <link>https://w1n-gl0ry.github.io/tags/rev/</link>
+      <pubDate>Fri, 10 May 2024 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/rev/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Write-Up</title>
+      <link>https://w1n-gl0ry.github.io/tags/write-up/</link>
+      <pubDate>Fri, 10 May 2024 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/write-up/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>https://w1n-gl0ry.github.io/tags/c&#43;&#43;/</link>
+      <pubDate>Tue, 24 Oct 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/c&#43;&#43;/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Technique</title>
+      <link>https://w1n-gl0ry.github.io/tags/technique/</link>
+      <pubDate>Tue, 08 Aug 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/tags/technique/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+  </channel>
+</rss>

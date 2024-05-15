@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
+  <channel>
+    <title>Ư on Blogs</title>
+    <link>http://localhost:1313/tags/%C6%B0/</link>
+    <description>Recent content in Ư on Blogs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
+    <lastBuildDate>Fri, 10 May 2024 17:37:11 +0800</lastBuildDate><atom:link href="http://localhost:1313/tags/%C6%B0/index.xml" rel="self" type="application/rss+xml" /><icon>http://localhost:1313/logo.svg</icon>
+    
+    
+    <item>
+      <title>DEFCON Qualifier 2024</title>
+      <link>http://localhost:1313/posts/defcon32/</link>
+      <pubDate>Fri, 10 May 2024 17:37:11 +0800</pubDate>
+      
+      <guid>http://localhost:1313/posts/defcon32/</guid>
+      <description><![CDATA[<h1 id="introduction">Introduction</h1>
+<p>I have played DEFCON-CTF 2024 with my team 1337%Yogurt, we ended up with 30th place and I solved 5 pwnable challenges. In this write-up, I will write all the challenges I solved during and after the contests.</p>
+<h1 id="pwn---lib-pcre3">Pwn - lib-pcre3</h1>
+<h1 id="pwn---suscall">Pwn - suscall</h1>
+<h1 id="pwn---process_vm_readv-me-maybe">Pwn - process_vm_readv-me-maybe</h1>
+<h1 id="pwn---durnk">Pwn - durnk</h1>
+<h1 id="pwn---ndles">Pwn - ndles</h1>
+]]></description>
+      
+    </item>
+    
+    
+  </channel>
+</rss>

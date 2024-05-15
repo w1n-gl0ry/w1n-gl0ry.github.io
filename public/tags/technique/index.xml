@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
+  <channel>
+    <title>Technique on kyrie</title>
+    <link>https://w1n-gl0ry.github.io/tags/technique/</link>
+    <description>Recent content in Technique on kyrie</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Some copyright notice - [my license](https://example.com/license)</copyright>
+    <lastBuildDate>Tue, 08 Aug 2023 17:37:11 +0800</lastBuildDate><atom:link href="https://w1n-gl0ry.github.io/tags/technique/index.xml" rel="self" type="application/rss+xml" /><icon>https://w1n-gl0ry.github.io/logo.svg</icon>
+    
+    
+    <item>
+      <title>FILE STREAM ORIENTED PROGRAMMING</title>
+      <link>https://w1n-gl0ry.github.io/posts/fsop/</link>
+      <pubDate>Tue, 08 Aug 2023 17:37:11 +0800</pubDate>
+      
+      <guid>https://w1n-gl0ry.github.io/posts/fsop/</guid>
+      <description><![CDATA[<h1 id="file-structure">FILE STRUCTURE</h1>
+<h6 id="tags-fsop-technique-pwn-hacking">tags: <code>fsop</code> <code>technique</code> <code>pwn</code> <code>hacking</code></h6>
+<p>Nói về <code>FILE STRUCTURE</code> attack (FSOP), nếu là 1 người chơi <code>pwn</code> chắc hẳn mọi người cũng đã có nghe qua. Bản thân mình cũng mơ hồ về loại tấn công này, nên mình quyết định viết 1 bài research về nó.</p>
+<p>Theo mình tìm hiểu, thì kỹ thuật này được <a href="https://github.com/scwuaptx">Angelboy</a> public qua bài viết <a href="https://www.slideshare.net/AngelBoy1/play-with-file-structure-yet-another-binary-exploit-technique"> Play with FILE Structure - Yet Another Binary Exploit Technique</a>.</p>
+<p>Mình bắt đầu đi vào các phần cơ bản nhất!</p>
+<h3 id="1-file-operator">1. FILE OPERATOR</h3>
+<p><code>FILE</code> là 1 kiểu dữ liệu được định nghĩa trong glibc và thường được dùng khi muốn mở 1 file trong ngôn ngữ lập trình C.
+Tất nhiên, nó khác với khái niệm <code>File Descriptor</code> mà chúng ta thường dùng.
+Mục đích của việc dùng <code>FILE</code> là để việc thao tác với các <code>file operation</code> nhanh hơn bằng cách sử dụng <code>buffer</code> để giảm thiểu số lượng syscall được gọi (_IO_syscall read, write, &hellip;.). Vấn đề này mình sẽ giải thích kĩ hơn ở các phần sau.</p>
+<h3 id="2-diving-into-glibc-code">2. DIVING INTO GLIBC CODE</h3>
+<p>Mình sẽ sử dụng <code>GLIBC-2.35</code> source code để tìm hiểu về <code>FILE STRUCTURE</code>.
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/bits/types/FILE.h#L7">FILE</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> _IO_FILE FILE
+</span></span></code></pre></div><p>Vậy, type <code>FILE</code> thực chất là <code>_IO_FILE</code> struct</p>
+<p>Nhìn sơ qua <code>_IO_FILE</code> struct trong glibc 2.35:
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/bits/types/struct_FILE.h#L49">_IO_FILE</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> _IO_FILE
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> _flags;		<span style="color:#75715e">/* High-order word is _IO_MAGIC; rest is flags. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* The following pointers correspond to the C++ streambuf protocol. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_read_ptr;	<span style="color:#75715e">/* Current read pointer */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_read_end;	<span style="color:#75715e">/* End of get area. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_read_base;	<span style="color:#75715e">/* Start of putback+get area. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_write_base;	<span style="color:#75715e">/* Start of put area. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_write_ptr;	<span style="color:#75715e">/* Current put pointer. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_write_end;	<span style="color:#75715e">/* End of put area. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_buf_base;	<span style="color:#75715e">/* Start of reserve area. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_buf_end;	<span style="color:#75715e">/* End of reserve area. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* The following fields are used to support backing up and undo. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_save_base; <span style="color:#75715e">/* Pointer to start of non-current get area. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_backup_base;  <span style="color:#75715e">/* Pointer to first valid character of backup area */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>_IO_save_end; <span style="color:#75715e">/* Pointer to end of non-current get area. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> _IO_marker <span style="color:#f92672">*</span>_markers;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> _IO_FILE <span style="color:#f92672">*</span>_chain;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> _fileno;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> _flags2;
+</span></span><span style="display:flex;"><span>  __off_t _old_offset; <span style="color:#75715e">/* This used to be _offset but it&#39;s too small.  */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* 1+column number of pbase(); 0 is unknown. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">short</span> _cur_column;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">signed</span> <span style="color:#66d9ef">char</span> _vtable_offset;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> _shortbuf[<span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  _IO_lock_t <span style="color:#f92672">*</span>_lock;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifdef _IO_USE_OLD_IO_FILE
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><p>Nhìn thoáng qua, rất nhiều kiểu dữ liệu được khai báo trong struct.</p>
+<p>Ba loại <code>FILE</code> cơ bản thường được khai báo trong chương trình (nằm trên binary và trỏ đến structure trên libc):</p>
+<ul>
+<li>_IO_2_1_stderr</li>
+<li>_IO_2_1_stdout</li>
+<li>_IO_2_1_stdin</li>
+</ul>
+<p>Riêng <code>stdout</code> có thể ở chế độ unbuffered, line-buffered, hoặc fully-buffered.</p>
+<ul>
+<li>Unbuffered - Chương trình sẽ in ra thiết bị xuất chuẩn càng sớm càng tốt (không hạn chế).</li>
+<li>Line-buffered - Chương trình sẽ in ra thiết bị xuất chuẩn khi gặp kí tự new-line.</li>
+<li>Fully-buffered - Chương trình sẽ in ra thiết bị xuất chuẩn khi <code>stdout buffers</code> đầy.</li>
+</ul>
+<p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/stdfiles.c#L56">_IO_list-all</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> _IO_FILE_plus <span style="color:#f92672">*</span>_IO_list_all <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>_IO_2_1_stderr_;
+</span></span></code></pre></div><p>Glibc mặc định biến <code>_IO_list_all</code> chứa 1 linked list tất cả các type <code>FILE</code> trong binary. Mặc định <code>_IO_list_all</code> sẽ trỏ tới <code>stderr</code> đầu tiên. Các phần tử tiếp theo sẽ được truy cập qua thuộc tính <code>_chain</code> .</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> p <span style="color:#f92672">&amp;</span>_IO_list_all
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">8</span> <span style="color:#f92672">=</span> (_IO_FILE_plus <span style="color:#f92672">**</span>) <span style="color:#ae81ff">0x7ffff7dd5520</span> <span style="color:#f92672">&lt;</span>__GI__IO_list_all<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> p _IO_list_all
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">9</span> <span style="color:#f92672">=</span> (_IO_FILE_plus <span style="color:#f92672">*</span>) <span style="color:#ae81ff">0x7ffff7dd5540</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stderr_<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> p _IO_2_1_stderr_.file._chain
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">10</span> <span style="color:#f92672">=</span> (_IO_FILE <span style="color:#f92672">*</span>) <span style="color:#ae81ff">0x7ffff7dd5620</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> p _IO_2_1_stdout_.file._chain
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">11</span> <span style="color:#f92672">=</span> (_IO_FILE <span style="color:#f92672">*</span>) <span style="color:#ae81ff">0x7ffff7dd48e0</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdin_<span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p>_chain</p>
+<p><img src="https://hackmd.io/_uploads/H1GG2SVn2.png" alt="chain"></p>
+<p>Đặc biệt, <code>FILE</code> còn được bao gồm trong struct <code>_IO_FILE_plus</code></p>
+<p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/libioP.h#L324">_IO_FILE_plus</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> _IO_FILE_plus
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  FILE file;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> _IO_jump_t <span style="color:#f92672">*</span>vtable;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><code>Glibc-2.35</code> có thêm struct <code>_IO_FILE_plus</code> là bản mở rộng của struct <code>_IO_FILE</code> vì chỉ có chứa thêm ptr <a href="https://en.wikipedia.org/wiki/Virtual_method_table">vtable</a>, và mọi <code>FILE</code> đều dùng chung 1 <code>vtable</code>. Thường mọi <code>FILE</code> (cả 3 <code>FILE</code> cơ bản cũng dùng <code>_IO_FILE_plus</code> hơn là <code>_IO_FILE</code>).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> p _IO_2_1_stdout_
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">12</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  file <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    _flags <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">72537977</span>,
+</span></span><span style="display:flex;"><span>    _IO_read_ptr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_read_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_read_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_write_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_write_ptr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_write_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_buf_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a3</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">131</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_buf_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd56a4</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">+</span><span style="color:#ae81ff">132</span><span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_save_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _IO_backup_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _IO_save_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _markers <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _chain <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd48e0</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdin_<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    _fileno <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _flags2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    _old_offset <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _cur_column <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    _vtable_offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#e6db74">&#39;\000&#39;</span>,
+</span></span><span style="display:flex;"><span>    _shortbuf <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _lock <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd6780</span> <span style="color:#f92672">&lt;</span>_IO_stdfile_1_lock<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    _offset <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _codecvt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _wide_data <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd47a0</span> <span style="color:#f92672">&lt;</span>_IO_wide_data_1<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    _freeres_list <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _freeres_buf <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    __pad5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    _mode <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _unused2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\000&#39;</span> <span style="color:#f92672">&lt;</span>repeats <span style="color:#ae81ff">19</span> times<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  vtable <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7dd36e0</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_jumps<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>vtable</code> có kiểu dữ liệu là <code>_IO_jump_t</code>
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/libioP.h#L293">_IO_jump_t</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> _IO_jump_t
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(<span style="color:#66d9ef">size_t</span>, __dummy);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(<span style="color:#66d9ef">size_t</span>, __dummy2);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_finish_t, __finish);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_overflow_t, __overflow);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_underflow_t, __underflow);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_underflow_t, __uflow);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_pbackfail_t, __pbackfail);
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* showmany */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_xsputn_t, __xsputn);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_xsgetn_t, __xsgetn);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_seekoff_t, __seekoff);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_seekpos_t, __seekpos);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_setbuf_t, __setbuf);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_sync_t, __sync);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_doallocate_t, __doallocate);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_read_t, __read);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_write_t, __write);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_seek_t, __seek);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_close_t, __close);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_stat_t, __stat);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_showmanyc_t, __showmanyc);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">JUMP_FIELD</span>(_IO_imbue_t, __imbue);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>Struct này chứa các con trỏ đến các phương thức IO cần thiết trong lúc xử lí file (fopen, fread, fwrite, fclose,&hellip;).</p>
+<p>Ví dụ khi thực hiện mở 1 file thông qua fopen():
+-&gt; Các bước open file:</p>
+<ul>
+<li>Malloc FILE structure</li>
+<li>Gán vtable vào FILE structure</li>
+<li>Khởi tạo FILE structure</li>
+<li>Liên kết FILE structure vào _IO_list_all</li>
+<li>Call fopen()</li>
+</ul>
+<p><em>Gán vtable vào FILE structure</em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">_IO_JUMPS</span> (<span style="color:#f92672">&amp;</span>new_f<span style="color:#f92672">-&gt;</span>fp) <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>_IO_file_jumps;
+</span></span></code></pre></div><p><code>_IO_file_jumps</code> là bảng 1 trong nhiều<code>vtable</code> đã tồn tại trong chương trình. Khởi tạo <code>vtable</code> với <code>_IO_file_jumps</code> khi mở file.
+Làm sao để gọi hàm đó ?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#a6e22e">void</span> (<span style="color:#f92672">*</span>_IO_finish_t) (_IO_FILE <span style="color:#f92672">*</span>, <span style="color:#66d9ef">int</span>);
+</span></span></code></pre></div><p>Khi thực hiện <code>_IO_FINISH(FP)</code>, nó sẽ gọi đến hàm được lưu trong <code>vtable</code> của <code>FILE</code> được truyền vào, với chỉ mục kiểu <code>int</code> là vị trí của hàm <code>_IO_finish_t</code> trong bảng <code>vtable</code>.</p>
+<p>Hmm, mình đã khái quát xong.
+Tóm gọn lại, nếu chúng ta có thể ghi đè 1 file structure nào đó, thì ta có thể điều khiển được nơi mà chúng ta có thể ghi, đọc -&gt; READ/WRITE PRIMITIVE . Điều đó khá là dễ dàng nhưng chúng ta cần chú ý các điều kiện.</p>
+<p>Vậy mình đặt câu hỏi trong đầu: <code>Liệu có thể điều khiển được luồng thực thi sang hướng khác nếu như mình có thể ghi đè phân vùng vtable không ?</code></p>
+<p>Mình sẽ nói rõ hơn phần đó trong phần cuối cùng !</p>
+<h3 id="3-leak-libc-via-_io_file-read-primitive">3. LEAK LIBC VIA _IO_FILE (READ PRIMITIVE)</h3>
+<p>Làm sao chúng ta có thể leak được địa chỉ của libc thông qua FSOP attack ?</p>
+<p>Trước hết, tìm hiểu cách hoạt động của hàm <code>puts</code> trong C (glibc-2.35).</p>
+<p>Chương trình đơn giản sau thực hiện việc in chuỗi ra thiết bị xuất chuẩn</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">puts</span>(<span style="color:#e6db74">&#34;FSOP ATTACK&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Mình setup source code và compile với <code>glibc-2.35</code> bằng câu lệnh sau</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span> wget https:<span style="color:#75715e">//ftp.gnu.org/gnu/glibc/glibc-2.35.tar.gz
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">$</span> tar <span style="color:#f92672">-</span>xvf glibc<span style="color:#f92672">-</span><span style="color:#ae81ff">2.35</span>.tar.gz
+</span></span><span style="display:flex;"><span><span style="color:#f92672">*</span> run binary in gdb
+</span></span><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> dir glibc<span style="color:#f92672">-</span><span style="color:#ae81ff">2.35</span><span style="color:#f92672">/</span>libio<span style="color:#f92672">/</span>
+</span></span></code></pre></div><p>Sau khi load source code vào chúng ta có thể dễ dàng debug hơn với code C.</p>
+<p>Debug binary bằng gdb:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> disassemble main
+</span></span><span style="display:flex;"><span>Dump of assembler code <span style="color:#66d9ef">for</span> function main:
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x0000000000001149</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">0</span><span style="color:#f92672">&gt;:</span>     endbr64
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x000000000000114d</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">4</span><span style="color:#f92672">&gt;:</span>     push   rbp
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x000000000000114e</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">5</span><span style="color:#f92672">&gt;:</span>     mov    rbp,rsp
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x0000000000001151</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">8</span><span style="color:#f92672">&gt;:</span>     lea    rax,[rip<span style="color:#f92672">+</span><span style="color:#ae81ff">0xeac</span>]        <span style="color:#960050;background-color:#1e0010">#</span> <span style="color:#ae81ff">0x2004</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x0000000000001158</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">15</span><span style="color:#f92672">&gt;:</span>    mov    rdi,rax
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x000000000000115b</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">18</span><span style="color:#f92672">&gt;:</span>    call   <span style="color:#ae81ff">0x1050</span> <span style="color:#f92672">&lt;</span>puts<span style="color:#960050;background-color:#1e0010">@</span>plt<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x0000000000001160</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">23</span><span style="color:#f92672">&gt;:</span>    mov    eax,<span style="color:#ae81ff">0x0</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x0000000000001165</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">28</span><span style="color:#f92672">&gt;:</span>    pop    rbp
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x0000000000001166</span> <span style="color:#f92672">&lt;+</span><span style="color:#ae81ff">29</span><span style="color:#f92672">&gt;:</span>    ret
+</span></span><span style="display:flex;"><span>End of assembler dump.
+</span></span></code></pre></div><p>Mình đặt breakpoints tại hàm chỗ gọi đên hàm <code>puts@plt</code> để xem nó làm gì.</p>
+<p>Rõ ràng, nó gọi đến hàm <code>_IO_puts</code> trong thư viện
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/ioputs.c#L31">_IO_puts</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">_IO_puts</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> result <span style="color:#f92672">=</span> EOF;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">size_t</span> len <span style="color:#f92672">=</span> <span style="color:#a6e22e">strlen</span> (str);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">_IO_acquire_lock</span> (stdout);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ((<span style="color:#a6e22e">_IO_vtable_offset</span> (stdout) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">||</span> <span style="color:#a6e22e">_IO_fwide</span> (stdout, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">_IO_sputn</span> (stdout, str, len) <span style="color:#f92672">==</span> len
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">_IO_putc_unlocked</span> (<span style="color:#e6db74">&#39;\n&#39;</span>, stdout) <span style="color:#f92672">!=</span> EOF)
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> <span style="color:#a6e22e">MIN</span> (INT_MAX, len <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">_IO_release_lock</span> (stdout);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> result;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">weak_alias</span> (_IO_puts, puts)
+</span></span></code></pre></div><p>Ta thấy trong source và assembly, tiếp tục gọi đến <code>_IO_sputn</code>.
+Sau 1 hồi tìm kiếm thì mình biết là <code>_IO_sputn</code> là alias tới <code>_IO_XSPUTN (__fp, __s, __n)</code> qua dòng code</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define _IO_sputn(__fp, __s, __n) _IO_XSPUTN (__fp, __s, __n)
+</span></span></span></code></pre></div><p>Đơn giản là nó jump thẳng tới con trỏ hàm trong <code>__xsputn</code> với vtable là của <code>stdout</code> FP.</p>
+<pre tabindex="0"><code>#define _IO_XSPUTN(FP, DATA, N) JUMP2 (__xsputn, FP, DATA, N)
+</code></pre><p>Kiểm tra vtable của <code>stdout</code> trong gdb, ta thấy <code>__xsputn</code> trỏ đến <code>_IO_new_file_xsputn</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> print _IO_file_jumps
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  __dummy <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>  __dummy2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>  __finish <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c86060</span> <span style="color:#f92672">&lt;</span>_IO_new_file_finish<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __overflow <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c86e60</span> <span style="color:#f92672">&lt;</span>_IO_new_file_overflow<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __underflow <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c86af0</span> <span style="color:#f92672">&lt;</span>_IO_new_file_underflow<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __uflow <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c88100</span> <span style="color:#f92672">&lt;</span>__GI__IO_default_uflow<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __pbackfail <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c898c0</span> <span style="color:#f92672">&lt;</span>__GI__IO_default_pbackfail<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __xsputn <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c856b0</span> <span style="color:#f92672">&lt;</span>_IO_new_file_xsputn<span style="color:#f92672">&gt;</span>             <span style="color:#960050;background-color:#1e0010">#</span> target
+</span></span><span style="display:flex;"><span>  __xsgetn <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c85340</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_xsgetn<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __seekoff <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c849a0</span> <span style="color:#f92672">&lt;</span>_IO_new_file_seekoff<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __seekpos <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c88840</span> <span style="color:#f92672">&lt;</span>_IO_default_seekpos<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __setbuf <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c84650</span> <span style="color:#f92672">&lt;</span>_IO_new_file_setbuf<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __sync <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c844e0</span> <span style="color:#f92672">&lt;</span>_IO_new_file_sync<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __doallocate <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c78060</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_doallocate<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __read <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c859d0</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_read<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __write <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c84f80</span> <span style="color:#f92672">&lt;</span>_IO_new_file_write<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __seek <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c84720</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_seek<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __close <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c84640</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_close<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __stat <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c84f70</span> <span style="color:#f92672">&lt;</span>__GI__IO_file_stat<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __showmanyc <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c89a40</span> <span style="color:#f92672">&lt;</span>_IO_default_showmanyc<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>  __imbue <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7c89a50</span> <span style="color:#f92672">&lt;</span>_IO_default_imbue<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Vậy ta cùng xem source hàm <code>_IO_new_file_xsputn</code>
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/fileops.c#L1196">_IO_new_file_xsputn</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">size_t</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">_IO_new_file_xsputn</span> (FILE <span style="color:#f92672">*</span>f, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">size_t</span> n)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>s <span style="color:#f92672">=</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) data;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">size_t</span> to_do <span style="color:#f92672">=</span> n;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> must_flush <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">size_t</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* This is an optimized implementation.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     If the amount to be written straddles a block boundary
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     (or the filebuf is unbuffered), use sys_write directly. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* First figure out how much space is available in the buffer. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ((f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_LINE_BUF) <span style="color:#f92672">&amp;&amp;</span> (f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_CURRENTLY_PUTTING))
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      count <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_end <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_write_ptr;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (count <span style="color:#f92672">&gt;=</span> n)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>p;
+</span></span><span style="display:flex;"><span>	  <span style="color:#66d9ef">for</span> (p <span style="color:#f92672">=</span> s <span style="color:#f92672">+</span> n; p <span style="color:#f92672">&gt;</span> s; )
+</span></span><span style="display:flex;"><span>	    {
+</span></span><span style="display:flex;"><span>	      <span style="color:#66d9ef">if</span> (<span style="color:#f92672">*--</span>p <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>)
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>		  count <span style="color:#f92672">=</span> p <span style="color:#f92672">-</span> s <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>		  must_flush <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>		  <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	    }
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_IO_write_end <span style="color:#f92672">&gt;</span> f<span style="color:#f92672">-&gt;</span>_IO_write_ptr)
+</span></span><span style="display:flex;"><span>    count <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_write_end <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_write_ptr; <span style="color:#75715e">/* Space available. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* Then fill the buffer. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (count <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (count <span style="color:#f92672">&gt;</span> to_do)
+</span></span><span style="display:flex;"><span>	count <span style="color:#f92672">=</span> to_do;
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">=</span> <span style="color:#a6e22e">__mempcpy</span> (f<span style="color:#f92672">-&gt;</span>_IO_write_ptr, s, count);
+</span></span><span style="display:flex;"><span>      s <span style="color:#f92672">+=</span> count;
+</span></span><span style="display:flex;"><span>      to_do <span style="color:#f92672">-=</span> count;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (to_do <span style="color:#f92672">+</span> must_flush <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">size_t</span> block_size, do_write;
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* Next flush the (full) buffer. */</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_IO_OVERFLOW</span> (f, EOF) <span style="color:#f92672">==</span> EOF)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/* If nothing else has to be written we must not signal the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	   caller that everything has been written.  */</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> to_do <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">?</span> EOF : n <span style="color:#f92672">-</span> to_do;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* Try to maintain alignment: write a whole number of blocks.  */</span>
+</span></span><span style="display:flex;"><span>      block_size <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_end <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_base;
+</span></span><span style="display:flex;"><span>      do_write <span style="color:#f92672">=</span> to_do <span style="color:#f92672">-</span> (block_size <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">128</span> <span style="color:#f92672">?</span> to_do <span style="color:#f92672">%</span> block_size : <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (do_write)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  count <span style="color:#f92672">=</span> <span style="color:#a6e22e">new_do_write</span> (f, s, do_write);
+</span></span><span style="display:flex;"><span>	  to_do <span style="color:#f92672">-=</span> count;
+</span></span><span style="display:flex;"><span>	  <span style="color:#66d9ef">if</span> (count <span style="color:#f92672">&lt;</span> do_write)
+</span></span><span style="display:flex;"><span>	    <span style="color:#66d9ef">return</span> n <span style="color:#f92672">-</span> to_do;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* Now write out the remainder.  Normally, this will fit in the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 buffer, but it&#39;s somewhat messier for line-buffered files,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 so we let _IO_default_xsputn handle the general case. */</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (to_do)
+</span></span><span style="display:flex;"><span>	to_do <span style="color:#f92672">-=</span> <span style="color:#a6e22e">_IO_default_xsputn</span> (f, s<span style="color:#f92672">+</span>do_write, to_do);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> n <span style="color:#f92672">-</span> to_do;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">libc_hidden_ver</span> (_IO_new_file_xsputn, _IO_file_xsputn)
+</span></span></code></pre></div><p>Trước khi gọi đến hàm <code>new_do_write()</code>, ta để ý ở trên gọi đến <code>_IO_OVERFLOW()</code>.</p>
+<p>Vào hàm <code>_IO_OVERFLOW()</code> thì trong vtable của <code>stdout</code>, nó gọi đến hàm <code>_IO_new_file_overflow()</code></p>
+<p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/fileops.c#L730">_IO_new_file_overflow</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">_IO_new_file_overflow</span> (FILE <span style="color:#f92672">*</span>f, <span style="color:#66d9ef">int</span> ch)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_NO_WRITES) <span style="color:#75715e">/* SET ERROR */</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">|=</span> _IO_ERR_SEEN;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">__set_errno</span> (EBADF);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> EOF;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* If currently reading or no buffer allocated. */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ((f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_CURRENTLY_PUTTING) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> f<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">==</span> NULL)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* Allocate a buffer if needed. */</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">==</span> NULL)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#a6e22e">_IO_doallocbuf</span> (f);
+</span></span><span style="display:flex;"><span>	  <span style="color:#a6e22e">_IO_setg</span> (f, f<span style="color:#f92672">-&gt;</span>_IO_buf_base, f<span style="color:#f92672">-&gt;</span>_IO_buf_base, f<span style="color:#f92672">-&gt;</span>_IO_buf_base);
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* Otherwise must be currently reading.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 If _IO_read_ptr (and hence also _IO_read_end) is at the buffer end,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 logically slide the buffer forwards one block (by setting the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 read pointers to all point at the beginning of the block).  This
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 makes room for subsequent output.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 Otherwise, set the read pointers to _IO_read_end (leaving that
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	 alone, so it can continue to correspond to the external position). */</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">__glibc_unlikely</span> (<span style="color:#a6e22e">_IO_in_backup</span> (f)))
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#66d9ef">size_t</span> nbackup <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_read_end <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_read_ptr;
+</span></span><span style="display:flex;"><span>	  <span style="color:#a6e22e">_IO_free_backup_area</span> (f);
+</span></span><span style="display:flex;"><span>	  f<span style="color:#f92672">-&gt;</span>_IO_read_base <span style="color:#f92672">-=</span> <span style="color:#a6e22e">MIN</span> (nbackup,
+</span></span><span style="display:flex;"><span>				   f<span style="color:#f92672">-&gt;</span>_IO_read_base <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_base);
+</span></span><span style="display:flex;"><span>	  f<span style="color:#f92672">-&gt;</span>_IO_read_ptr <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_read_base;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_IO_read_ptr <span style="color:#f92672">==</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_end)
+</span></span><span style="display:flex;"><span>	f<span style="color:#f92672">-&gt;</span>_IO_read_end <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_read_ptr <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_base;
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_read_ptr;
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_write_ptr;
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_IO_write_end <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_end;
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_IO_read_base <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_read_ptr <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_read_end;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">|=</span> _IO_CURRENTLY_PUTTING;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_mode <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> (_IO_LINE_BUF <span style="color:#f92672">|</span> _IO_UNBUFFERED))
+</span></span><span style="display:flex;"><span>	f<span style="color:#f92672">-&gt;</span>_IO_write_end <span style="color:#f92672">=</span> f<span style="color:#f92672">-&gt;</span>_IO_write_ptr;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (ch <span style="color:#f92672">==</span> EOF)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_IO_do_write</span> (f, f<span style="color:#f92672">-&gt;</span>_IO_write_base,
+</span></span><span style="display:flex;"><span>			 f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_write_base);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">==</span> f<span style="color:#f92672">-&gt;</span>_IO_buf_end ) <span style="color:#75715e">/* Buffer is really full */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_IO_do_flush</span> (f) <span style="color:#f92672">==</span> EOF)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> EOF;
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">*</span>f<span style="color:#f92672">-&gt;</span>_IO_write_ptr<span style="color:#f92672">++</span> <span style="color:#f92672">=</span> ch;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ((f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_UNBUFFERED)
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">||</span> ((f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_LINE_BUF) <span style="color:#f92672">&amp;&amp;</span> ch <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">_IO_do_write</span> (f, f<span style="color:#f92672">-&gt;</span>_IO_write_base,
+</span></span><span style="display:flex;"><span>		      f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_write_base) <span style="color:#f92672">==</span> EOF)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> EOF;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span>) ch;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">libc_hidden_ver</span> (_IO_new_file_overflow, _IO_file_overflow)
+</span></span></code></pre></div><p>Lưu ý rằng, tham số thứ 2 đang lưu giá trị <code>EOF</code> (ch == EOF).</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (ch <span style="color:#f92672">==</span> EOF)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_IO_do_write</span> (f, f<span style="color:#f92672">-&gt;</span>_IO_write_base,
+</span></span><span style="display:flex;"><span>			 f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_write_base);
+</span></span></code></pre></div><p><code>_IO_do_write()</code> là hàm cuối cùng được gọi và nó là alias tới <code>_IO_new_do_write()</code></p>
+<p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/fileops.c#L422">_IO_new_do_write</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">size_t</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_do_write</span> (FILE <span style="color:#f92672">*</span>fp, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">size_t</span> to_do)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">size_t</span> count;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_IS_APPENDING)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* On a system without a proper O_APPEND implementation,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       you would need to sys_seek(0, SEEK_END) here, but is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       not needed nor desirable for Unix- or Posix-like systems.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       Instead, just indicate that offset (before and after) is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       unpredictable. */</span>
+</span></span><span style="display:flex;"><span>    fp<span style="color:#f92672">-&gt;</span>_offset <span style="color:#f92672">=</span> _IO_pos_BAD;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_IO_read_end <span style="color:#f92672">!=</span> fp<span style="color:#f92672">-&gt;</span>_IO_write_base)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">off64_t</span> new_pos
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_SYSSEEK</span> (fp, fp<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">-</span> fp<span style="color:#f92672">-&gt;</span>_IO_read_end, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (new_pos <span style="color:#f92672">==</span> _IO_pos_BAD)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>      fp<span style="color:#f92672">-&gt;</span>_offset <span style="color:#f92672">=</span> new_pos;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  count <span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_SYSWRITE</span> (fp, data, to_do);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_cur_column <span style="color:#f92672">&amp;&amp;</span> count)
+</span></span><span style="display:flex;"><span>    fp<span style="color:#f92672">-&gt;</span>_cur_column <span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_adjust_column</span> (fp<span style="color:#f92672">-&gt;</span>_cur_column <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, data, count) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">_IO_setg</span> (fp, fp<span style="color:#f92672">-&gt;</span>_IO_buf_base, fp<span style="color:#f92672">-&gt;</span>_IO_buf_base, fp<span style="color:#f92672">-&gt;</span>_IO_buf_base);
+</span></span><span style="display:flex;"><span>  fp<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">=</span> fp<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">=</span> fp<span style="color:#f92672">-&gt;</span>_IO_buf_base;
+</span></span><span style="display:flex;"><span>  fp<span style="color:#f92672">-&gt;</span>_IO_write_end <span style="color:#f92672">=</span> (fp<span style="color:#f92672">-&gt;</span>_mode <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		       <span style="color:#f92672">&amp;&amp;</span> (fp<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> (_IO_LINE_BUF <span style="color:#f92672">|</span> _IO_UNBUFFERED))
+</span></span><span style="display:flex;"><span>		       <span style="color:#f92672">?</span> fp<span style="color:#f92672">-&gt;</span>_IO_buf_base : fp<span style="color:#f92672">-&gt;</span>_IO_buf_end);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> count;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Cuối cùng trong hàm <code>_IO_new_do_write()</code> nó gọi tới <code>_IO_SYSWRITE (fp, data, to_do)</code>.</p>
+<p><code>_IO_SYSWRITE</code> trỏ tới key <code>__write</code> trong vtable.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define _IO_SYSWRITE(FP, DATA, LEN) JUMP2 (__write, FP, DATA, LEN)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#__write = 0x7ffff7c84f80 &lt;_IO_new_file_write&gt;
+</span></span></span></code></pre></div><p><a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/fileops.c#L1172">_IO_new_file_write</a></p>
+<pre tabindex="0"><code>ssize_t
+_IO_new_file_write (FILE *f, const void *data, ssize_t n)
+{
+  ssize_t to_do = n;
+  while (to_do &gt; 0)
+    {
+      ssize_t count = (__builtin_expect (f-&gt;_flags2
+                                         &amp; _IO_FLAGS2_NOTCANCEL, 0)
+			   ? __write_nocancel (f-&gt;_fileno, data, to_do)
+			   : __write (f-&gt;_fileno, data, to_do)); -&gt; target
+      if (count &lt; 0)
+	{
+	  f-&gt;_flags |= _IO_ERR_SEEN;
+	  break;
+	}
+      to_do -= count;
+      data = (void *) ((char *) data + count);
+    }
+  n -= to_do;
+  if (f-&gt;_offset &gt;= 0)
+    f-&gt;_offset += n;
+  return n;
+}
+</code></pre><p>Rõ ràng ta thấy, cuối cùng nó sẽ gọi syscall <code>write()</code> để thực hiện in ra màn hình ?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">__write</span> (f<span style="color:#f92672">-&gt;</span>_fileno, data, to_do)
+</span></span></code></pre></div><p>Mình tóm tắt flow của hàm <code>puts()</code> thành 1 sơ đồ sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">puts</span>(str)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>_ <span style="color:#a6e22e">_IO_new_file_xsputn</span> (stdout, str, len)
+</span></span><span style="display:flex;"><span>   <span style="color:#f92672">|</span>_ <span style="color:#a6e22e">_IO_new_file_overflow</span> (stdout, EOF)
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">|</span>_ <span style="color:#a6e22e">new_do_write</span>(stdout, stdout<span style="color:#f92672">-&gt;</span>_IO_write_base, stdout<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> stdout<span style="color:#f92672">-&gt;</span>_IO_write_base)
+</span></span><span style="display:flex;"><span>         <span style="color:#f92672">|</span>_ <span style="color:#a6e22e">_IO_new_file_write</span>(stdout, stdout<span style="color:#f92672">-&gt;</span>_IO_write_base, stdout<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> stdout<span style="color:#f92672">-&gt;</span>_IO_write_base)
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">|</span>_ <span style="color:#a6e22e">write</span>(stdout<span style="color:#f92672">-&gt;</span>fileno, stdout<span style="color:#f92672">-&gt;</span>_IO_write_base, stdout<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> stdout<span style="color:#f92672">-&gt;</span>_IO_write_base)
+</span></span></code></pre></div><p>-&gt; Mọi thứ đã rõ ràng rồi, mục tiêu của chúng ta là làm sao để thực hiện được <code>write(stdout-&gt;fileno, stdout-&gt;_IO_write_base, stdout-&gt;_IO_write_ptr - stdout-&gt;_IO_write_base)</code>. Việc cần làm đầu tiên là ta phải bypass được 1 loạt check đồ sộ ở trên.</p>
+<p>Lúc gọi đến syscall <code>write</code>, mình kiểm tra giá trị của từng biến trong write.
+Mình đặt break points ngay hàm <code>write</code> và lần lượt kiểm tra</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>pwndbg<span style="color:#f92672">&gt;</span> p _IO_2_1_stdout_
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  file <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    _flags <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">72537468</span>,
+</span></span><span style="display:flex;"><span>    _IO_read_ptr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592a0</span> <span style="color:#e6db74">&#34;FSOP ATTACK</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_read_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592a0</span> <span style="color:#e6db74">&#34;FSOP ATTACK</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_read_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592a0</span> <span style="color:#e6db74">&#34;FSOP ATTACK</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_write_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592a0</span> <span style="color:#e6db74">&#34;FSOP ATTACK</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_write_ptr <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592ac</span> <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_write_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592a0</span> <span style="color:#e6db74">&#34;FSOP ATTACK</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_buf_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555592a0</span> <span style="color:#e6db74">&#34;FSOP ATTACK</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_buf_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5555555596a0</span> <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    _IO_save_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _IO_backup_base <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _IO_save_end <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _markers <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _chain <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7df6aa0</span> <span style="color:#f92672">&lt;</span>_IO_2_1_stdin_<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    _fileno <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _flags2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    _old_offset <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _cur_column <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    _vtable_offset <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#e6db74">&#39;\000&#39;</span>,
+</span></span><span style="display:flex;"><span>    _shortbuf <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    _lock <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7df8a30</span> <span style="color:#f92672">&lt;</span>_IO_stdfile_1_lock<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    _offset <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _codecvt <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _wide_data <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7df69a0</span> <span style="color:#f92672">&lt;</span>_IO_wide_data_1<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>    _freeres_list <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    _freeres_buf <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0</span>,
+</span></span><span style="display:flex;"><span>    __pad5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>    _mode <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    _unused2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\000&#39;</span> <span style="color:#f92672">&lt;</span>repeats <span style="color:#ae81ff">19</span> times<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  vtable <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x7ffff7df3600</span> <span style="color:#f92672">&lt;</span>_IO_file_jumps<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Lúc này:
+<code>stdout-&gt;fileno = 1</code>
+<code>stdout-&gt;_IO_write_ptr = 0x5555555592ac</code>
+<code>stdout-&gt;_IO_write_base = 0x5555555592a0 &quot;FSOP ATTACK\n&quot;</code></p>
+<p>Giá trị <code>stdout-&gt;_IO_write_ptr - stdout-&gt;_IO_write_base</code> đúng bằng 12, bằng độ dài của chuỗi mà chúng ta muốn in.</p>
+<p>1 suy nghĩ hiện lên, nếu ta có thể ghi đè những giá trị này ? Có nghĩa là ta sẽ điều khiển nó in cái gì mà ta muốn :&gt;. Khi đó chúng ta không cần phải quan ngại điều gì cả khi đã có địa chỉ LIBC&hellip; Hơn thế nữa là STACK, PIE, &hellip;..</p>
+<p>Nhưng đời không như là mơ, sự thật <del>nỗ não</del> , chúng ta bắt buộc phải bypass tất cả các điều kiện ở trên nếu chúng ta muốn có <strong>READ PRIMITIVE</strong>.</p>
+<p>Các macro được define như sau:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define _IO_MAGIC 0xFBAD0000 </span><span style="color:#75715e">/* Magic number */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _OLD_STDIO_MAGIC 0xFABC0000 </span><span style="color:#75715e">/* Emulate old stdio. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_MAGIC_MASK 0xFFFF0000
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_USER_BUF 1 </span><span style="color:#75715e">/* User owns buffer; don&#39;t delete it on close. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_UNBUFFERED 2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_NO_READS 4 </span><span style="color:#75715e">/* Reading not allowed */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_NO_WRITES 8 </span><span style="color:#75715e">/* Writing not allowd */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_EOF_SEEN 0x10
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_ERR_SEEN 0x20
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_DELETE_DONT_CLOSE 0x40 </span><span style="color:#75715e">/* Don&#39;t call close(_fileno) on cleanup. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_LINKED 0x80 </span><span style="color:#75715e">/* Set if linked (using _chain) to streambuf::_list_all.*/</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_IN_BACKUP 0x100
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_LINE_BUF 0x200
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_TIED_PUT_GET 0x400 </span><span style="color:#75715e">/* Set if put and get pointer logicly tied. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_CURRENTLY_PUTTING 0x800
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_IS_APPENDING 0x1000
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_IS_FILEBUF 0x2000
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_BAD_SEEN 0x4000
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define _IO_USER_LOCK 0x8000
+</span></span></span></code></pre></div><p>Lần lượt đọc source và đi qua từng hàm để xem có thể khai thác được gì không:</p>
+<p>Để thực hiện được <code>_IO_do_write()</code> thì mình lần lượt check từng câu lệnh if trong <code>_IO_new_file_overflow()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_NO_WRITES) <span style="color:#75715e">/* SET ERROR */</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">|=</span> _IO_ERR_SEEN;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">__set_errno</span> (EBADF);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> EOF;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>Rõ ràng <code>f-&gt;_flags &amp; _IO_NO_WRITES</code> buộc phải trả về false thì mới thực hiện tiếp được.</p>
+<pre tabindex="0"><code>   0x7ffff7c86e64 &lt;_IO_file_overflow+4&gt;     push   r12
+   0x7ffff7c86e66 &lt;_IO_file_overflow+6&gt;     push   rbp
+   0x7ffff7c86e67 &lt;_IO_file_overflow+7&gt;     push   rbx
+   0x7ffff7c86e68 &lt;_IO_file_overflow+8&gt;     mov    eax, dword ptr [rdi]
+   0x7ffff7c86e6a &lt;_IO_file_overflow+10&gt;    mov    rbx, rdi
+ ► 0x7ffff7c86e6d &lt;_IO_file_overflow+13&gt;    test   al, 8
+</code></pre><p><code>_IO_NO_WRITES = 8</code>  nên <code>stdout-&gt;_flags &amp; 8 = 0</code></p>
+<ul>
+<li><code>stdout-&gt;_flags &amp; 8 = 0</code></li>
+</ul>
+<p>Tiếp tục check tiếp, chúng ta phải khiến nó sao cho trả về False</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ((f<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_CURRENTLY_PUTTING) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">||</span> f<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">==</span> NULL)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">/* Allocate a buffer if needed. */</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (f<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">==</span> NULL)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>	  <span style="color:#a6e22e">_IO_doallocbuf</span> (f);
+</span></span><span style="display:flex;"><span>	  <span style="color:#a6e22e">_IO_setg</span> (f, f<span style="color:#f92672">-&gt;</span>_IO_buf_base, f<span style="color:#f92672">-&gt;</span>_IO_buf_base, f<span style="color:#f92672">-&gt;</span>_IO_buf_base);
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></div><p>Có nghĩa <code>f-&gt;_flags &amp; _IO_CURRENTLY_PUTTING != 0</code></p>
+<p>Kiểm tra giá trị <code>_IO_CURRENTLY_PUTTING</code> trong gdb:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c86e75</span> <span style="color:#f92672">&lt;</span>_IO_file_overflow<span style="color:#f92672">+</span><span style="color:#ae81ff">21</span><span style="color:#f92672">&gt;</span>    mov    ebp, esi
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c86e77</span> <span style="color:#f92672">&lt;</span>_IO_file_overflow<span style="color:#f92672">+</span><span style="color:#ae81ff">23</span><span style="color:#f92672">&gt;</span>    mov    rsi, qword ptr [rdi <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x20</span>]
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">►</span> <span style="color:#ae81ff">0x7ffff7c86e7b</span> <span style="color:#f92672">&lt;</span>_IO_file_overflow<span style="color:#f92672">+</span><span style="color:#ae81ff">27</span><span style="color:#f92672">&gt;</span>    test   ah, <span style="color:#ae81ff">8</span>
+</span></span></code></pre></div><p>Như vậy <code>f-&gt;_flags &amp; 8 = 1</code> || <code>f-&gt;_IO_write_base == NULL</code> -&gt; False</p>
+<ul>
+<li><code>f-&gt;_flags &amp; 0x0800 = 1</code></li>
+</ul>
+<p>Giả sử, chúng ta đã bypass qua 2 lần check đó
+Ta đã lưu ý <code>ch</code> vẫn bằng EOF nên có thể thành công vào hàm <code>_IO_do_write()</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (ch <span style="color:#f92672">==</span> EOF)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">_IO_do_write</span> (f, f<span style="color:#f92672">-&gt;</span>_IO_write_base,
+</span></span><span style="display:flex;"><span>			 f<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">-</span> f<span style="color:#f92672">-&gt;</span>_IO_write_base);
+</span></span></code></pre></div><p><code>_IO_do_write()</code> gọi tới <code>_IO_new_do_write</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">size_t</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">new_do_write</span> (FILE <span style="color:#f92672">*</span>fp, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>data, <span style="color:#66d9ef">size_t</span> to_do)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">size_t</span> count;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> _IO_IS_APPENDING)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* On a system without a proper O_APPEND implementation,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       you would need to sys_seek(0, SEEK_END) here, but is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       not needed nor desirable for Unix- or Posix-like systems.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       Instead, just indicate that offset (before and after) is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       unpredictable. */</span>
+</span></span><span style="display:flex;"><span>    fp<span style="color:#f92672">-&gt;</span>_offset <span style="color:#f92672">=</span> _IO_pos_BAD;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_IO_read_end <span style="color:#f92672">!=</span> fp<span style="color:#f92672">-&gt;</span>_IO_write_base)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">off64_t</span> new_pos
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_SYSSEEK</span> (fp, fp<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">-</span> fp<span style="color:#f92672">-&gt;</span>_IO_read_end, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (new_pos <span style="color:#f92672">==</span> _IO_pos_BAD)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>      fp<span style="color:#f92672">-&gt;</span>_offset <span style="color:#f92672">=</span> new_pos;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  count <span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_SYSWRITE</span> (fp, data, to_do);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_cur_column <span style="color:#f92672">&amp;&amp;</span> count)
+</span></span><span style="display:flex;"><span>    fp<span style="color:#f92672">-&gt;</span>_cur_column <span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_adjust_column</span> (fp<span style="color:#f92672">-&gt;</span>_cur_column <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, data, count) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">_IO_setg</span> (fp, fp<span style="color:#f92672">-&gt;</span>_IO_buf_base, fp<span style="color:#f92672">-&gt;</span>_IO_buf_base, fp<span style="color:#f92672">-&gt;</span>_IO_buf_base);
+</span></span><span style="display:flex;"><span>  fp<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">=</span> fp<span style="color:#f92672">-&gt;</span>_IO_write_ptr <span style="color:#f92672">=</span> fp<span style="color:#f92672">-&gt;</span>_IO_buf_base;
+</span></span><span style="display:flex;"><span>  fp<span style="color:#f92672">-&gt;</span>_IO_write_end <span style="color:#f92672">=</span> (fp<span style="color:#f92672">-&gt;</span>_mode <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		       <span style="color:#f92672">&amp;&amp;</span> (fp<span style="color:#f92672">-&gt;</span>_flags <span style="color:#f92672">&amp;</span> (_IO_LINE_BUF <span style="color:#f92672">|</span> _IO_UNBUFFERED))
+</span></span><span style="display:flex;"><span>		       <span style="color:#f92672">?</span> fp<span style="color:#f92672">-&gt;</span>_IO_buf_base : fp<span style="color:#f92672">-&gt;</span>_IO_buf_end);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> count;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>fp-&gt;_flags &amp; _IO_IS_APPENDING</code> cần phải trả về True để không bị vướng vào câu lệnh if hỗn độn ngay dưới nó :&gt;</p>
+<p>Nếu không thõa mãn điều kiện này thì ta thử đi vào câu lệnh nhánh if phía dưới:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (fp<span style="color:#f92672">-&gt;</span>_IO_read_end <span style="color:#f92672">!=</span> fp<span style="color:#f92672">-&gt;</span>_IO_write_base)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">off64_t</span> new_pos
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">=</span> <span style="color:#a6e22e">_IO_SYSSEEK</span> (fp, fp<span style="color:#f92672">-&gt;</span>_IO_write_base <span style="color:#f92672">-</span> fp<span style="color:#f92672">-&gt;</span>_IO_read_end, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (new_pos <span style="color:#f92672">==</span> _IO_pos_BAD)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>      fp<span style="color:#f92672">-&gt;</span>_offset <span style="color:#f92672">=</span> new_pos;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>So sánh giá trị <code>fp-&gt;_IO_read_end</code> và <code>fp-&gt;_IO_write_base</code> nếu khác nhau, sẽ gọi hàm <code>_IO_SYSSEEK()</code>. Bởi vì giá trị của <code>fp-&gt;_IO_read_end</code> và <code>fp-&gt;_IO_write_base</code> đang bằng nhau nên có thể dễ dàng bypass được kiện check. ĐI sâu vào bên trong, <code>_IO_SYSSEEK()</code> sẽ gọi syscall <code>lseek()</code> với tham số là <code>offset=fp-&gt;_IO_write_base - fp-&gt;_IO_read_end</code>. Vì vậy, nếu <code>fp-&gt;_IO_write_base</code> &lt; <code>fp-&gt;_IO_read_end</code> thì <code>offset</code> sẽ có giá trị âm và làm cho chương trình báo lỗi. Như vậy, để nó không xảy ra thì ta chỉ cần overwrite LSB của <code>fp-&gt;_IO_write_base</code> thành null byte, nhưng muốn chắc thì ta cũng overwrite LSB của<code>fp-&gt;_IO_write_base</code> thành null.</p>
+<p><code>fp-&gt;_flags &amp; _IO_IS_APPENDING = 1</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c8699d</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">45</span><span style="color:#f92672">&gt;</span>    mov    rbp, rdx
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c869a0</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">48</span><span style="color:#f92672">&gt;</span>    push   rbx
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c869a1</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">49</span><span style="color:#f92672">&gt;</span>    mov    rbx, rdi
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c869a4</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">52</span><span style="color:#f92672">&gt;</span>    sub    rsp, <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c869a8</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">56</span><span style="color:#f92672">&gt;</span>    mov    r14, qword ptr [rdi <span style="color:#f92672">+</span> <span style="color:#ae81ff">0xd8</span>]
+</span></span><span style="display:flex;"><span> <span style="color:#960050;background-color:#1e0010">►</span> <span style="color:#ae81ff">0x7ffff7c869af</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">63</span><span style="color:#f92672">&gt;</span>    test   dword ptr [rdi], <span style="color:#ae81ff">0x1000</span>       <span style="color:#f92672">&lt;</span>_IO_2_1_stdout_<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">0x7ffff7c869b5</span> <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">69</span><span style="color:#f92672">&gt;</span>    jne    _IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">272</span>                <span style="color:#f92672">&lt;</span>_IO_do_write<span style="color:#f92672">+</span><span style="color:#ae81ff">272</span><span style="color:#f92672">&gt;</span>
+</span></span></code></pre></div><p><code>_IO_IS_APPENDING = 0x1000</code></p>
+<ul>
+<li><code>fp-&gt;_flags &amp; 0x1000 == 1</code></li>
+</ul>
+<p>Vậy, tổng kết như sau:</p>
+<pre tabindex="0"><code>stdout-&gt;_flags &amp; _IO_NO_WRITES         == 0
+stdout-&gt;_flags &amp; _IO_CURRENTLY_PUTTING == 1
+stdout-&gt;_flags &amp; _IO_IS_APPENDING      == 1
+</code></pre><p>_flags &amp; 0x8 = 0
+_flags &amp; 0x800 = 1
+_flags &amp; 0x1000 = 1
+<strong>-&gt; _flags = 0x1800</strong></p>
+<p>Tương tự với READ PRIMITIVE, WRITE PRIMITIVE cũng cần 1 số điều kiện để chúng có thể hoạt động, chỉ cần chúng ta điều khiển được các giá trị <code>_IO_read_end</code>, <code>_IO_read_ptr</code>,&hellip; là được.
+Vậy, chúng ta đã thành công bypass được tất cả các hạn chế và chỉ cần ghi vào <code>f-&gt;_IO_write_ptr</code> , <code>f-&gt;_IO_write_base</code> những giá trị phù hợp để khai thác, ta sẽ có được <del>LIBC BASE</del> , khi đã có <del>LIBC BASE</del>, ta có thể tiếp tục dùng <code>FSOP</code> để điều khiển được luồng thực thi nhờ <code>VTABLE HIJACKING</code> như phần trên mình đã nói (và rõ ràng là ở GLIBC-2.35 thì gần như đã full đồ, full giáp nên việc tấn công FSOP rất là khó và phải cần rất nhiều kiến thức và hiểu rõ bản chất để có thể đi sâu hơn trong kĩ thuật này) !</p>
+<h3 id="4-vtable-hijacking">4. VTABLE-HIJACKING</h3>
+<p>Ta đã thành công giải quyết được vấn đề READ/WRITE PRIMITIVE trên GLIBC-2.35, làm sao ta có thể điều khiển được luồng thực thi từ chương trình nếu như không thể bypass được loạt check trên.</p>
+<h3 id="5-protection-mechanism">5. PROTECTION MECHANISM</h3>
+<p>Từ phiên bản <code>Glibc-2.24</code> trở đi, khi ta ghi đè vào vtable thì sẽ không còn chiếm quyền điều khiển được nữa. Bởi vì chương trình sẽ kiểm tra tính hợp lệ của địa chỉ <code>vtable</code> trước khi gọi hàm ảo.</p>
+<p>Hai hàm <code>IO_validate_vtable</code> and <code>_IO_vtable_check</code> được thêm vào.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> _IO_jump_t <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">IO_validate_vtable</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> _IO_jump_t <span style="color:#f92672">*</span>vtable)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* Fast path: The vtable pointer is within the __libc_IO_vtables
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     section.  */</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uintptr_t</span> section_length <span style="color:#f92672">=</span> __stop___libc_IO_vtables <span style="color:#f92672">-</span> __start___libc_IO_vtables;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>ptr <span style="color:#f92672">=</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) vtable;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">uintptr_t</span> offset <span style="color:#f92672">=</span> ptr <span style="color:#f92672">-</span> __start___libc_IO_vtables;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">__glibc_unlikely</span> (offset <span style="color:#f92672">&gt;=</span> section_length))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* The vtable pointer is not in the expected section.  Use the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">       slow path, which will terminate the process if necessary.  */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">_IO_vtable_check</span> ();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> vtable;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Hàm kiểm tra xem con trỏ vtable có nằm trong phần <code>__libc_IO_vtables</code> hay không. Nếu không, nó sẽ tiếp tục gọi đến <code>_IO_vtable_check</code> .</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> attribute_hidden
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">_IO_vtable_check</span> (<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifdef SHARED
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>flag) (<span style="color:#66d9ef">void</span>) <span style="color:#f92672">=</span> <span style="color:#a6e22e">atomic_load_relaxed</span> (<span style="color:#f92672">&amp;</span>IO_accept_foreign_vtables);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#ifdef PTR_DEMANGLE
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">PTR_DEMANGLE</span> (flag);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (flag <span style="color:#f92672">==</span> <span style="color:#f92672">&amp;</span>_IO_vtable_check)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    Dl_info di;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> link_map <span style="color:#f92672">*</span>l;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (_dl_open_hook <span style="color:#f92672">!=</span> NULL
+</span></span><span style="display:flex;"><span>       <span style="color:#f92672">||</span> (<span style="color:#a6e22e">_dl_addr</span> (_IO_vtable_check, <span style="color:#f92672">&amp;</span>di, <span style="color:#f92672">&amp;</span>l, NULL) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&amp;&amp;</span> l<span style="color:#f92672">-&gt;</span>l_ns <span style="color:#f92672">!=</span> LM_ID_BASE))
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else </span><span style="color:#75715e">/* !SHARED */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (__dlopen <span style="color:#f92672">!=</span> NULL)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">__libc_fatal</span> (<span style="color:#e6db74">&#34;Fatal error: glibc detected an invalid stdio handle</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Nếu <code>vtable</code> không hợp lệ, chương trình sẽ dừng lại và báo lỗi.</p>
+<h3 id="references">References</h3>
+<p><a href="https://chovid99.github.io/posts/file-structure-attack-part-1/">https://chovid99.github.io/posts/file-structure-attack-part-1/</a>
+<a href="https://dhavalkapil.com/blogs/FILE-Structure-Exploitation/">https://dhavalkapil.com/blogs/FILE-Structure-Exploitation/</a>
+<a href="https://nightrainy.github.io/2019/08/07/play-withe-file-structure-%E6%90%AC%E8%BF%90/">https://nightrainy.github.io/2019/08/07/play-withe-file-structure-%E6%90%AC%E8%BF%90/</a>
+<a href="https://outflux.net/blog/archives/2011/12/22/abusing-the-file-structure/">https://outflux.net/blog/archives/2011/12/22/abusing-the-file-structure/</a>
+<a href="https://en.wikipedia.org/wiki/Virtual_method_table">https://en.wikipedia.org/wiki/Virtual_method_table</a>
+<a href="https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/">https://elixir.bootlin.com/glibc/glibc-2.35/source/libio/</a>
+<a href="https://blog.kylebot.net/2022/10/22/angry-FSROP/">https://blog.kylebot.net/2022/10/22/angry-FSROP/</a>
+<a href="https://bbs.kanxue.com/thread-273832.htm">https://bbs.kanxue.com/thread-273832.htm</a></p>
+]]></description>
+      
+    </item>
+    
+    
+  </channel>
+</rss>
