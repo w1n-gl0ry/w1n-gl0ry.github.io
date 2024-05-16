@@ -288,10 +288,6 @@
         <li><a href="#vulnerabilities">Vulnerabilities</a>
           <ul>
             <li><a href="#uninitialized-memory">Uninitialized Memory</a></li>
-          </ul>
-        </li>
-        <li><a href="#trigger-the-bug">Trigger the bug</a>
-          <ul>
             <li><a href="#stack-overflow">Stack overflow</a></li>
           </ul>
         </li>
@@ -1815,7 +1811,6 @@ http {
 </span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>  }
 </span></span></code></pre></div><p>Since the value doesn&rsquo;t overwrite when they are NaN and because after malloc, the memory isn&rsquo;t properly initialized. So we can leverage this to leak through <code>draw_graph</code> function.</p>
-<h2 id="trigger-the-bug">Trigger the bug</h2>
 <p>First, I created 2 chunks of 0x400 size, then free 1 to make it into the unsorted bin</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>pwndbg&gt; bins
 </span></span><span style="display:flex;"><span>tcachebins
